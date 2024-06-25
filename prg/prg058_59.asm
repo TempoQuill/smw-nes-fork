@@ -46,8 +46,8 @@ tbl10_8000:
 	dw ofs_Vol2B
 	dw ofs_Vol2C
 	dw ofs_Duty2D ; 210121 x1
-	dw ofs_NA
-	dw ofs_NA
+	dw ofs_Vol2E
+	dw ofs_Pitch2F
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
@@ -1462,114 +1462,114 @@ Empty_Footer:
 UnknownMusPtr:
 	db $FF
 NotePitchTable:
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $07F2 ;A-0
-	dw $0780 ;A#0
-	dw SongLoopPointer ;B-0
-	dw $06AE ;C-1
-	dw $064E ;C#1
-	dw $05F4 ;D-1
-	dw $059E ;D#1
-	dw $054D ;E-1
-	dw $0501 ;F-1
-	dw $04B9
-	dw $0475
-	dw $0435
-	dw $03F9
-	dw $03C0
-	dw $038A
-	dw $0357
-	dw $0327
-	dw $02FA
-	dw $02CF
-	dw $02A7
-	dw $0281
-	dw $025D
-	dw $023B
-	dw $021B
-	dw $01FC
-	dw $01E0
-	dw $01C5
-	dw $01AC
-	dw $0194
-	dw $017D
-	dw $0168
-	dw $0153
-	dw $0140
-	dw $012E
-	dw $011D
-	dw $010D
-	dw $00FE
-	dw $00F0
-	dw $00E2
-	dw $00D6
-	dw $00CA
-	dw $00BE
-	dw $00B4
-	dw $00AA
-	dw $00A0
-	dw $0097
-	dw $008F
-	dw $0087
-	dw $007F
-	dw $0078
-	dw $0071
-	dw $006B
-	dw $0065
-	dw $005F
-	dw $005A
-	dw $0055
-	dw $0050
-	dw $004C
-	dw $0047
-	dw $0043
-	dw $0040
-	dw $003C
-	dw $0039
-	dw $0035
-	dw $0032
-	dw $0030
-	dw $002D
-	dw $002A
-	dw $0028
-	dw $0026
-	dw $0024
-	dw $0022
-	dw $0020
-	dw $001E
-	dw $001C
-	dw $001B
-	dw $0019
-	dw $0018
-	dw $0016
-	dw $0015
-	dw $0014
-	dw $0013
-	dw $0012
-	dw $0011
-	dw $0010
-	dw $000F
-	dw $000E
-	dw $000D
-	dw $000C
-	dw $000B
-	dw $000A
-	dw $0009
-	dw $0008
-	dw $0007
-	dw $0006
-	dw $0005
-	dw $0004
-	dw $0003
-	dw $0002
+	.dw $d5b
+	.dw $c9c
+	.dw $be6
+	.dw $b3b
+	.dw $a9a
+	.dw $a01
+	.dw $972
+	.dw $8ea
+	.dw $86a
+	.dw $7f1
+	.dw $77f
+	.dw $713
+	.dw $d5b >> 1
+	.dw $c9c >> 1
+	.dw $be6 >> 1
+	.dw $b3b >> 1
+	.dw $a9a >> 1
+	.dw $a01 >> 1
+	.dw $972 >> 1
+	.dw $8ea >> 1
+	.dw $86a >> 1
+	.dw $7f1 >> 1
+	.dw $77f >> 1
+	.dw $713 >> 1
+	.dw $d5b >> 2
+	.dw $c9c >> 2
+	.dw $be6 >> 2
+	.dw $b3b >> 2
+	.dw $a9a >> 2
+	.dw $a01 >> 2
+	.dw $972 >> 2
+	.dw $8ea >> 2
+	.dw $86a >> 2
+	.dw $7f1 >> 2
+	.dw $77f >> 2
+	.dw $713 >> 2
+	.dw $d5b >> 3
+	.dw $c9c >> 3
+	.dw $be6 >> 3
+	.dw $b3b >> 3
+	.dw $a9a >> 3
+	.dw $a01 >> 3
+	.dw $972 >> 3
+	.dw $8ea >> 3
+	.dw $86a >> 3
+	.dw $7f1 >> 3
+	.dw $77f >> 3
+	.dw $713 >> 3
+	.dw $d5b >> 4
+	.dw $c9c >> 4
+	.dw $be6 >> 4
+	.dw $b3b >> 4
+	.dw $a9a >> 4
+	.dw $a01 >> 4
+	.dw $972 >> 4
+	.dw $8ea >> 4
+	.dw $86a >> 4
+	.dw $7f1 >> 4
+	.dw $77f >> 4
+	.dw $713 >> 4
+	.dw $d5b >> 5
+	.dw $c9c >> 5
+	.dw $be6 >> 5
+	.dw $b3b >> 5
+	.dw $a9a >> 5
+	.dw $a01 >> 5
+	.dw $972 >> 5
+	.dw $8ea >> 5
+	.dw $86a >> 5
+	.dw $7f1 >> 5
+	.dw $77f >> 5
+	.dw $713 >> 5
+	.dw $d5b >> 6
+	.dw $c9c >> 6
+	.dw $be6 >> 6
+	.dw $b3b >> 6
+	.dw $a9a >> 6
+	.dw $a01 >> 6
+	.dw $972 >> 6
+	.dw $8ea >> 6
+	.dw $86a >> 6
+	.dw $7f1 >> 6
+	.dw $77f >> 6
+	.dw $713 >> 6
+	.dw $d5b >> 7
+	.dw $c9c >> 7
+	.dw $be6 >> 7
+	.dw $b3b >> 7
+	.dw $a9a >> 7
+	.dw $a01 >> 7
+	.dw $972 >> 7
+	.dw $8ea >> 7
+	.dw $86a >> 7
+	.dw $7f1 >> 7
+	.dw $77f >> 7
+	.dw $713 >> 7
+	.dw $d5b >> 8
+	.dw $c9c >> 8
+	.dw $be6 >> 8
+	.dw $b3b >> 8
+	.dw $a9a >> 8
+	.dw $a01 >> 8
+	.dw $972 >> 8
+	.dw $8ea >> 8
+	.dw $86a >> 8
+	.dw $7f1 >> 8
+	.dw $77f >> 8
+	.dw $713 >> 8
 DPCM_BankTable:
 	db $3E ; C0
 REPT 6

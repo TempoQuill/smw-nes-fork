@@ -2209,7 +2209,7 @@ pnt2_EEC8:
 	LDA ActionFrameCount
 	CMP #$02
 	BNE bra3_EEEB
-	LDA #sfx_Thunder?
+	LDA #sfx_Thwomp
 	STA SFXRegister
 bra3_EEEB:
 	LDX #$00

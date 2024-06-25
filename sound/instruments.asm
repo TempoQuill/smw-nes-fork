@@ -647,3 +647,42 @@ ofs_Vol10:
 	.byte $7f,$11
 	.byte $ff
 	.byte $fe
+ofs_Vol2E:
+	.byte $02,$1f
+	.byte $02,$10
+	.byte $09,$1f
+	.byte $01,$1e
+	.byte $01,$1d
+	.byte $01,$1c
+	.byte $01,$1b
+	.byte $01,$1a
+	.byte $01,$19
+	.byte $01,$18
+	.byte $01,$17
+	.byte $01,$16
+	.byte $01,$15
+	.byte $01,$14
+	.byte $01,$13
+	.byte $01,$12
+	.byte $01,$11
+	.byte $ff
+	.byte $00
+ofs_Pitch2F:
+	.byte $01,$0E
+	.byte $03,$0F
+	.byte $01,$0D
+	.byte $01,$0B
+	.byte $01,$0A
+	.byte $01,$0C
+	.byte $01,$0A
+	.byte $01,$0D
+	.byte $01,$0B
+	.byte $01,$0E
+	.byte $01,$0C
+	.byte $01,$0E
+	.byte $01,$0D
+	.byte $01,$0F
+	.byte $01,$0E
+	.byte $0A,$0D
+	.byte $ff
+	.byte $00
