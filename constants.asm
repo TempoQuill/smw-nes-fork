@@ -64,7 +64,7 @@ mus_Silence = $4E
 mus_Ending = $4F
 mus_InvincibleStar = $50
 
-;Music Note IDs
+;Music notes
 NRest = $00
 C1 = $0C
 C#1 = $0D
@@ -139,6 +139,12 @@ A6 = $51
 A#6 = $52
 B6 = $53
 C7 = $54
+C#7 = $55
+D7 = $56
+D#7 = $57
+E7 = $58
+F7 = $59
+
 ;Music Commands
 NLen = $80
 SegCall = $F0

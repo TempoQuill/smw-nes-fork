@@ -7,150 +7,150 @@ GhostHouse_P1Loop:
 	.byte VolSet, $33
 	.byte $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte Transpose
-	.byte C2
-	.byte $F0
+	db Transpose
+	db C2
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
 	.byte Transpose, $16
 	.byte $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F0
+	db $F0
 	.word GhostHouse_P1Seq2
-	.byte $F4
+	db $F4
 	.word GhostHouse_P1Loop
-	.byte $FF
+	db $FF
 GhostHouse_P1Seq:
-	.byte $8A
-	.byte A3
-	.byte B3
-	.byte $2B
-	.byte A3
-	.byte A3
-	.byte B3
-	.byte $2B
-	.byte A3
-	.byte $F1
-	.byte $FF
+	db $8A
+	db A3
+	db B3
+	db $2B
+	db A3
+	db A3
+	db B3
+	db $2B
+	db A3
+	db $F1
+	db $FF
 GhostHouse_P1Seq2:
-	.byte $8A
-	.byte A3
-	.byte B3
-	.byte $2B
-	.byte B3
-	.byte A3
-	.byte B3
-	.byte $2B
-	.byte B3
-	.byte $F1
-	.byte $FF
+	db $8A
+	db A3
+	db B3
+	db $2B
+	db B3
+	db A3
+	db B3
+	db $2B
+	db B3
+	db $F1
+	db $FF
 GhostHouse_P2Tri:
 GhostHouse_P2TriLoop:
 	.byte Transpose, $0E
 	.byte $F0
 	.word GhostHouse_P2Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P2Seq2
 	.byte Transpose, $0C
 	.byte $F0
 	.word GhostHouse_P2Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P2Seq2
 	.byte Transpose, $0A
 	.byte $F0
 	.word GhostHouse_P2Seq
-	.byte $F0
+	db $F0
 	.word GhostHouse_P2Seq2
-	.byte $F4
+	db $F4
 	.word GhostHouse_P2TriLoop
-	.byte $FF
+	db $FF
 GhostHouse_P2Seq:
 	.byte DutySet, $00
 	.byte PitchSet, $62
@@ -218,16 +218,16 @@ GhostHouse_P2Seq2:
 	.byte $F1
 	.byte $FF
 GhostHouse_End:
-	.byte $FF
+	db $FF
 GhostHouse_Footer:
-	.byte NRest
+	db NRest
 	.word GhostHouse_P1
-	.byte $01
+	db $01
 	.word GhostHouse_P2Tri
-	.byte $02
+	db $02
 	.word GhostHouse_P2Tri
-	.byte $03
+	db $03
 	.word GhostHouse_End
-	.byte $04
+	db $04
 	.word GhostHouse_End
-	.byte $FF
+	db $FF

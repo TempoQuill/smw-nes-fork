@@ -257,16 +257,16 @@ DonutPlains_NoiseLoop:
 	.word DonutPlains_NoiseLoop
 	.byte $FF
 DonutPlains_End:
-	.byte $FF
+	db $FF
 DonutPlains_Footer:
-	.byte NRest
+	db NRest
 	.word DonutPlains_P1
-	.byte $01
+	db $01
 	.word DonutPlains_P2
-	.byte $02
+	db $02
 	.word DonutPlains_Tri
-	.byte $03
+	db $03
 	.word DonutPlains_Noise
-	.byte $04
+	db $04
 	.word DonutPlains_End
-	.byte $FF
+	db $FF

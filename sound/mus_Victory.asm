@@ -243,16 +243,16 @@ Victory_DPCM:
 	.byte FMajorDown
 	.byte $FF
 Victory_End:
-	.byte $FF
+	db $FF
 Victory_Footer:
-	.byte NRest
+	db NRest
 	.word Victory_P1
-	.byte $01
+	db $01
 	.word Victory_P2
-	.byte $02
+	db $02
 	.word Victory_Tri
 	.byte $03
 	.word Victory_End
 	.byte $04
 	.word Victory_DPCM
-	.byte $FF
+	db $FF

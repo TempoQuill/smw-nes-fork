@@ -1507,7 +1507,8 @@ Castle_Noise:
 	.byte $3E
 	.byte $FF
 Castle_End:
-	.byte $FF
+	db $FF
+
 Castle_Footer:
 	.byte $00
 	.word Castle_P1

@@ -146,7 +146,7 @@ Ending_P1Loop:
 	.byte NRest
 	.byte $F4
 	.word Ending_P1Loop
-	.byte $FF
+	db $FF
 Ending_P2:
 Ending_P2Loop:
 	.byte Transpose
@@ -195,7 +195,7 @@ Ending_P2Loop:
 	.byte D3
 	.byte $F4
 	.word Ending_P2Loop
-	.byte $FF
+	db $FF
 Ending_Tri:
 Ending_TriLoop:
 	.byte Transpose, $0C
@@ -221,7 +221,7 @@ Ending_TriLoop:
 	.byte B2
 	.byte $F4
 	.word Ending_TriLoop
-	.byte $FF
+	db $FF
 Ending_Noise:
 Ending_NoiseLoop:
 	.byte Transpose, $01
@@ -274,18 +274,18 @@ Ending_NoiseLoop:
 	.byte C3
 	.byte $F4
 	.word Ending_NoiseLoop
-	.byte $FF
+	db $FF
 Ending_End:
-	.byte $FF
+	db $FF
 Ending_Footer:
-	.byte NRest
+	db NRest
 	.word Ending_P1
-	.byte $01
+	db $01
 	.word Ending_P2
-	.byte $02
+	db $02
 	.word Ending_Tri
-	.byte $03
+	db $03
 	.word Ending_Noise
-	.byte $04
+	db $04
 	.word Ending_End
-	.byte $FF
+	db $FF

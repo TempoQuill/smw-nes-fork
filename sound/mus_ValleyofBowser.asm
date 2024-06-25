@@ -29,7 +29,7 @@ ValleyofBowser_P1Loop:
 	.byte G#2
 	.byte $F4
 	.word ValleyofBowser_P1Loop
-	.byte $FF
+	db $FF
 ValleyofBowser_P2:
 ValleyofBowser_P2Loop:
 	.byte Transpose, $00
@@ -43,7 +43,7 @@ ValleyofBowser_P2Loop:
 	.byte B1
 	.byte $F4
 	.word ValleyofBowser_P2Loop
-	.byte $FF
+	db $FF
 ValleyofBowser_P2Sub:
 	.byte PitchSet, $39
 	.byte NLen+7
@@ -97,7 +97,7 @@ ValleyofBowser_TriLoop:
 	.byte G#2
 	.byte $F4
 	.word ValleyofBowser_TriLoop
-	.byte $FF
+	db $FF
 ValleyofBowser_Noise:
 ValleyofBowser_NoiseLoop:
 	.byte Transpose, $01
@@ -126,14 +126,14 @@ ValleyofBowser_DPCMLoop:
 	.word ValleyofBowser_DPCMLoop
 	.byte $FF
 ValleyofBowser_Footer:
-	.byte NRest
+	db NRest
 	.word ValleyofBowser_P1
-	.byte $01
+	db $01
 	.word ValleyofBowser_P2
-	.byte $02
+	db $02
 	.word ValleyofBowser_Tri
-	.byte $03
+	db $03
 	.word ValleyofBowser_Noise
-	.byte $04
+	db $04
 	.word ValleyofBowser_DPCM
-	.byte $FF
+	db $FF

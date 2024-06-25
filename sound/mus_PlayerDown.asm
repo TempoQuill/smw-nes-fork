@@ -84,16 +84,16 @@ PlayerDown_Tri:
 	.byte G1
 	.byte $FF
 PlayerDown_End:
-	.byte $FF
+	db $FF
 PlayerDown_Footer:
-	.byte NRest
+	db NRest
 	.word PlayerDown_P1
-	.byte $01
+	db $01
 	.word PlayerDown_P2
-	.byte $02
+	db $02
 	.word PlayerDown_Tri
-	.byte $03
+	db $03
 	.word PlayerDown_End
-	.byte $04
+	db $04
 	.word PlayerDown_End
-	.byte $FF
+	db $FF

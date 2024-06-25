@@ -630,16 +630,16 @@ Underwater_TriSub4:
 	.byte NRest
 	.byte SegEnd
 Underwater_End:
-	.byte $FF
+	db $FF
 Underwater_Footer:
-	.byte NRest
+	db NRest
 	.word Underwater_P1
-	.byte $01
+	db $01
 	.word Underwater_P2
-	.byte $02
+	db $02
 	.word Underwater_Tri
-	.byte $03
+	db $03
 	.word Underwater_End
-	.byte $04
+	db $04
 	.word Underwater_End
-	.byte $FF
+	db $FF

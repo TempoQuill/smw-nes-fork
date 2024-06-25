@@ -36,16 +36,16 @@ GameOver_P2:
 	.byte D4
 	.byte $FF
 GameOver_End:
-	.byte $FF
+	db $FF
 GameOver_Footer:
-	.byte NRest
+	db NRest
 	.word GameOver_P1
-	.byte $01
+	db $01
 	.word GameOver_P2
-	.byte $02
+	db $02
 	.word GameOver_End
-	.byte $03
+	db $03
 	.word GameOver_End
-	.byte $04
+	db $04
 	.word GameOver_End
-	.byte $FF
+	db $FF

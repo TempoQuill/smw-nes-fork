@@ -784,13 +784,15 @@ sub10_8A65:
 	JSR sub10_8AAB
 	JSR sub10_8ADC
 	RTS
+
 sub10_8A7A:
 	LDA CurrentTrackID
-	AND #$0F
+	AND #%1111 ;Mask out lower nybble
 	TAX
 	CPX #$04
-	BMI bra10_8A85
+	BMI bra10_8A85 ;Branch if it's commands F0 to F3
 	RTS
+
 bra10_8A85:
 	LDX CurrentTrackOffset
 	LDY CurrentTrackPointerOffset
@@ -808,6 +810,7 @@ bra10_8A85:
 	LDA (SoundPointer),Y
 	STA Pulse1VolumeDelay,X
 	RTS
+
 sub10_8AAB:
 	LDA CurrentTrackID
 	AND #$0F
@@ -856,29 +859,33 @@ bra10_8AE7:
 	LDA (SoundPointer),Y
 	STA Pulse1PitchDelay,X
 	RTS
+
 sub10_8B0D:
 	LDX CurrentTrackPointerOffset
 	LDA MusicPointer,X
 	STA SoundPointer
 	LDA MusicPointer+1,X
 	STA SoundPointer+1
-	JSR sub10_8E20
+	
+	JSR sub10_8E20 ;Move to next byte
 	LDY #$00
 	LDA (SoundPointer),Y
 	LDX CurrentTrackOffset
 	RTS
+
 sub10_8B25:
 	JSR sub10_8B2F
 	JSR sub10_8BA2
 	JSR sub10_8C15
 	RTS
+
 sub10_8B2F:
 	LDA CurrentTrackID
 	AND #$0F
 	TAX
 	CPX #$04
 	BPL bra10_8BA1_RTS
-bra10_8B39:
+
 loc10_8B39:
 	LDX CurrentTrackOffset
 	LDA Pulse1VolumeDelay,X
@@ -888,6 +895,8 @@ loc10_8B39:
 	LDX CurrentTrackOffset
 	LDA Pulse1VolumeDelay,X
 	BNE bra10_8B9E
+	
+	;Move to next RLE tag
 	LDX CurrentTrackPointerOffset
 	LDA #$02
 	CLC
@@ -898,13 +907,14 @@ loc10_8B39:
 	ADC Pulse1VolumePointer+1,X
 	STA Pulse1VolumePointer+1,X
 	STA SoundPointer+1
+	
 	LDX CurrentTrackOffset
 	LDY #$00
 	LDA (SoundPointer),Y
 	STA Pulse1VolumeDelay,X
 	TAY
 	CPY #$FF
-	BNE bra10_8B39
+	BNE loc10_8B39
 	LDX CurrentTrackPointerOffset
 	LDY #$01
 	LDA (SoundPointer),Y
@@ -929,13 +939,14 @@ bra10_8B9E:
 	DEC Pulse1VolumeDelay,X
 bra10_8BA1_RTS:
 	RTS
+
 sub10_8BA2:
 	LDA CurrentTrackID
 	AND #$0F
 	TAX
 	CPX #$02
 	BPL bra10_8C14_RTS
-bra10_8BAC:
+
 loc10_8BAC:
 	LDX CurrentTrackOffset
 	LDA Pulse1DutyDelay,X
@@ -961,7 +972,7 @@ loc10_8BAC:
 	STA Pulse1DutyDelay,X
 	TAY
 	CPY #$FF
-	BNE bra10_8BAC
+	BNE loc10_8BAC
 	LDX CurrentTrackPointerOffset
 	LDY #$01
 	LDA (SoundPointer),Y
@@ -1301,8 +1312,13 @@ loc10_8E1B:
 	PLA
 	TAY
 	RTS
+
+;----------------------------------------
+;SUBROUTINES ($8E20, $8E23)
+;Increments the pointer for channel data, optionally ignoring the index for the current channel if the second subroutine is called.
+;----------------------------------------
 sub10_8E20:
-	LDX CurrentTrackPointerOffset
+	LDX CurrentTrackPointerOffset ;Get current channel
 sub_58_8E23:
 	INC MusicPointer,X
 	LDA MusicPointer,X
@@ -1338,6 +1354,7 @@ bra10_8E32:
 	STA SoundQueue,Y ;Store in SFX queue
 bra10_8E40_RTS:
 	RTS
+
 tbl10_8E41:
 	dw Empty_Footer
 	dw SpinJump_Footer

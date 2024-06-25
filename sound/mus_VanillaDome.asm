@@ -78,7 +78,7 @@ VanillaDome_P2Loop:
 	.byte NRest
 	.byte $F4
 	.word VanillaDome_P2Loop
-	.byte $FF
+	db $FF
 VanillaDome_P2Sub:
 	.byte NLen+5
 	.byte G3
@@ -185,14 +185,14 @@ VanillaDome_DPCMSub:
 	.byte KickDrum
 	.byte SegEnd
 VanillaDome_Footer:
-	.byte NRest
+	db NRest
 	.word VanillaDome_P1Tri
-	.byte $01
+	db $01
 	.word VanillaDome_P2
-	.byte $02
+	db $02
 	.word VanillaDome_P1Tri
-	.byte $03
+	db $03
 	.word VanillaDome_Noise
-	.byte $04
+	db $04
 	.word VanillaDome_DPCM
-	.byte $FF
+	db $FF

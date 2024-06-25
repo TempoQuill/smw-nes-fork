@@ -1112,16 +1112,16 @@ Overworld_DPCMAbDiminished:
 	.byte AbDiminishedUp
 	.byte SegEnd
 Overworld_End:
-	.byte $FF
+	db $FF
 Overworld_Footer:
-	.byte NRest
+	db NRest
 	.word Overworld_P1
-	.byte $01
+	db $01
 	.word Overworld_P2
-	.byte $02
+	db $02
 	.word Overworld_Tri
-	.byte $03
+	db $03
 	.word Overworld_End
-	.byte $04
+	db $04
 	.word Overworld_DPCM
-	.byte $FF
+	db $FF
