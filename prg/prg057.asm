@@ -4749,8 +4749,8 @@ loc4_BB43:
 	LDA #$27
 	STA M90_PRG3 ;Swap the collision bank into the 4th PRG slot
 	JSR jmp_39_E000 ;Jump
-	LDA #$3F	
-	STA M90_PRG3 ;Swap the IRQ bank back in
+	LDA #$24
+	STA M90_PRG3 ;Swap the warp bank back in
 	LDA PlayerBackColl
 	CMP #$F8
 	BNE bra4_BB73
@@ -4827,8 +4827,8 @@ bra4_BBF0:
 	LDA #$27
 	STA M90_PRG3 ;Swap bank 39 into 4th PRG slot
 	JSR jmp_39_E000 ;Jump
-	LDA #$3F
-	STA M90_PRG3 ;Swap the IRQ bank back in
+	LDA #$24
+	STA M90_PRG3 ;Swap the warp bank back in
 	LDA PlayerBackColl
 	CMP #$F8
 	BNE bra4_BC09 ;Branch if the player isn't in front of a fence tile

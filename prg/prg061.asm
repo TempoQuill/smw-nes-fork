@@ -4157,8 +4157,8 @@ bra6_B365:
 	STA BGBank3 ;Set BG bank 3
 	LDA LevelBGBanks+3,X
 	STA BGBank4 ;Set BG bank 4 (dummy)
-	LDA #$3F
-	STA M90_PRG3 ;Swap bank 63 back in
+	LDA #$24
+	STA M90_PRG3 ;Swap bank 36 back in
 	RTS
 jmp_61_B38E:
 	LDA PPUStatus

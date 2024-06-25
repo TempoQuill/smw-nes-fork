@@ -2156,7 +2156,7 @@ bra3_EE72:
 	LDA ActionFrameCount
 	CMP #$02
 	BNE bra3_EE84
-	LDA #sfx_Warp
+	LDA #sfx_PowerDown
 	STA SFXRegister
 bra3_EE84:
 	LDX #$00
