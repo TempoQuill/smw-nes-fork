@@ -2002,10 +2002,10 @@ bra2_903B:
 bra2_904F:
 	LDA $30
 	BEQ bra2_9057
-	JSR sub2_9151
+	JMP sub2_9151
 	RTS
 bra2_9057:
-	JSR sub2_90B1
+	JMP sub2_90B1
 	RTS
 bra2_905B:
 	LDA #$00

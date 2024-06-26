@@ -213,7 +213,7 @@ bra6_8196:
 	LDY #$C0
 bra6_81B0:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Ninji:
 	dw SprMap_Ninji_Idle
@@ -299,7 +299,7 @@ tbl6_8246:
 ptr6_8250:
 	JSR sub6_825A
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 sub6_825A:
 	LDX $A4
@@ -502,7 +502,7 @@ ptr6_83B3:
 	LDY #$C0
 bra6_83DB:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Thwomp:
 	dw SprMap_Thwomp_Idle
@@ -603,7 +603,7 @@ bra6_849D:
 	JSR jmp_54_BBC3
 bra6_84A7:
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ObjID_h90:
 	LDX $A4
@@ -675,7 +675,7 @@ bra6_8533:
 	JSR jmp_54_BBC3
 bra6_853D:
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr7_8544:
 	LDY #$00
@@ -700,7 +700,7 @@ bra6_8550:
 	LDY #$C0
 bra6_856A:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS ;unlogged code end
 tbl6_8570:
 	dw Unknown1 ;Unused (Fuzzy)
@@ -793,7 +793,7 @@ tbl6_8604:
 ptr6_860C:
 	JSR sub6_8616
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 sub6_8616:
 	LDX $A4
@@ -955,7 +955,7 @@ tbl6_874D:
 ptr6_8755:
 	JSR sub6_875F
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74 ;unlogged
+	JMP jmp_54_BF74 ;unlogged
 	RTS ;unlogged
 sub6_875F:
 	LDX $A4
@@ -1065,7 +1065,7 @@ bra6_8824:
 	STY $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Urchin:
 	dw SprMap_Urchin_Open
@@ -1360,7 +1360,7 @@ ObjID_h70:
 	LDX $A4
 	LDA ObjectVariables,X
 	BPL bra6_8971
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra6_8971:
 	JSR sub6_8BCA
@@ -1816,10 +1816,10 @@ bra6_8CC2:
 	LDA WorldNumber
 	CMP #$04
 	BEQ bra6_8CD7
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 bra6_8CD7:
-	JSR sub_52_A2A8
+	JMP sub_52_A2A8
 	RTS
 ptr6_8CDB:
 	LDA WorldNumber
@@ -1846,7 +1846,7 @@ bra6_8D02:
 	AND #$C0
 	ORA #$60
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 bra6_8D12:
 	LDX $A4
@@ -1872,7 +1872,7 @@ bra6_8D35:
 	AND #$C0
 	ORA #$60
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl6_8D45:
 	dw ofs_90CF
@@ -3186,7 +3186,7 @@ ptr6_9358:
 	LDA ReznorsDefeated
 	BNE bra6_9363_RTS
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 bra6_9363_RTS:
 	RTS
 ptr6_9364:
@@ -3205,7 +3205,7 @@ ptr6_9364:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_9389:
 	LDX $A4
@@ -3228,7 +3228,7 @@ bra6_93A9:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ObjID_h72:
 	LDX $A4
@@ -3738,7 +3738,7 @@ loc6_9747:
 	LDA PlayerYSpeed
 	BNE bra6_9767
 bra6_9763:
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 bra6_9767:
 	LDA InvincibilityTimer
@@ -4061,7 +4061,7 @@ bra6_99CC:
 	STY $36
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl6_99D7:
 	db $DD
@@ -4095,9 +4095,9 @@ sub6_99EF:
 	BPL bra6_99FF_RTS
 	LDA #$02
 	STA $2D
-	JSR sub2_A5D0
 	PLA
 	PLA
+	JMP sub2_A5D0
 bra6_99FF_RTS:
 	RTS
 ObjID_h6C:
@@ -4290,7 +4290,7 @@ bra6_9B5D:
 	LDY #$01
 bra6_9B75:
 	STY $96
-	JSR sub6_9C4F
+	JMP sub6_9C4F
 bra6_9B7A_RTS:
 	RTS
 ptr6_9B7B:

@@ -28,7 +28,7 @@ bra5_802B:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_8039:
 	LDX $A4
@@ -46,7 +46,7 @@ ptr6_8039:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl5_805E:
 	dw ofs2_80CE
@@ -582,7 +582,7 @@ tbl5_836A:
 	dw ptr10_8372
 ptr10_8372:
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ObjID_h77:
 	LDX $A4
@@ -980,10 +980,10 @@ ptr10_864E:
 bra5_86BC_RTS:
 	RTS
 sub5_86BD:
+	PLA
+	PLA
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
-	PLA
-	PLA
+	JMP jmp_54_BF74
 	RTS
 sub5_86C6:
 	LDA ObjXScreenDistance,X
@@ -1481,7 +1481,7 @@ tbl5_8A8B:
 ptr10_8A95:
 	JSR Obj_CapeHitCheck
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ObjID_h4E:
 	LDX $A4
@@ -1544,7 +1544,7 @@ bra5_8B0D:
 	STA EnemyAnimFrame,X
 	RTS
 bra5_8B1D:
-	JSR sub_54_B4FC
+	JMP sub_54_B4FC
 	RTS
 loc5_8B21:
 	JSR sub5_8C27
@@ -2111,7 +2111,7 @@ bra5_8F62:
 	TAY
 bra5_8F78:
 	STY $25
-	JSR sub5_93A8
+	JMP sub5_93A8
 	RTS
 bra5_8F7E:
 	JSR sub5_82EC
@@ -2201,7 +2201,7 @@ bra5_900F:
 	LDA ObjectYScreen,X
 	SBC #$00
 	STA ObjectYScreen,X
-	JSR sub5_9056
+	JMP sub5_9056
 	RTS
 bra5_902C:
 	LDA $062B
@@ -2225,7 +2225,7 @@ bra5_904A:
 	TAY
 	JSR jmp_54_B896
 	JSR sub5_9522
-	JSR sub5_9056
+	JMP sub5_9056
 	RTS
 sub5_9056:
 	LDA ObjectSlot,X
@@ -2325,7 +2325,7 @@ bra5_90F3:
 	LDA ObjectYScreen,X
 	SBC #$00
 	STA ObjectYScreen,X
-	JSR sub5_9056
+	JMP sub5_9056
 	RTS
 bra5_9117:
 	LDA ObjectXPos,X
@@ -2342,7 +2342,7 @@ bra5_9117:
 	LDA ObjectYScreen,X
 	SBC #$00
 	STA ObjectYScreen,X
-	JSR sub5_9056
+	JMP sub5_9056
 	RTS
 bra5_913D:
 	LDA $062B
@@ -2365,7 +2365,7 @@ bra5_915B:
 	ASL
 	TAY
 	JSR jmp_54_B896
-	JSR sub5_9056
+	JMP sub5_9056
 	RTS
 ObjID_h66:
 	LDX $A4
@@ -2433,7 +2433,7 @@ bra5_91D5:
 	STA $2B
 	LDA #$CA
 	STA $25
-	JSR sub5_93A8
+	JMP sub5_93A8
 	RTS
 bra5_91F2:
 	LDA #$6A
@@ -3097,7 +3097,7 @@ loc5_963F:
 bra5_9645:
 	LDA ObjectVariables,X
 	BPL bra5_964E
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra5_964E:
 	JSR sub5_82EC
@@ -3113,7 +3113,7 @@ bra5_964E:
 bra5_9661:
 	ASL
 	TAY
-	JSR jmp_54_B896
+	JMP jmp_54_B896
 	RTS
 tbl5_9667:
 	db $3A
@@ -3150,7 +3150,7 @@ bra5_9696:
 	STY $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl5_96A1:
 	dw WallUrchin1
@@ -3185,7 +3185,7 @@ ptr6_96CB:
 	LDX $A4
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl5_96EB:
 	dw GrassPlatform1
@@ -3348,7 +3348,7 @@ bra5_97E3:
 	JSR jmp_54_B896
 	LDA #$DA
 	STA $25
-	JSR sub5_93A8
+	JMP sub5_93A8
 	RTS
 tbl5_97F0:
 	db $40
@@ -3574,7 +3574,7 @@ bra5_9971:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR sub_52_ADAF
+	JMP sub_52_ADAF
 	RTS
 tbl5_997F:
 	dw ofs_9989 ;Bonus ? Block
@@ -4053,7 +4053,7 @@ bra5_9CE0:
 	LDA #$00
 	STA ObjectSlot,X
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 bra5_9CF3_RTS:
 	RTS
 	db $01

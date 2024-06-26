@@ -445,7 +445,7 @@ pad $A000
 
 include prg/prg040.asm
 ;50010 - 5200f
-
+;DMC bank
 
 .base $A000
 .include prg/prg041.asm
@@ -476,6 +476,7 @@ include prg/prg045.asm
 pad $A000
 ;5a010 - 5c00f
 ;title screen level data
+;	also contains a chunk of DMC sample data
 
 base $8000
 include prg/prg046.asm
@@ -517,6 +518,7 @@ include prg/prg052.asm
 pad $C000
 ;68010 - 6a00f
 ;sprite manager?
+;	also contains a chunk of DMC sample data
 
 base $8000
 include prg/prg053.asm
@@ -557,7 +559,7 @@ pad $C000
 base $8000
 include prg/prg060.asm
 ;78010 - 7a00f
-;Unknown
+;DMC bank
 
 base $A000
 include prg/prg061.asm
@@ -569,7 +571,7 @@ base $C000
 include prg/prg062.asm
 pad $E000
 ;7c010 - 7e00f
-;Bank 47 clone
+;DMC bank
 
 base $E000
 include prg/prg063.asm

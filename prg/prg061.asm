@@ -3472,7 +3472,7 @@ bra6_AEC2:
 	INX ;Move to the next byte in the table
 	CPX #$0C
 	BCC bra6_AEC2 ;Loop until 12 bytes from the table have been copied to RAM
-	JSR GetEntitySetPtr
+	JMP GetEntitySetPtr
 	RTS
 tbl6_AED1:
 	db $00
@@ -4296,7 +4296,7 @@ bra6_B488:
 	CPX #$80
 	BCC bra6_B488
 	JSR sub6_BCA9
-	JSR sub6_B49D
+	JMP sub6_B49D
 	RTS
 sub6_B49D:
 	LDA InterruptMode
@@ -5388,7 +5388,7 @@ bra6_B92F:
 bra6_B951:
 	LDA VertScrollLock
 	CMP $57
-	BNE bra6_B96B
+	BNE loc6_B9C1
 	LDA #$00
 	STA $57
 	STA $58
@@ -5398,7 +5398,6 @@ bra6_B951:
 	STA PlayerSprYPos
 	LDA PlayerYScreenDup
 	SBC $57
-	BPL bra6_B96B
 bra6_B96B:
 	JMP loc6_B9C1
 bra6_B96E:
@@ -5428,7 +5427,7 @@ bra6_B96E:
 bra6_B999:
 	LDA YScreenCount
 	CMP $57
-	BNE bra6_B9B3
+	BNE loc6_B9C1
 	STA $57
 	LDA #$00
 	STA $58
@@ -5438,8 +5437,6 @@ bra6_B999:
 	STA PlayerSprYPos
 	LDA PlayerYScreenDup
 	SBC $57
-	BPL bra6_B9B3
-bra6_B9B3:
 	JMP loc6_B9C1
 bra6_B9B6:
 	STA PlayerSprYPos
@@ -5447,6 +5444,10 @@ bra6_B9B6:
 	STA $57
 	LDA $54
 	STA $58
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 loc6_B9C1:
 	LDA $57

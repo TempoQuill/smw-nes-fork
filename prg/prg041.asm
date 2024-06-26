@@ -949,7 +949,7 @@ bra_A5E1:
 	AND #$01
 	BNE bra_A5F8_RTS
 bra_A5F5:
-	JSR sub2_96DB
+	JMP sub2_96DB
 bra_A5F8_RTS:
 	RTS
 sub_A5F9:
@@ -1070,7 +1070,7 @@ bra_A6C3:
 	STA a:Event
 	RTS
 bra_A6CF:
-	JSR sub_B486
+	JMP sub_B486
 	RTS
 bra_A6D3:
 	JSR ClearGS0Sprites
@@ -1088,7 +1088,7 @@ sub_A6EE:
 	LDA #$00
 	JSR sub_42_99FA
 	LDX #$F8
-	JSR sub_A6F9
+	JMP sub_A6F9
 	RTS
 sub_A6F9:
 	LDY #$02
@@ -1374,7 +1374,7 @@ loc_A912:
 	JSR sub_B486
 	LDA #$2A
 	STA M90_PRG0 ;Swap bank 42 into the 1st PRG slot
-	JSR DrawDestroyedCastle
+	JMP DrawDestroyedCastle
 	RTS
 pnt5_A924:
 	JSR DrawDestroyedCastle
@@ -1568,7 +1568,7 @@ sub_AA5F:
 	LDA zInputBottleNeck
 	AND #buttonA+buttonStart ;Check if A or start is pressed
 	BEQ bra_AA6A ;If not, branch
-	JSR PlayLevel ;If they are, jump
+	JMP PlayLevel ;If they are, jump
 	RTS
 bra_AA6A:
 	LDX CurrentPlayer
@@ -1621,7 +1621,7 @@ loc_AAB1:
 sub_AACB:
 	LDA #$2A
 	STA M90_PRG0 ;Load bank 42 into the 1st PRG slot
-	JSR TilemapDecompSub ;Draw the compressed title screen logo to VRAM
+	JMP TilemapDecompSub ;Draw the compressed title screen logo to VRAM
 	RTS
 ClearGS0Sprites:
 	LDX #$00
@@ -1656,7 +1656,7 @@ bra_AAFA:
 	STA PlayerMapAnim ;Reset the player's animation
 	STA WorldSelectNum ;Set the starting spot
 	LDA #$0F ;Set next event
-	JSR sub_BFD0 ;Reset the trigger
+	JMP sub_BFD0 ;Reset the trigger
 bra_AB0C_RTS:
 	RTS
 tbl_AB0D:
@@ -1730,7 +1730,7 @@ bra_AB79:
 	LDA #$50
 	STA GS0SpriteYPos
 	JSR AnimateMapPlayer
-	JSR ClearOtherSprites
+	JMP ClearOtherSprites
 	RTS
 tbl_AB95:
 	db $04
@@ -2211,7 +2211,7 @@ sub_AEA3:
 	STA ScrollYPos
 	STA PPUMask
 	STA PPUMaskMirror ;Clear the PPU registers
-	JSR ClearNametable ;Clear the screen
+	JMP ClearNametable ;Clear the screen
 	RTS
 tbl_AEB2:
 	db $04
@@ -2393,7 +2393,7 @@ loc_B001:
 	JSR sub_B486
 	LDA #$2A
 	STA M90_PRG0
-	JSR DrawDestroyedCastle
+	JMP DrawDestroyedCastle
 	RTS
 pnt5_B013:
 	LDA FrameCount
@@ -2414,7 +2414,7 @@ loc_B02C:
 	JSR sub_B486
 	LDA #$2A
 	STA M90_PRG0
-	JSR DrawDestroyedCastle
+	JMP DrawDestroyedCastle
 	RTS
 pnt5_B03E:
 	LDA #$00
@@ -3322,8 +3322,6 @@ sub_B486:
 	BEQ bra_B4BB
 	LDA zInputCurrentState
 	AND #$0C
-	BEQ bra_B4A0
-bra_B4A0:
 	LDA zInputCurrentState
 	AND #$03
 	BEQ bra_B4AA
@@ -3331,8 +3329,6 @@ bra_B4A0:
 bra_B4AA:
 	LDA zInputCurrentState
 	AND #$0C
-	BEQ bra_B4B1
-bra_B4B1:
 	LDA zInputCurrentState
 	AND #$03
 	BEQ bra_B4BB
@@ -3351,6 +3347,10 @@ loc_B4BB:
 	STA CameraXScreen
 	LDA $56
 	STA $52
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 	RTS
 sub_B4D5:
@@ -4760,7 +4760,7 @@ bra_BC84:
 bra_BCA6:
 	LDA HorizScrollLock
 	CMP $55
-	BNE bra_BCC0
+	BNE loc_BD0E
 	LDA #$00
 	STA $55
 	STA $56
@@ -4770,9 +4770,9 @@ bra_BCA6:
 	STA $12
 	LDA PlayerXScreenDup
 	SBC $55
-	BPL bra_BCC0
-bra_BCC0:
 	JMP loc_BD0E
+	NOP
+	NOP
 bra_BCC3:
 	LDA $28
 	CMP #$80
@@ -4858,7 +4858,7 @@ bra_BD31:
 bra_BD53:
 	LDA VertScrollLock
 	CMP $57
-	BNE bra_BD6D
+	BNE loc_BDC3
 	LDA #$00
 	STA $57
 	STA $58
@@ -4868,7 +4868,6 @@ bra_BD53:
 	STA $13
 	LDA PlayerYScreenDup
 	SBC $57
-	BPL bra_BD6D
 bra_BD6D:
 	JMP loc_BDC3
 bra_BD70:
@@ -4898,7 +4897,7 @@ bra_BD70:
 bra_BD9B:
 	LDA YScreenCount
 	CMP $57
-	BNE bra_BDB5
+	BNE loc_BDC3
 	STA $57
 	LDA #$00
 	STA $58
@@ -4908,8 +4907,6 @@ bra_BD9B:
 	STA $13
 	LDA PlayerYScreenDup
 	SBC $57
-	BPL bra_BDB5
-bra_BDB5:
 	JMP loc_BDC3
 bra_BDB8:
 	STA $13
@@ -4917,6 +4914,10 @@ bra_BDB8:
 	STA $57
 	LDA $54
 	STA $58
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 loc_BDC3:
 	LDA $57
@@ -5048,12 +5049,15 @@ loc_BE91:
 	STA M90_PRG0
 	LDA ($DA),Y
 	STA PlayerBackColl
-	LDA #$3A
-	STA M90_PRG0
-	JSR $8000 ;Unused function, bank 60 is just padding
+;	LDA #$3A
+;	STA M90_PRG0
+;	;JSR $8000 ;Unused function, bank 60 is just padding
 	LDA $26
 	BEQ bra_BEBC
 	JMP loc_BE5D
+REPT 8
+	RTS
+ENDR
 bra_BEBC:
 	JMP loc_BEC1
 	STA $95
@@ -5115,7 +5119,7 @@ sub_BED2:
 	STA $66
 	LDA PlayerYPos
 	STA $67
-	JSR sub_BF31
+	JMP sub_BF31
 	RTS
 sub_BF31:
 	LDY $66
@@ -5151,9 +5155,12 @@ sub_BF31:
 	CMP #$78
 	BCC bra_BF7A_RTS
 	STA PlayerBackColl
-	LDA #$3A
-	STA M90_PRG0
-	JSR $8000
+REPT 8
+	RTS
+ENDR
+;	LDA #$3A
+;	STA M90_PRG0
+;	;JSR $8000
 bra_BF7A_RTS:
 	RTS
 	db $C0

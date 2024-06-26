@@ -74,7 +74,7 @@ tbl2_A074:
 jmp_52_A080:
 	LDA #$35
 	STA M90_PRG0
-	JSR sub_53_827C
+	JMP sub_53_827C
 	RTS
 jmp_52_A089:
 	LDA FrameCount
@@ -158,7 +158,7 @@ sub2_A10D:
 	LDA ObjectAction,X
 	AND #$0F
 	STA $2D
-	JSR sub2_A5D0
+	JMP sub2_A5D0
 	RTS
 jmp_52_A118:
 	LDY #$00
@@ -420,10 +420,12 @@ sub_52_A2A8:
 	CLC
 	ADC #$0C
 	JSR sub2_A2DE
-	JSR sub2_A446
+	JMP sub2_A446
 	RTS
-	JSR sub2_A2CA ;unlogged
-	RTS ;unlogged
+	RTS
+	RTS
+	RTS
+	RTS
 sub2_A2CA:
 	LDY #$00
 	LDA ($32),Y

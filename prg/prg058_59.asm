@@ -440,8 +440,7 @@ InvalidNoteLength:
 	JSR sub10_8E20
 	JMP GaugeMusicByte
 musDummy:
-	JSR sub10_8E20
-	RTS
+	JMP sub10_8E20
 	LDX $060A
 	BEQ bra10_881F_RTS
 	LDX #$FF
@@ -476,7 +475,6 @@ GaugePitch:
 	BNE bra10_883B
 	JSR sub10_8E20
 	JMP loc10_8A0A
-	RTS
 bra10_883B:
 	PHA
 	LDA CurrentTrackID
@@ -527,8 +525,7 @@ bra10_8871:
 	STA Pulse1Pitch,X
 loc10_8878:
 	JSR sub10_8A65
-	JSR sub10_8E20
-	RTS
+	JMP sub10_8E20
 GaugeMusicCommand:
 	AND #$0F
 	ASL
@@ -782,8 +779,7 @@ sub10_8A65:
 	STA Pulse1FinalPitch+1,X
 	JSR sub10_8A7A
 	JSR sub10_8AAB
-	JSR sub10_8ADC
-	RTS
+	JMP sub10_8ADC
 
 sub10_8A7A:
 	LDA CurrentTrackID
@@ -876,8 +872,7 @@ sub10_8B0D:
 sub10_8B25:
 	JSR sub10_8B2F
 	JSR sub10_8BA2
-	JSR sub10_8C15
-	RTS
+	JMP sub10_8C15
 
 sub10_8B2F:
 	LDA CurrentTrackID
@@ -1581,10 +1576,9 @@ ENDR
 REPT 15
 	db $3E ; E1 - F#2
 ENDR
-REPT 8
-	db $34 ; G2 - D3
+REPT 9
+	db $26 ; G2 - D#3
 ENDR
-	db $2d ; D#3
 	db $3E ; E3
 	db $3E ; F3
 	db $3E ; F#3

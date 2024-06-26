@@ -77,7 +77,7 @@ bra8_8073:
 		AND #$01
 		BNE @Stop ;Only continue every even frame
 		LDA #$10
-		JSR GetMovementData ;Get animation data for Koopa
+		JMP GetMovementData ;Get animation data for Koopa
 	@Stop:
 		RTS
 
@@ -86,7 +86,7 @@ bra8_808A:
 	AND #$01
 	BNE bra8_8096_RTS ;Only continue every even frame
 	LDA #$10
-	JSR sub_54_B3B4 ;Load animation data for Koopa
+	JMP sub_54_B3B4 ;Load animation data for Koopa
 bra8_8096_RTS:
 	RTS
 
@@ -293,7 +293,7 @@ bra8_822C:
 	LDA ObjectState,X
 	AND #$40
 	STA $05F0
-	JSR jmp_52_A118
+	JMP jmp_52_A118
 	RTS
 
 KoopaMappings:
@@ -404,7 +404,7 @@ loc8_82F9:
 bra8_82FF:
 	LDA ObjectVariables,X
 	BPL bra8_8308
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra8_8308:
 	JSR sub8_83D0
@@ -473,7 +473,7 @@ loc8_8385:
 bra8_838B:
 	LDA ObjectVariables,X
 	BPL bra8_8394
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra8_8394:
 	JSR sub8_83D0
@@ -650,7 +650,7 @@ loc8_84ED:
 	BEQ bra8_84F3
 	RTS ;unlogged
 bra8_84F3:
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra8_84F7:
 	LDA #$06
@@ -743,7 +743,7 @@ bra8_8596:
 	STA ObjectSlot,X
 	LDA #$00
 	STA ObjectState,X
-	JSR jmp_54_BCC2
+	JMP jmp_54_BCC2
 	RTS
 bra8_85B5:
 	LDA #$10
@@ -822,7 +822,7 @@ bra8_8648:
 	INC ObjectSlot,X
 	LDA #$00
 	STA ObjectState,X
-	JSR Obj_StompKnockback
+	JMP Obj_StompKnockback
 	RTS
 ptr6_8657:
 	LDY #$00
@@ -854,7 +854,7 @@ bra8_8681:
 	LDA ObjectState,X
 	AND #%01000000
 	STA ObjectAttributes ;Get/use the horizontal mirroring bit
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 RexMappings:
 	dw RexWalk1
@@ -1043,7 +1043,7 @@ ptr3_87FE:
 	LDA #$15
 	JSR jmp_54_B11D ;Use movement data string #$15 (21 in decimal), which is used for the piranha plant
 bra8_8809:
-	JSR Obj_YoshiTongueCheck ;Handle edibility
+	JMP Obj_YoshiTongueCheck ;Handle edibility
 	RTS
 ptr3_880D:
 	LDA FrameCount
@@ -1052,7 +1052,7 @@ ptr3_880D:
 	LDA #$15
 	JSR jmp_54_B11D
 bra8_8818:
-	JSR ptr_AA7B
+	JMP ptr_AA7B
 	RTS
 ptr3_881C:
 	LDA FrameCount
@@ -1061,7 +1061,7 @@ ptr3_881C:
 	LDA #$15
 	JSR jmp_54_B11D
 bra8_8827:
-	JSR ptr_AB29
+	JMP ptr_AB29
 	RTS
 ptr3_882B:
 	LDA FrameCount
@@ -1077,7 +1077,7 @@ bra8_8836:
 	BCS bra8_884A_RTS
 	JSR Obj_CapeHitCheck
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 bra8_884A_RTS:
 	RTS
 ptr6_884B:
@@ -1107,7 +1107,7 @@ bra8_8874:
 	STY $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl8_887F:
 	dw JumpPiranha1
@@ -1265,7 +1265,7 @@ bra8_8979:
 	LDA ObjectYScreen,X
 	SBC #$00
 	STA ObjectYScreen,X
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra8_8995:
 	LDA ObjectAction,X
@@ -1290,7 +1290,7 @@ bra8_8995:
 	INC ObjectAction,X
 	RTS
 bra8_89CB:
-	JSR sub_54_B4FC
+	JMP sub_54_B4FC
 	RTS
 bra8_89CF:
 	JSR sub8_89F6
@@ -1312,7 +1312,7 @@ bra8_89DE:
 	AND #$01
 	BNE bra8_89F6_RTS
 	LDA $25
-	JSR jmp_54_B11D
+	JMP jmp_54_B11D
 bra8_89F6_RTS:
 	RTS
 sub8_89F6:
@@ -1441,7 +1441,7 @@ bra8_8AE3:
 	LDA ObjectState,X
 	AND #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl8_8AF1:
 	db $00
@@ -1685,7 +1685,7 @@ ptr3_8C3B:
 	JSR Obj_CapeHitCheck
 	JSR jmp_54_BC3E
 	JSR Obj_KillOnSpinJump
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr3_8C48:
 	LDA #$0F
@@ -1777,7 +1777,7 @@ bra8_8D00:
 	STY $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl8_8D0B:
 	db $00
@@ -1943,7 +1943,7 @@ bra8_8DF1:
 bra8_8E04:
 	JSR Obj_CapeHitCheck
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr3_8E0E:
 	LDA #$00
@@ -1974,7 +1974,7 @@ bra8_8E3B:
 	STY $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl8_8E46:
 	dw LotusPollen1
@@ -2061,10 +2061,10 @@ bra8_8ED9:
 	BNE bra8_8EE5
 	LDA #sfx_Thunder?
 	STA SFXRegister
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra8_8EE5:
-	JSR sub_54_B4FC
+	JMP sub_54_B4FC
 	RTS
 loc8_8EE9:
 	LDA #$06
@@ -2181,7 +2181,7 @@ bra8_8FC5:
 	LDA ObjectState,X
 	AND #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl8_8FD3:
 	dw Swooper1
@@ -2268,7 +2268,7 @@ loc8_9059:
 	BEQ bra8_905F
 	RTS ;unlogged
 bra8_905F:
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra8_9063:
 	LDA #$06
@@ -2357,7 +2357,7 @@ bra8_910B:
 	JSR Obj_CapeHitCheck
 	JSR jmp_54_BC3E
 	JSR Obj_KillOnSpinJump
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr6_9118:
 	LDY #$00
@@ -2394,7 +2394,7 @@ bra8_913B:
 	LDY #$C0
 bra8_9155:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl8_915B:
 	dw Blurp1
@@ -2492,7 +2492,7 @@ loc8_91F8:
 	BEQ bra8_91FE
 	RTS ;unlogged
 bra8_91FE:
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 loc8_9202:
 	LDA ObjectAction,X
@@ -2692,9 +2692,9 @@ loc8_9374:
 bra8_938A:
 	STY $06E1
 bra8_938D:
-	JSR jmp_54_A118
 	PLA
 	STA $06E1
+	JMP jmp_54_A118
 	RTS
 tbl8_9395:
 	dw Mechakoopa1
@@ -3662,7 +3662,7 @@ bra8_9A7F:
 	LDY #$C0 ;unlogged
 bra8_9A93:
 	STY $36 ;unlogged
-	JSR jmp_54_A118 ;unlogged
+	JMP jmp_54_A118 ;unlogged
 	RTS ;unlogged
 tbl8_9A99:
 	db $A3

@@ -116,7 +116,7 @@ bra_80D0:
 	JSR jmp_54_B470
 bra_80DD:
 	JSR sub_82EA
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ObjID_hE0:
 	LDX $A4
@@ -334,7 +334,7 @@ bra_82B4:
 	AND #$01
 	BNE bra_82C8_RTS
 	LDA $32
-	JSR jmp_54_B470
+	JMP jmp_54_B470
 bra_82C8_RTS:
 	RTS
 sub_82C9:
@@ -394,22 +394,23 @@ bra_8323:
 	ADC $38
 	CLC
 	ADC ObjectYDistance,X
-	BCS bra_8340
-	BCC bra_8343
+	JMP bra_8343
 bra_8339:
 	LDA ObjectYDistance,X
 	CMP #$00
-	BCS bra_8343
-bra_8340:
-	CLC
-	BCC bra_8344
-bra_8343:
-	SEC
-bra_8344:
 	BCC bra_8348_RTS
+bra_8343:
+bra_8344:
 	PLA
 	PLA
 bra_8348_RTS:
+	RTS
+	RTS
+	RTS
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 ptr6_8349:
 	LDA #$00
@@ -423,7 +424,7 @@ ptr6_8349:
 	STA $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_PeachMushroom:
 	dw SprMap_PeachMushroom
@@ -559,7 +560,7 @@ bra_8462:
 	LDA #$00
 	STA ObjectSlot,Y
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 ptr6_8475:
 	LDX $A4
@@ -582,7 +583,7 @@ bra_8495:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl_84A3:
 	dw DinoRhino1
@@ -871,7 +872,7 @@ bra_86DD:
 	AND #$01
 	BNE bra_86E8_RTS
 	LDA #$12
-	JSR GetMovementData
+	JMP GetMovementData
 bra_86E8_RTS:
 	RTS
 sub_86E9:
@@ -1114,7 +1115,7 @@ bra_88BC:
 	STA ObjectState,X
 	STA ObjectVariables,X
 	STA ObjectAction,X
-	JSR Obj_StompKnockback
+	JMP Obj_StompKnockback
 	RTS
 ptr6_88D1:
 	LDX $A4
@@ -2207,7 +2208,7 @@ bra_8EEE:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl_8EFC:
 	dw ofs_8F00

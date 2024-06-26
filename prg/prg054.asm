@@ -1413,18 +1413,18 @@ bra3_A7A2:
 	BCS bra3_A7AC ;Branch if the player is above the object's hitbox?
 bra3_A7A9:
 	CLC
-	BCC bra3_A7AD
-bra3_A7AC:
-	SEC
-bra3_A7AD:
 	BCC bra3_A7BA_RTS
+bra3_A7AC:
 	LDA ObjectState,X
 	AND #$E0
 	STA ObjectState,X
 	PLA
 	PLA
-	RTS
 bra3_A7BA_RTS:
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 
 ;----------------------------------------
@@ -2419,9 +2419,9 @@ bra3_AC97:
 loc3_AC97:
 	LDA #$10
 	JSR sub3_AEA8
-	JSR sub3_AD3D
 	PLA
 	PLA
+	JMP sub3_AD3D
 bra3_ACA1_RTS:
 	RTS
 bra3_ACA2:
@@ -2638,7 +2638,7 @@ bra3_AE28:
 	AND #$00
 	BNE bra3_AE36_RTS
 	LDA #$24
-	JSR GetMovementData
+	JMP GetMovementData
 bra3_AE36_RTS:
 	RTS
 sub3_AE37:
@@ -4393,7 +4393,7 @@ ptr11_B968:
 	AND $26
 	BNE bra3_B982_RTS
 	LDA $25
-	JSR sub3_B7F2
+	JMP sub3_B7F2
 bra3_B982_RTS:
 	RTS
 ptr11_B983:
@@ -4958,7 +4958,7 @@ bra3_BD31:
 	LDY $2B
 	LDX $28
 	LDA #$01
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 jmp_54_BD3D:
 	LDA ObjectVariables,X
@@ -5267,7 +5267,7 @@ ObjHandlePlayerColl:
 	STA InvincibilityTimer ;Otherwise, give them 12 frames of invulnerability without flickering
 @GivePointsContinue:
 	LDA #$01
-	JSR RewardPoints ;Give the player 200 points
+	JMP RewardPoints ;Give the player 200 points
 	RTS
 
 @InvincibilityCheck:
@@ -5288,9 +5288,9 @@ ObjHandlePlayerColl:
 		RTS ;Go back two calls and stop running code for this object
 
 @DamagePlayer:
-	JSR DealDamage ;Deal damage
 	PLA
 	PLA
+	JMP DealDamage ;Deal damage
 	RTS ;Go back two calls and stop running code for this object
 
 jmp_54_BF74:

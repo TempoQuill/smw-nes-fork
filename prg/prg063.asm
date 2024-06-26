@@ -376,7 +376,7 @@ bra3_E2FE:
 	STA a:Event ;Clear event triggers
 	LDA #$05
 	STA PalTransition
-	JSR sub3_F919 ;Jump
+	JMP sub3_F919 ;Jump
 bra3_E315:
 	RTS
 pnt2_E316:
@@ -562,7 +562,7 @@ bra3_E47C:
 	LDX CurrentPlayer
 	INC Player1Lives,X ;Temporarily increment current player's life count
 bra3_E494:
-	JSR sub3_F27F ;Jump
+	JMP sub3_F27F ;Jump
 	RTS
 loc3_E498:
 	LDA #$00
@@ -576,7 +576,7 @@ loc3_E498:
 	STA a:EventPart ;End level transition
 	LDA #$16
 	STA a:Event
-	JSR sub3_E4BA ;Jump
+	JMP sub3_E4BA ;Jump
 	RTS
 sub3_E4BA:
 	LDX CurrentPlayer ;Set index for current player
@@ -697,7 +697,7 @@ pnt2_E597:
 	STA a:EventPart ;Go to first part of event
 	LDA #$16
 	STA a:Event ;Trigger map fade-in
-	JSR sub3_E4BA
+	JMP sub3_E4BA
 	RTS
 sub3_E5B6:
 	INC ActionFrameCount ;Increment frame count for player action
@@ -710,7 +710,7 @@ sub3_E5B6:
 	BCC bra3_E5CE ;Branch if the loaded tick count isn't reached
 bra3_E5CB:
 	PLA
-	PLA ;Pull accumulator from stack twice (Not sure what this is for)
+	PLA ;Eject immediate source address
 	RTS
 bra3_E5CE:
 	LDA #$00
@@ -738,7 +738,7 @@ sub3_E5D4:
 	JSR jmp_52_A080 ;Jump
 	JSR jmp_52_A089 ;Jump
 	JSR jmp_52_A000 ;Jump
-	JSR sub3_E9C4 ;Jump
+	JMP sub3_E9C4 ;Jump
 	RTS
 pnt2_E610:
 	JSR sub3_ED14 ;Jump
@@ -938,7 +938,7 @@ pnt2_E774:
 	STA a:EventPart ;Clear event part
 	LDA #$16
 	STA a:Event ;Set event number to 16h
-	JSR sub3_E4BA ;Jump
+	JMP sub3_E4BA ;Jump
 	RTS
 pnt2_E79E:
 	INC a:Event ;Increment event number (go right to next event)
@@ -960,7 +960,7 @@ pnt2_E7A2:
 	JSR jmp_52_A080 ;Jump
 	JSR jmp_52_A089 ;Jump
 	JSR jmp_52_A000 ;Jump
-	JSR sub3_E9C4 ;Jump
+	JMP sub3_E9C4 ;Jump
 	RTS
 pnt2_E7D0:
 	LDA #$39
@@ -1026,7 +1026,7 @@ bra3_E840:
 	STA a:EventPart ;Set event part
 	LDA #$16
 	STA a:Event
-	JSR sub3_E4BA
+	JMP sub3_E4BA
 	RTS
 pnt2_E85F:
 	LDA a:EventPart
@@ -1214,7 +1214,7 @@ sub3_E9C4:
 	JSR jmp_57_A8DE
 	LDA #$34
 	STA M90_PRG1 ;Swap bank 52 into 2nd PRG slot
-	JSR jmp_52_A0F3
+	JMP jmp_52_A0F3
 	RTS
 JYScreenTrigger:
 	LDA zInputBottleNeck
@@ -2003,7 +2003,7 @@ sub3_ED14:
 	JSR jmp_52_A080
 	JSR jmp_52_A089
 	JSR jmp_52_A000
-	JSR sub3_E9C4 ;Jump
+	JMP sub3_E9C4 ;Jump
 	RTS
 sub3_ED48:
 	LDA #$24
@@ -2562,6 +2562,7 @@ bra3_F195:
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;CONTROLLER READING
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=	
+; Routine imported from VulpReich to deal with DPCM
 UpdateJoypad:
 	; Work around DPCM sample bug.
 	; Some inputs are skipped, leading to polling corruption
@@ -3670,7 +3671,7 @@ PauseChk:
 	LDA DataBank2 ;Otherwise, continue
 	CMP #$26 ;Check if the final boss area is loaded
 	BNE BGAnimSub ;If not, do standard BG animation
-	JSR sub3_F90B ;If it is, animate the clown car instead
+	JMP sub3_F90B ;If it is, animate the clown car instead
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ; BG BANK ANIMATION

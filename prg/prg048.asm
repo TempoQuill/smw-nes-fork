@@ -19,7 +19,7 @@ bra4_8013:
 	INC ObjectVariables,X
 bra4_8024:
 ; NOTE This routine has a deceptively useless branch
-; the contents of a have the 7th bit masked away, meaning the branch
+; the contents of A have the 7th bit masked away, meaning the branch
 ; will always fail.
 ; Even still, A gets overwritten without using its restored contents
 	PHA
@@ -564,7 +564,7 @@ bra4_8422:
 	STA $32
 	LDA tbl4_9A83+1,Y
 	STA $33
-	JSR sub4_8140
+	JMP sub4_8140
 bra4_843A_RTS:
 	RTS
 ptr9_843B:
@@ -978,7 +978,7 @@ tbl4_8764:
 ptr9_876E:
 	JSR sub4_8778
 	JSR Obj_CapeHitCheck
-	JSR jmp_54_BC3E
+	JMP jmp_54_BC3E
 	RTS
 sub4_8778:
 	LDA ObjectState,X
@@ -1825,7 +1825,7 @@ bra4_8E0B:
 	STA $32
 	LDA tbl4_9A83+1,Y
 	STA $33
-	JSR sub4_8140
+	JMP sub4_8140
 bra4_8E23_RTS:
 	RTS
 tbl4_8E24:

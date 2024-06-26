@@ -356,7 +356,7 @@ sub9_82AE:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_82C6_RTS:
 	RTS
 ptr6_82C7:
@@ -392,7 +392,7 @@ bra9_82E1:
 	LDY #$C0
 bra9_8303:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Paragoomba:
 	dw SprMap_Paragoomba1
@@ -642,7 +642,7 @@ sub9_84FE:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_8516_RTS:
 	RTS
 ptr6_8517:
@@ -670,7 +670,7 @@ ptr6_8517:
 bra9_8542:
 	STY $36
 ptr6_8544:
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 
 ;Animation attributes
@@ -865,7 +865,7 @@ bra9_86A2:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_86BA_RTS:
 	RTS
 loc9_86BB:
@@ -879,7 +879,7 @@ loc9_86BB:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_86D3_RTS:
 	RTS
 ObjID_h96:
@@ -1074,7 +1074,7 @@ bra9_884C:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_8864_RTS:
 	RTS
 sub9_8865:
@@ -1088,7 +1088,7 @@ sub9_8865:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_887D_RTS:
 	RTS
 sub9_887E:
@@ -1102,7 +1102,7 @@ sub9_887E:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_8896_RTS:
 	RTS
 ptr6_8897:
@@ -1142,7 +1142,7 @@ bra9_88B6:
 	LDY #$C0
 bra9_88DA:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_88E0:
 	LDX $A4
@@ -1170,7 +1170,7 @@ bra9_88ED:
 	LDY #$C0
 bra9_890F:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_8915:
 	dw off_891D
@@ -1348,7 +1348,7 @@ sub9_8A45:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub9_8000
+	JMP sub9_8000
 bra9_8A5D_RTS:
 	RTS
 ptr6_8A5E:
@@ -1373,7 +1373,7 @@ ptr6_8A5E:
 	LDY #$C0
 bra9_8A84:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_8A8A:
 	dw SpinyWalk1
@@ -1459,10 +1459,10 @@ bra9_8B18:
 	LDA ObjectVariables,X
 	CMP #$81
 	BCS bra9_8B23
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra9_8B23:
-	JSR sub_54_B4FC
+	JMP sub_54_B4FC
 	RTS
 loc9_8B27:
 	LDA #$06
@@ -1583,7 +1583,7 @@ ptr6_8BF1:
 	LDY #$C0
 bra9_8C16:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_BulletBill:
 	dw SprMap_BulletBill
@@ -1617,7 +1617,7 @@ bra9_8C38:
 	LDY #$C0
 bra9_8C52:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_VBulletBill:
 	dw SprMap_VBulletBill1
@@ -1780,7 +1780,7 @@ bra9_8D83:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub3_B485
+	JMP sub3_B485
 	RTS
 ptr6_8D95:
 	LDY #$00
@@ -1817,7 +1817,7 @@ bra9_8DB6:
 	LDY #$C0
 bra9_8DD0:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_8DD6:
 	dw VPodoboo1
@@ -1993,7 +1993,7 @@ bra9_8F03:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR GetSpeedData
+	JMP GetSpeedData
 	RTS
 ptr6_8F15:
 	LDX $A4
@@ -2029,7 +2029,7 @@ bra9_8F39:
 	LDY #$C0
 bra9_8F53:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_8F59:
 	db $61
@@ -2122,7 +2122,7 @@ loc9_8FE5:
 	BEQ bra9_8FEB
 	RTS
 bra9_8FEB:
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 loc9_8FEF:
 	LDA #$07
@@ -2231,7 +2231,7 @@ bra9_90A8:
 	LDY #$C0
 bra9_90C2:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_90C8:
 	dw Eerie1
@@ -2459,7 +2459,7 @@ bra9_9267:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR jmp_54_B39B
+	JMP jmp_54_B39B
 	RTS
 ptr6_9279:
 	LDX $A4
@@ -2501,7 +2501,7 @@ bra9_929B:
 	LDY #$C0
 bra9_92BD:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_92C3:
 	db $02
@@ -2637,7 +2637,7 @@ bra9_938C:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR GetSpeedData
+	JMP GetSpeedData
 	RTS
 sub9_939E:
 	LDA FrameCount
@@ -2652,7 +2652,7 @@ bra9_93A5:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR sub3_B485
+	JMP sub3_B485
 	RTS
 ptr6_93B7:
 	LDY #$00
@@ -2680,7 +2680,7 @@ bra9_93CC:
 	LDY #$C0
 bra9_93E6:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_93EC:
 	dw StunBonyBeetle1
@@ -2825,7 +2825,7 @@ tbl9_94EE:
 ptr2_94F6:
 	JSR sub9_9500
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 sub9_9500:
 	LDA FrameCount
@@ -2840,7 +2840,7 @@ bra9_9507:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR GetSpeedData
+	JMP GetSpeedData
 	RTS
 ptr6_9519:
 	LDX $A4
@@ -2872,7 +2872,7 @@ bra9_9536:
 	LDY #$C0
 bra9_9550:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_9556:
 	dw FishBones1
@@ -2983,7 +2983,7 @@ bra9_9621:
 	JSR jmp_54_BBC3
 bra9_962B:
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr7_9632:
 	LDY #$00
@@ -3003,7 +3003,7 @@ ptr7_9632:
 	LDY #$C0
 bra9_9651:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_9657:
 	dw SpikeBall
@@ -3178,7 +3178,7 @@ bra9_9794:
 	STA $32
 	LDA tbl9_9C5E+1,Y
 	STA $33
-	JSR jmp_54_B39B
+	JMP jmp_54_B39B
 	RTS
 ObjID_hA2:
 	LDX $A4
@@ -3450,7 +3450,7 @@ bra9_99A2:
 	LDY #$C0
 bra9_99C4:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_99CA:
 	dw DryBones1
@@ -3599,7 +3599,7 @@ bra9_9AA2:
 	LDY #$C0
 bra9_9ABC:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_9AC2:
 	dw StunDryBones1
@@ -3740,7 +3740,7 @@ ptr6_9B79:
 	LDY #$C0
 bra9_9BA4:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl9_9BAA:
 	db $00

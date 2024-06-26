@@ -2612,7 +2612,7 @@ jmp_57_AD04:
 	BCC bra4_AD1D_RTS
 	LDA #$00
 	STA PlayerPowerupBuffer
-	JSR sub4_A14A
+	JMP sub4_A14A
 bra4_AD1D_RTS:
 	RTS
 bra4_AD1E:
@@ -2665,9 +2665,9 @@ bra4_AD76:
 	STA $06DD
 	LDA #$04
 	STA Event
-	JSR sub4_A14A
 	PLA
 	PLA
+	JMP sub4_A14A
 bra4_AD8B_RTS:
 	RTS
 sub4_AD8C:
@@ -2832,7 +2832,7 @@ PActIdleChecks:
 	JSR LookUpDuckRoutine ;Check for ducking and looking up
 	JSR PlayerWalkRoutine ;Check for walking
 	JSR SwimHoldRoutine ;Check for swimming
-	JSR ShootFireball ;Check for shooting fireballs
+	JMP ShootFireball ;Check for shooting fireballs
 PActIdleDone:
 	RTS
 PlayerIdleFallChk:
@@ -2856,7 +2856,7 @@ PActDuck:
 bra4_AED0:
 	JSR LookUpDuckRoutine
 	JSR SwimHoldRoutine
-	JSR ShootFireball
+	JMP ShootFireball
 PActDuckDone:
 	RTS
 PlayerDuckFallChk:
@@ -2893,7 +2893,7 @@ bra4_AF0F:
 	JSR PlayerRunRoutine
 	JSR SwimHoldRoutine
 	JSR LeapRoutine
-	JSR ShootFireball
+	JMP ShootFireball
 	RTS
 PlayerWalkFallRout:
 	LDA PlayerYSpeed
@@ -2925,7 +2925,7 @@ bra4_AF41:
 	BEQ bra4_AF51 ;Skip the underwater object grab if the player isn't underwater
 	JSR SwimHoldRoutine
 bra4_AF51:
-	JSR SpinJumpRoutine
+	JMP SpinJumpRoutine
 	RTS
 	
 JumpYSpdRoutine:
@@ -2954,7 +2954,7 @@ bra4_AF78:
 	JSR JumpXSpdRoutine
 	LDA PlayerState
 	BEQ bra4_AF85_RTS ;Skip the underwater object grab if the player isn't underwater
-	JSR SwimHoldRoutine
+	JMP SwimHoldRoutine
 bra4_AF85_RTS:
 	RTS
 pnt_AF86:
@@ -2990,7 +2990,7 @@ ShootFireball:
 	BEQ ShootFireballDone ;Wait until B is pressed
 	LDA #$13 ;norm fireball 
 	STA PlayerAction ;Set PAct to throwing fireball
-	JSR SetFireballDir ;Jump to set fireball direction
+	JMP SetFireballDir ;Jump to set fireball direction
 ShootFireballDone:
 
 	RTS		
@@ -3013,7 +3013,7 @@ MidAirFireShoot:
 	INY ;If underwater, make the player shoot an underwater fireball instead
 bra4_AFEB:
 	STY PlayerAction ;Store loaded action (type of fire to throw)
-	JSR SetFireballDir ;Jump
+	JMP SetFireballDir ;Jump
 MidAirFireShootDone:
 	RTS
 ;-=-=--=-=		
@@ -3132,7 +3132,7 @@ bra4_B0B0:
 bra4_B0B2: ;swimming action list
 	JSR SwimMove
 	JSR SwimHoldRoutine
-	JSR MidAirFireShoot
+	JMP MidAirFireShoot
 	RTS
 sub4_B0BC:
 	LDA Player1YoshiStatus
@@ -3186,7 +3186,7 @@ bra4_B113:
 	LDA Player1YoshiStatus
 	CMP #$04
 	BNE bra4_B11E
-	JSR SpawnYoshiFire
+	JMP SpawnYoshiFire
 bra4_B11D_RTS:
 	RTS
 bra4_B11E:
@@ -3303,7 +3303,7 @@ sub4_B1DE:
 	CLC
 	ADC #$05
 	STA Player1YoshiStatus
-	JSR sub4_A14A
+	JMP sub4_A14A
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;YOSHI FIRE SPAWN
@@ -3868,7 +3868,7 @@ bra4_B5C4: ;if P speed timer not reached
 bra4_B5D2:
 	JSR SwimMove
 	JSR sub4_B616
-	JSR sub4_B669
+	JMP sub4_B669
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=	
 ;END OF P SPEED ROUTINE
@@ -4100,7 +4100,7 @@ ofs_B76A:
 bra4_B77A:
 	LDA #$0D
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B782:
 	JSR TongueSpeedBoost
@@ -4109,7 +4109,7 @@ ofs_B782:
 	LDY #$07
 	LDA #$0D
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B794:
 	JSR TongueSpeedBoost
@@ -4127,7 +4127,7 @@ bra4_B7A7:
 bra4_B7AD:
 	LDA #$03
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7B5:
 	JSR TongueSpeedBoost
@@ -4140,7 +4140,7 @@ ofs_B7B5:
 bra4_B7C5:
 	LDA #$04
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7CD:
 	JSR TongueSpeedBoost
@@ -4149,7 +4149,7 @@ ofs_B7CD:
 	LDY #$07
 	LDA #$01
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7DF:
 	JSR SwimMove
@@ -4162,7 +4162,7 @@ ofs_B7DF:
 bra4_B7EF:
 	LDA #$03
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7F7:
 	JSR SwimMove
@@ -4175,7 +4175,7 @@ ofs_B7F7:
 bra4_B807:
 	LDA #$07
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B80F:
 	JSR SwimMove
@@ -4184,7 +4184,7 @@ ofs_B80F:
 	LDY #$07
 	LDA #$03
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B821:
 	JSR SwimMove

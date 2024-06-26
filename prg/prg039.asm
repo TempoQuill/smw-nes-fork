@@ -1179,11 +1179,11 @@ ptr8_E67F:
 	CMP #$FF
 	BEQ bra_E697_RTS
 	CMP #$F0
-	BNE bra_E693
+	BNE sub_E698
 	STA $26
 	RTS
 bra_E693:
-	JSR sub_E698
+	JMP sub_E698
 	RTS
 bra_E697_RTS:
 	RTS
@@ -1648,11 +1648,11 @@ ptr8_E973:
 	CMP #$FF
 	BEQ bra_E98B_RTS
 	CMP #$F0
-	BNE bra_E987
+	BNE sub_E98C
 	STA $26
 	RTS
 bra_E987:
-	JSR sub_E98C
+	JMP sub_E98C
 	RTS
 bra_E98B_RTS:
 	RTS

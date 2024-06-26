@@ -997,7 +997,7 @@ ptr5_8689:
 	AND #$00
 	BNE bra7_8694_RTS
 	LDA #$26
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_8694_RTS:
 	RTS
 ptr5_8695:
@@ -1637,14 +1637,14 @@ ptr5_8B7D:
 bra7_8B88:
 	LDA #$10
 	JSR sub3_AEA8
-	JSR jmp_54_AD54
+	JMP jmp_54_AD54
 	RTS
 ptr5_8B91:
 	LDA FrameCount
 	AND #$00
 	BNE bra7_8B9C_RTS
 	LDA #$27
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_8B9C_RTS:
 	RTS
 ObjID_h38:
@@ -1726,7 +1726,7 @@ bra7_8C36:
 	JSR sub7_8C42
 	LDA #$10
 	JSR sub3_AEA8
-	JSR jmp_54_AD54
+	JMP jmp_54_AD54
 bra7_8C41_RTS:
 	RTS
 loc7_8C42:
@@ -1933,7 +1933,7 @@ loc7_8DD0:
 	AND #$01
 	BNE bra7_8DE9_RTS
 	LDA #$0B
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_8DE9_RTS:
 	RTS
 sub7_8DEA:
@@ -1962,7 +1962,7 @@ ptr5_8E0C:
 	LDA #$00
 	STA ObjectSlot,X ;Despawn 1UP
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 ptr5_8E21:
 	LDA ObjectVariables,X
@@ -1972,7 +1972,7 @@ ptr5_8E21:
 	AND #$03
 	BNE bra7_8E33_RTS
 	LDA #$05
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_8E33_RTS:
 	RTS
 bra7_8E34:
@@ -2293,7 +2293,7 @@ loc7_90BE:
 	BEQ bra7_90C4
 	RTS
 bra7_90C4:
-	JSR sub7_9149
+	JMP sub7_9149
 	RTS
 ObjID_h0B:
 	LDX $A4
@@ -2354,7 +2354,7 @@ bra7_912E:
 	AND #$01
 	BNE bra7_9148_RTS ;Only continue if on an even frame
 	LDA #$0B
-	JSR GetMovementData ;Get the movement data
+	JMP GetMovementData ;Get the movement data
 bra7_9148_RTS:
 	RTS
 sub7_9149:
@@ -2381,7 +2381,7 @@ ptr5_916B:
 	LDA #$00
 	STA ObjectSlot,Y
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 ptr5_917C:
 	LDA ObjectVariables,X
@@ -2395,7 +2395,7 @@ ObjID_h3A:
 	AND #$00
 	BNE bra7_9195_RTS
 	LDA #$2A
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_9195_RTS:
 	RTS
 bra7_9196:
@@ -2403,7 +2403,7 @@ bra7_9196:
 	AND #$03
 	BNE bra7_91A1_RTS
 	LDA #$05
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_91A1_RTS:
 	RTS
 bra7_91A2:
@@ -2544,7 +2544,7 @@ ptr5_92B2:
 	LDA #$00
 	STA ObjectSlot,Y
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 ptr5_92C3:
 	LDX $A4
@@ -2683,7 +2683,7 @@ ptr5_93D0:
 	LDA #$00
 	STA ObjectSlot,Y
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 ObjID_h0E:
 	LDX $A4
@@ -2744,7 +2744,7 @@ bra7_9447:
 	AND #$01
 	BNE bra7_9461_RTS
 	LDA #$0E
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_9461_RTS:
 	RTS
 sub7_9462:
@@ -2772,7 +2772,7 @@ ptr5_9484:
 	LDA #$00
 	STA ObjectSlot,X
 	LDA #$03
-	JSR RewardPoints
+	JMP RewardPoints
 	RTS
 ptr5_9497:
 	LDA ObjectVariables,X
@@ -2782,7 +2782,7 @@ ptr5_9497:
 	AND #$03
 	BNE bra7_94A9_RTS
 	LDA #$05
-	JSR GetMovementData
+	JMP GetMovementData
 bra7_94A9_RTS:
 	RTS
 bra7_94AA:
@@ -2897,7 +2897,7 @@ bra7_9573:
 	STA $36
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_958D:
 	JSR sub7_9792
@@ -2913,7 +2913,7 @@ ptr6_9590:
 	STA $36
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_CommonObjects:
 	dw SprMap_Mushroom
@@ -3037,7 +3037,7 @@ ptr6_9630:
 	STA $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl7_9654:
 	db $03
@@ -3072,7 +3072,7 @@ bra7_966F:
 	STA $36
 	LDA #$80
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 bra7_968A:
 	LDA #$02
@@ -3095,7 +3095,7 @@ bra7_968A:
 	LDY #$40
 bra7_96B0:
 	STY $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_96B7:
 	JSR sub7_9792
@@ -3110,7 +3110,7 @@ ptr6_96B7:
 	STA $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_96D5:
 	LDY $A4
@@ -3129,7 +3129,7 @@ ptr6_96D5:
 	ASL
 	ASL
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr7_96F8:
 	LDX $A4
@@ -3146,7 +3146,7 @@ ptr7_96F8:
 	STA $33
 	LDA #$40
 	STA $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 bra7_971A_RTS:
 	RTS
 SprPtrs_HPodoboo:
@@ -3171,7 +3171,7 @@ ptr6_9727:
 	STA $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_9742:
 	JSR sub7_9792
@@ -3191,7 +3191,7 @@ ptr6_9742:
 	LDY #$00
 bra7_9762:
 	STY $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_9769:
 	JSR sub7_9792
@@ -3212,7 +3212,7 @@ ptr6_9769:
 	LDY #$40
 bra7_978B:
 	STY $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 sub7_9792:
 	LDX $A4
@@ -3241,7 +3241,7 @@ bra7_97A9:
 	STA $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_97C3:
 	LDA #$40
@@ -3431,7 +3431,7 @@ ObjID_h42:
 	LDX $A4
 	LDA ObjectVariables,X
 	BPL bra7_9908
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra7_9908:
 	LDA #$07
@@ -3552,7 +3552,7 @@ bra7_99F1:
 	LDA ObjectState,X
 	AND #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_BuzzyBeetle:
 	dw SprMap_BuzzyWalk1
@@ -3614,7 +3614,7 @@ bra7_9A5C:
 	AND #$40
 bra7_9A61:
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_9A68:
 	LDA $062B
@@ -3641,7 +3641,7 @@ bra7_9A77:
 	LDY #$C0
 bra7_9A93:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_BuzzyShell:
 	dw SprMap_BuzzyShell1
@@ -3837,7 +3837,7 @@ ptr6_9BDB:
 	STA $36
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprMap_Checkpoint:
 	db $02
@@ -3862,7 +3862,7 @@ bra7_9C16:
 	STY $36
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprMap_GoalTape:
 	db $03
@@ -3971,7 +3971,7 @@ loc7_9CC2:
 	STA $066A,Y
 	RTS
 bra7_9D07:
-	JSR sub_54_B4FC
+	JMP sub_54_B4FC
 	RTS
 loc7_9D0B:
 	LDA #$07
@@ -4047,7 +4047,7 @@ ptr5_9D93:
 	JSR jmp_54_B11D
 bra7_9D9E:
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr5_9DA5:
 	LDA #$00
@@ -4064,7 +4064,7 @@ ptr5_9DA5:
 	LDA ObjectState,X
 	AND #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ObjID_h4C:
 	LDX $A4
