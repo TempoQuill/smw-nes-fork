@@ -1,2 +1,2 @@
 asm6 -l smw.asm smw.nes
-pause
+certutil -hashfile smw.nes SHA256 | findstr /V ":"
