@@ -340,22 +340,25 @@ loc3_E2BE:
 	JMP jmp_41_A000 ;Jump
 	RTS
 
+	.db $00,$00,$00 ; whited out code
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+VerifyEntryAtTableE329:
+	LDA a:Event
+	CMP #$16
+	BCS @Quit
+	ASL
+	RTS
+@Quit:
+	PLA
+	PLA
+	RTS
 ;-----UNUSED CODE START-----
 ;Seems to be an early routine for loading levels
-	LDA a:Event
-	ASL
-	TAY ;Get the event pointer
-	LDA tbl3_E2DB,Y 
-	STA $32 ;Load lower byte of pointer
-	LDA tbl3_E2DB+1,Y
-	STA $33 ;Load upper byte of pointer
-	JMP ($32) ;Jump to the loaded pointer
-tbl3_E2DB:
-	dw pnt2_E2E5
-	dw pnt2_E316
-	dw pnt2_E316
-	dw pnt2_E316
-	dw pnt2_E316
 pnt2_E2E5:
 	LDA zInputBottleNeck
 	AND #buttonA
@@ -384,8 +387,7 @@ pnt2_E316:
 ;-----UNUSED CODE END-----
 
 loc3_E317:
-	LDA a:Event
-	ASL
+	JSR VerifyEntryAtTableE329
 	TAY ;Get the pointer for the current event
 	LDA tbl3_E329,Y
 	STA $32 ;Load lower byte of pointer
@@ -4782,24 +4784,4 @@ MapperProtectLoop:
 	CMP #$19
 	BNE MapperProtectLoop ;If the product isn't 25, send the game into a loop and prevent it from starting
 	RTS
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $00
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $02
-	db $01
+

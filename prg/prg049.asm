@@ -567,7 +567,7 @@ loc5_8350:
 	RTS
 bra5_8356:
 	LDA ObjectState,X
-	AND #$1F
+	AND #$03
 	ASL
 	TAY
 	LDA tbl5_836A,Y

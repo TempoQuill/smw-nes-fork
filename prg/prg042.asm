@@ -3,7 +3,7 @@ TilemapPointers:
 	dw TitleLogo
 	dw EndingScreen
 	dw ThankYouScreen
-	dw CopyrightScreen
+	dw UpdatedCopyrightData
 	dw YoshiHouse ;Unused
 TitleLogo:
 	incbin screens/TitleLogo.bin
@@ -5240,3 +5240,59 @@ sub2_9E7A:
 	ADC #$08
 	STA $028F,Y
 	RTS
+UpdatedCopyrightData:
+	.db $20,$00
+
+	.db $7f,$00
+	.db $7f,$00
+	.db $2c,$00
+; 0a
+	.db $80 | (@a2 - @a1)
+@a1:
+	.db $AD,$AE
+	.db "1995" + $70
+	.db $AC,$00
+	.db "2024" + $70
+@a2:
+; 16
+	.db $34,$00
+; 0a
+	.db $80 | (@a4 - @a3)
+@a3:
+	.db "TEMPO" + $6F
+	.db $00, $00
+	.db "QUILL" + $6F
+@a4:
+; 16
+	.db $30,$00
+; 06
+	.db $80 | (@a6 - @a5)
+@a5:
+	.db "SOMARI" + $6F
+	.db $00
+	.db "THE" + $6F
+	.db $00
+	.db "ADVENTURER" + $6F
+@a6:
+; 1b
+	.db $67,$00
+; 02
+	.db $80 | (@a8 - @a7)
+@a7:
+	.db "ORIGINAL" + $6F
+	.db $00
+	.db "CODE" + $6F
+	.db $00
+	.db "BY" + $6F
+	.db $00
+	.db "HUMMER" + $6F
+	.db $00
+	.db "TEAM" + $6F
+@a8:
+; 1e
+	.db $7f,$00
+	.db $7f,$00
+	.db $7f,$00
+	.db $45,$00
+; $2400
+	.db $ff,$ff,$ff ; terminator

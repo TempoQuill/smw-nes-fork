@@ -522,8 +522,8 @@ bra9_840E:
 	AND #$1F
 	ASL
 	TAY
-	LDA tbl9_8422,Y
 ObjID_h8E:
+	LDA tbl9_8422,Y
 	STA $32
 	LDA tbl9_8422+1,Y
 	STA $33

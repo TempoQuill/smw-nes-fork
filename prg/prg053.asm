@@ -42,7 +42,7 @@ bra7_8049:
 	STA YoshiYScreenDist
 bra7_805A:
 loc7_805A:
-	LDA YoshiUnmountedState
+	JSR OAMOLHandler1
 	AND #$7F
 	ASL
 	TAY
@@ -4320,3 +4320,11 @@ bra7_9F8D:
 	db $23
 	db $23
 	db $23
+
+OAMOLHandler1:
+	LDA YoshiUnmountedState
+	CMP #$05
+	BCC @Quit
+	LDA #0
+@Quit:
+	RTS

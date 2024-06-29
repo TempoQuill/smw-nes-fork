@@ -4289,7 +4289,7 @@ jmp_54_B896:
 	LDA #$00
 	STA $28
 	STA $2B
-	JMP ($32) ;Jump to the pointer
+	JMP VerifyTableEntryElse4 ;Jump to the pointer
 tbl3_B8BF:
 	dw ptr11_B8DB
 	dw ptr11_B968
@@ -5366,3 +5366,10 @@ DealDamage:
 	STA $06DC
 	STA $06DD ;Clear player variables
 	RTS
+
+VerifyTableEntryElse4:
+	CPY #$1D
+	BCS @Wrong
+	JMP ($32)
+@Wrong:
+	JMP ptr11_B99B
