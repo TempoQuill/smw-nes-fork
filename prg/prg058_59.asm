@@ -48,7 +48,7 @@ tbl10_8000:
 	dw ofs_Duty2D ; 210121 x1
 	dw ofs_Vol2E
 	dw ofs_Pitch2F
-	dw ofs_NA
+	dw ofs_Vol30
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_Vol33

@@ -686,3 +686,11 @@ ofs_Pitch2F:
 	.byte $0A,$0D
 	.byte $ff
 	.byte $00
+
+ofs_Vol30:
+	.byte $01,$12
+	.byte $01,$14
+	.byte $01,$18
+	.byte $7F,$16
+	.byte $ff
+	.byte $fe

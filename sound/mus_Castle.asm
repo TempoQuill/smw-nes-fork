@@ -713,10 +713,10 @@ Castle_P2Sub1:
 	.byte SegEnd
 Castle_P2Sub2:
 	.byte DutySet, $3D
-	.byte VolSet, $2B
+	.byte VolSet, $30
 	.byte NLen+21
 	.byte C1
-	.byte VolSet, $1D
+	.byte VolSet, $1A
 	.byte NLen+1
 	.byte C#1
 	.byte D1
@@ -729,10 +729,8 @@ Castle_P2Sub2:
 	.byte A1
 	.byte A#1
 	.byte B1
-	.byte VolSet, $1C
 	.byte NLen+16
 	.byte C2
-	.byte VolSet, $1B
 	.byte NLen+1
 	.byte B1
 	.byte A#1
@@ -745,7 +743,7 @@ Castle_P2Sub2:
 	.byte D#1
 	.byte D1
 	.byte C#1
-	.byte VolSet, $1A
+	.byte VolSet, $19
 	.byte NLen+36
 	.byte C1
 	.byte SegEnd
