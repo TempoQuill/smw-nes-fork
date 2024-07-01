@@ -287,9 +287,7 @@ Ab_DIM_UP_END:
 .ende
 
 ; DMC Bank $34
-; DMC Bank $2D
-; DMC Bank $26
-.enum 0
+.enum $f4
 Bb_DIM_UP:	.dsb $11
 Bb_DIM_UP_END:
 	.dsb 3
@@ -314,6 +312,9 @@ SWIM_END:
 KICK_DRUM:	.dsb $d
 KICK_DRUM_END:
 	.dsb 3
+.ende
+; DMC Bank $2D
+.enum $e0
 POWER_SNARE:	.dsb $4b
 POWER_SNARE_END:
 	.dsb 1

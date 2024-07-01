@@ -4784,4 +4784,25 @@ MapperProtectLoop:
 	CMP #$19
 	BNE MapperProtectLoop ;If the product isn't 25, send the game into a loop and prevent it from starting
 	RTS
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $00
+	db $01
+	db $01
+	db $01
+	db $01
+	db $01
+	db $02
+	db $01
 

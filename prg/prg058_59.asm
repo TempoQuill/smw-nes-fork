@@ -1576,9 +1576,10 @@ ENDR
 REPT 15
 	db $3E ; E1 - F#2
 ENDR
-REPT 9
-	db $26 ; G2 - D#3
+REPT 8
+	db $34 ; G2 - D#3
 ENDR
+	db $2D
 	db $3E ; E3
 	db $3E ; F3
 	db $3E ; F#3
