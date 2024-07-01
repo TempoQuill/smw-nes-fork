@@ -125,8 +125,8 @@ bra3_E0F0:
 bra3_E0F8: ;OAM writing for in level sprites
 	LDA #$00
 	STA PPUOAMAddr
-	LDA #$02 ; this is the start address $0200
-	STA OAMDMA ;set OAM to copy sprite all data from $0200-$02FF
+	LDA #$02 ; this is the start address SpriteMem+0
+	STA OAMDMA ;set OAM to copy sprite all data from SpriteMem+0-$02FF
 	
 	LDA PPUMaskMirror
 	STA PPUMask
@@ -361,7 +361,7 @@ VerifyEntryAtTableE329:
 ;Seems to be an early routine for loading levels
 pnt2_E2E5:
 	LDA zInputBottleNeck
-	AND #buttonA
+	AND #btnA
 	BEQ bra3_E2FE ;If the A button is pressed,
 	INC LevelNumber ;Increment level number
 	LDA LevelNumber
@@ -372,7 +372,7 @@ pnt2_E2E5:
 	INC WorldNumber ;Carry over world number (1-5 would become 2-1)
 bra3_E2FE:
 	LDA zInputBottleNeck
-	AND #buttonStart
+	AND #btnStart
 	BEQ bra3_E315 ;If start is pressed,
 	INC a:GameState ;Set game state to 'in level'
 	LDA #$00
@@ -544,7 +544,7 @@ loc3_E45F:
 	LDA EndingFreezeFlag
 	BNE bra3_E47C ;Skip this check if at the ending cutscene
 	LDA zInputBottleNeck
-	AND #buttonStart
+	AND #btnStart
 	BEQ bra3_E47C ;If start pressed
 	LDA #$00
 	STA JYEasterEggInput ;Clear Easter egg input
@@ -558,7 +558,7 @@ bra3_E47C:
 	BEQ bra3_E494 ;Branch if game not paused
 	JSR JYScreenTrigger ;Jump
 	LDA zInputBottleNeck
-	AND #buttonSelect
+	AND #btnSelect
 	BEQ bra3_E494 ;If select pressed,
 	INC a:EventPart ;Start level transition
 	LDX CurrentPlayer
@@ -746,7 +746,7 @@ pnt2_E610:
 	JSR sub3_ED14 ;Jump
 	JSR sub3_F27F ;Jump
 	LDA zInputBottleNeck
-	AND #$C0
+	AND #btnA|btnB
 	BEQ bra3_E62F ;If A or B are pressed,
 	LDA #$00
 	STA Player1YoshiStatus ;Remove Yoshi
@@ -1220,7 +1220,7 @@ sub3_E9C4:
 	RTS
 JYScreenTrigger:
 	LDA zInputBottleNeck
-	CMP #buttonStart
+	CMP #btnStart
 	BEQ JYTriggerDone ;Stop if the game is unpaused.
 	LDA zInputBottleNeck
 	BEQ JYTriggerDone ;If any button is being pressed,
@@ -1243,7 +1243,7 @@ ClearJYInputs:
 	
 ;This is the 8 button code needed to trigger the JY easter egg screen
 JYScreenInputs:
-	db dirUp, dirRight, buttonA, dirDown, dirRight, buttonB, dirUp, dirLeft
+	db dirUp, dirRight, btnA, dirDown, dirRight, btnB, dirUp, dirLeft
 tbl3_EA10:
 	dw pnt2_EA48
 	dw pnt2_EA48
@@ -2528,10 +2528,10 @@ bra3_F15B:
 	LDA ($34),Y
 	STA $33
 	JMP ($32)
-;-----------------------------***********************
+;----------------------------------------
 ;Clear sprites from screen during gameplay
-;This mus_t happen before sprites are sent to $0200
-;-----------------------------***********************
+;This must happen before sprites are sent to $0200
+;----------------------------------------
 sub3_F176:
 	LDA #$F8 ;Y position (offscreen)
 	LDX #$00 ;storage offset
