@@ -137,8 +137,16 @@ bra10_85C4:
 	LDA MusicRegister
 	CMP MusicBackup ;Check if the BGM has changed
 	BEQ bra10_85D5_RTS ;If not, stop
+IFNDEF RGME_PATCH
 	LDA MusicRegister ;If it has, back up the song ID
+ELSE
+	LDA #mus_Silence
+	STA MusicRegister
+ENDIF
 	STA MusicBackup
+IFDEF RGME_PATCH
+	RTS
+ENDIF
 bra10_85CE:
 	JSR sub10_8E2F
 	LDA #0

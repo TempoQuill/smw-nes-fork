@@ -3,6 +3,7 @@
 ;This is still a work in progress and is not recommended for use in hacks.
 
 ;Assembles with parasyte's fork of ASM6.
+RGME_PATCH = 1
 
 ;----------------------------------------
 db "NES", $1A	;NES Header
