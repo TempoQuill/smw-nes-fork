@@ -1790,7 +1790,7 @@ DPCM_PitchTable:
 	.include sound/sfx_Swim.asm
 	.include sound/sfx_Beep.asm
 	.include sound/sfx_YoshiCoin.asm
-	.include sound/sfx_1up.asm
+	.include sound/sfx_1UP.asm
 	.include sound/sfx_Coin.asm
 	.include sound/sfx_Powerup.asm
 	.include sound/sfx_Warp.asm

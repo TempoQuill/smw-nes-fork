@@ -345,7 +345,7 @@ bra4_8274:
 loc4_8274:
 	INC ObjectVariables,X
 	RTS
-ObjID_hBE:
+Obj_hBE:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_8282
@@ -605,7 +605,7 @@ bra4_8468:
 	db $40
 	db $01
 	db $00
-ObjID_hC0:
+Obj_hC0:
 	LDX $A4
 	LDA ObjectVariables,X
 	CMP #$80
@@ -855,7 +855,7 @@ loc4_8669:
 	STA $05F0
 	TYA
 	JMP loc4_9104
-ObjID_hC2:
+Obj_hC2:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_867F
@@ -1068,7 +1068,7 @@ tbl4_8804:
 	db $07
 	db $07
 	db $07
-ObjID_hCE:
+Obj_hCE:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_881E
@@ -1418,7 +1418,7 @@ tbl4_8AAB:
 	db $08
 	db $08
 	db $08
-ObjID_hAE:
+Obj_hAE:
 	LDX $A4
 	LDA ObjectXPos,X
 	SEC
@@ -1509,7 +1509,7 @@ bra4_8B7E:
 	STY $05F0
 	LDA #$00
 	JMP loc4_90CE
-ObjID_hD0:
+Obj_hD0:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_8B90
@@ -1748,7 +1748,7 @@ bra4_8D71:
 	STA $05F0
 	TYA
 	JMP loc4_9104
-ObjID_hB0:
+Obj_hB0:
 	LDX $A4
 	JSR sub4_8DEC
 	LDA ObjectXPos,X
@@ -1844,7 +1844,7 @@ bra4_8E35:
 	STY $05F0
 	LDA #$01
 	JMP loc4_90CE
-ObjID_hD2:
+Obj_hD2:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_8E47
@@ -2095,7 +2095,7 @@ tbl4_9038:
 	db $0F
 	db $0F
 	db $0F
-ObjID_hB2:
+Obj_hB2:
 	LDX $A4
 	LDA ObjFrameCounter
 	AND #$02
@@ -2395,7 +2395,7 @@ SprMap_BaseballChuck_Throw2:
 	db $32, $33, $34
 ptr6_9286:
 	RTS
-ObjID_hD6:
+Obj_hD6:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_92C1
@@ -2524,7 +2524,7 @@ tbl4_935F:
 	db $80
 	db $00
 	db $40
-ObjID_hB4:
+Obj_hB4:
 	LDX $A4
 	LDA BooBuddiesFlag
 	CMP #$FF
@@ -2607,7 +2607,7 @@ bra4_93FA:
 bra4_93FE:
 	STA ObjectYScreen,X
 	RTS
-ObjID_hD8:
+Obj_hD8:
 	LDX $A4
 	LDA ObjectVariables,X
 	CMP #$80
@@ -2924,7 +2924,7 @@ bra4_9671:
 ;----------------------------------------
 ;Boo object code
 ;----------------------------------------
-ObjID_hDA:
+Obj_hDA:
 	LDX $A4 ;Get object index
 	LDA ObjectVariables,X
 	CMP #$80
@@ -3102,7 +3102,7 @@ loc4_97C1:
 bra4_97E7_RTS:
 	RTS
 
-ObjID_hDC:
+Obj_hDC:
 	LDX $A4
 	LDA ObjectXPos,X
 	SEC

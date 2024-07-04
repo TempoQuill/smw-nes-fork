@@ -732,7 +732,7 @@ sub3_E5D4:
 	STA M90_PRG1 ;Swap bank 61 into 2nd PRG slot
 	JSR jmp_61_AE8F
 	LDA #$00
-	STA $062B
+	STA ObjFrameCounter
 	LDA #$34
 	STA M90_PRG1 ;Swap bank 52 into 2nd PRG slot
 	LDA #$80
@@ -954,7 +954,7 @@ pnt2_E7A2:
 	LDA #$36
 	STA M90_PRG1 ;Swap bank 54 into 2nd PRG slot
 	LDA #$00
-	STA $062B
+	STA ObjFrameCounter
 	LDA #$34
 	STA M90_PRG1 ;Swap bank 52 into 2nd PRG slot
 	LDA #$80
