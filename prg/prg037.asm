@@ -772,7 +772,7 @@ bra_85FC:
 tbl_8610:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr7_861A
 	dw ptr_AD88
 ptr7_861A:
@@ -1031,7 +1031,7 @@ bra_8805:
 tbl_8819:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr7_8823
 	dw ptr_AD88
 ptr7_8823:
