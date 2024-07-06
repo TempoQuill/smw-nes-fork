@@ -194,7 +194,7 @@ jmp_52_A118:
 	STA $30
 	LDA CHRSprBankAttrs+1,X
 	STA $31 ;Get sprite tile attribute pointer for the given bank
-	LDA $05F0
+	LDA ObjectAttributes
 	AND #%01000000
 	BEQ bra2_A18C ;Branch if sprite tile isn't horizontally flipped
 	;If sprite is facing left:
@@ -210,18 +210,21 @@ jmp_52_A118:
 		BEQ bra2_A15E
 		RTS
 
+;Fetch previous metasprite X position
 bra2_A15E:
 	LDA $28
+
+;Upload metasprite column X positions to buffer
 bra2_A160:
 	STA $41,X
 	INX
 	CPX $2A
-	BCS bra2_A1D7 ;Position sprites vertically once the tile width is exceeded
-	;Otherwise, move next sprite a tile over
+	BCS bra2_A1D7 ;Stop when the metasprite width is reached
+	;Move next column 8 pixels over
 		CLC
 		ADC #8
-	BCC bra2_A160 ;Write every tile until the width is exceeded
-	BCS bra2_A181
+	BCC bra2_A160 ;Continue uploading each column if the sprite is on-screen
+	BCS bra2_A181 ;Clear the rest of the column buffer if this column goes off-screen
 bra2_A16E:
 	LDA $28
 	LDY #$00 ;Set index to first object?
@@ -238,6 +241,7 @@ bra2_A172:
 bra2_A180_RTS:
 	RTS
 
+;Clear the rest of the metasprite column position buffer
 bra2_A181:
 	LDA #$00
 bra2_A183:
@@ -388,7 +392,7 @@ bra2_A260:
 	ORA $36
 	STA SpriteMem+1,X
 	LDY $A4
-	LDA $05F0
+	LDA ObjectAttributes
 	EOR #$40
 	AND #$E0
 	LDY $38
@@ -468,7 +472,7 @@ sub2_A2DE:
 	STA $30
 	LDA CHRSprBankAttrs+1,X
 	STA $31
-	LDA $05F0
+	LDA ObjectAttributes
 	AND #$40
 	BEQ bra2_A33E
 	LDX #$00
@@ -654,7 +658,7 @@ bra2_A412:
 	ORA $36
 	STA SpriteMem+1,X
 	LDY $A4
-	LDA $05F0
+	LDA ObjectAttributes
 	EOR #$40
 	AND #$E0
 	LDY $38
@@ -927,10 +931,10 @@ loc2_A5C1:
 	RTS
 sub2_A5D0:
 	LDA #$40
-	STA $05F0
+	STA ObjectAttributes
 	LDA #$08
 	STA $25
-	LDA $05F0
+	LDA ObjectAttributes
 	AND #$40
 	BEQ bra2_A624
 	LDX #$00
@@ -2090,7 +2094,7 @@ jmp_52_AC3B:
 	STA $30
 	LDA CHRSprBankAttrs+1,X
 	STA $31
-	LDA $05F0
+	LDA ObjectAttributes
 	AND #$40
 	BEQ bra2_ACAA
 	LDX #$00
@@ -2276,7 +2280,7 @@ bra2_AD7E:
 	ORA $36
 	STA SpriteMem+1,X
 	LDY $A4
-	LDA $05F0
+	LDA ObjectAttributes
 	EOR #$40
 	AND #$C0
 	LDY $38
@@ -2312,7 +2316,7 @@ sub_52_ADAF:
 	STA $30
 	LDA CHRSprBankAttrs+1,X
 	STA $31
-	LDA $05F0
+	LDA ObjectAttributes
 	AND #$40
 	BEQ bra2_AE13
 	LDX #$00
@@ -2494,7 +2498,7 @@ bra2_AEE1:
 	ORA $36
 	STA SpriteMem+1,X
 	LDY $A4
-	LDA $05F0
+	LDA ObjectAttributes
 	EOR #$40
 	AND #$E0
 	LDY $38
