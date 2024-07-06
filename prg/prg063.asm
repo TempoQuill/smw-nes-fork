@@ -384,7 +384,6 @@ bra3_E315:
 	RTS
 pnt2_E316:
 	RTS
-;-----UNUSED CODE END-----
 
 loc3_E317:
 	JSR VerifyEntryAtTableE329
