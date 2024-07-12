@@ -1441,7 +1441,7 @@ tbl10_8E41:
 	dw Empty_Footer
 	dw Ending_Footer
 	dw InvincibleStar_Footer
-	dw Title_Footer
+	dw Athletic_Footer
 Empty_Footer:
 	db $00
 	dw UnknownMusPtr
@@ -1838,4 +1838,5 @@ DPCM_PitchTable:
 	.include sound/mus_Underwater.asm
 	.include sound/mus_Ending.asm
 	.include sound/mus_InvincibleStar.asm
+	.include sound/mus_Athletic.asm
 ;	.incbin prg/padding/padding058_59.bin
