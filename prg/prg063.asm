@@ -340,13 +340,20 @@ loc3_E2BE:
 	JMP jmp_41_A000 ;Jump
 	RTS
 
-	.db $00,$00,$00 ; whited out code
-	.db $00,$00
-	.db $00,$00
-	.db $00,$00
-	.db $00,$00
-	.db $00,$00
-	.db $00,$00
+DoRevealSound:
+	LDA ObjectSlot,X
+	CMP #objID_Vine+1
+	BEQ @Vine
+	CMP #objID_Vine
+	BEQ @Vine
+	LDA #sfx_BlockRelease
+	BNE @Set
+@Vine:
+	LDA #sfx_Vine
+@Set:
+	STA SFXRegister
+	RTS
+
 VerifyEntryAtTableE329:
 	LDA a:Event
 	CMP #$16
@@ -361,8 +368,8 @@ VerifyEntryAtTableE329:
 ;Seems to be an early routine for loading levels
 pnt2_E2E5:
 	LDA zInputBottleNeck
-	AND #btnA
-	BEQ bra3_E2FE ;If the A button is pressed,
+;	AND #btnA
+;	BEQ bra3_E2FE ;If the A button is pressed,
 	INC LevelNumber ;Increment level number
 	LDA LevelNumber
 	CMP #$04 ;Check if level number is below 4,
@@ -381,8 +388,6 @@ bra3_E2FE:
 	STA PalTransition
 	JMP sub3_F919 ;Jump
 bra3_E315:
-	RTS
-pnt2_E316:
 	RTS
 
 loc3_E317:

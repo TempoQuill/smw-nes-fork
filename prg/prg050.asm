@@ -1557,7 +1557,7 @@ ptr6_8ADB:
 	CMP #$30
 	BCC bra6_8B13
 	BNE bra6_8AEA
-	LDA #sfx_Thunder?
+	LDA #sfx_Explosion
 	STA SFXRegister
 	BNE bra6_8B13
 bra6_8AEA:
@@ -1777,7 +1777,7 @@ bra6_8C78:
 	ORA #$45
 	BNE bra6_8C9B
 bra6_8C86:
-	LDA #sfx_Feather
+	LDA #sfx_BossHit
 	STA SFXRegister
 	LDA #$06
 	STA ObjectAction,X
@@ -3751,8 +3751,8 @@ bra6_9767:
 	STA PlayerMovement ;Make player move upwards
 	LDA #$04
 	STA PlayerAction ;Make player jump off
-	LDA #sfx_Feather
-	STA SFXRegister ;Play feather/hit sound
+	LDA #sfx_BossHit
+	STA SFXRegister ;Play boss hit sound
 	LDY #$04 ;Load "hit" action into Y register
 	LDA ObjectSlot,X
 	CMP #$72

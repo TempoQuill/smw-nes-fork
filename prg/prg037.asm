@@ -3208,7 +3208,7 @@ bra_9612:
 	BEQ bra_9619
 	JMP loc_970B_RTS
 bra_9619:
-	LDA #sfx_Thunder?
+	LDA #sfx_Explosion
 	STA SFXRegister
 	INC $05F6
 	LDY ObjectCount

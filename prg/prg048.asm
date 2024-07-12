@@ -483,7 +483,7 @@ ptr9_8378:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #sfx_EnemyHit2
+	LDA #sfx_ChuckHit
 	STA SFXRegister
 	LDA ObjectSlot,X
 	CLC
@@ -744,7 +744,7 @@ ptr9_857E:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #sfx_EnemyHit2
+	LDA #sfx_BossHit
 	STA SFXRegister
 	LDA ObjectSlot,X
 	CLC

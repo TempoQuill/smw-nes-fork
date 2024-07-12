@@ -5240,8 +5240,7 @@ bra3_BDE1:
 	LDA #$0B
 	STA ObjectSlot,X ;Spawn a mushroom in
 bra3_BDE6:
-	LDA #sfx_BlockRelease
-	STA SFXRegister ;Play the block release sound
+	JSR DoRevealSound ;Play the block release sound
 	LDY ObjectCount
 	INC ObjectCount ;Set the index for the new object
 	LDA ObjectXPos,X
@@ -5265,6 +5264,7 @@ bra3_BDE6:
 	STA ObjectState,Y
 	PLA
 	PLA
+	RTS
 	RTS
 bra3_BE27:
 	LDX #$FF

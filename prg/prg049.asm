@@ -2207,7 +2207,7 @@ bra5_902C:
 	LDA ObjFrameCounter
 	AND #$07
 	BNE bra5_9037
-	LDA #sfx_Cutter
+	LDA #sfx_Chainsaw
 	STA SFXRegister
 bra5_9037:
 	JSR sub5_92D7
@@ -2348,7 +2348,7 @@ bra5_913D:
 	LDA ObjFrameCounter
 	AND #$07
 	BNE bra5_9148
-	LDA #sfx_Cutter
+	LDA #sfx_Chainsaw
 	STA SFXRegister
 bra5_9148:
 	JSR sub5_82EC
