@@ -1,7 +1,7 @@
-;--------------------------------------------------------------------------------
+;------------------------------------------------------------
 ;SMW NES OBJECT BANK
 ;This bank handles objects and contains various functions relating to them. Object-specific things will be kept here for convenience sake
-;--------------------------------------------------------------------------------
+;------------------------------------------------------------
 
 ;----------------------------------------
 ;OBJECT MACROS
@@ -4428,7 +4428,7 @@ bra3_B84E:
 	STA ObjectYPos,X
 	BCS bra3_B865
 	CMP #$F0
-	BCC bra3_B883
+	BCC loc3_B883
 bra3_B865:
 	CLC
 	ADC #$10
@@ -4439,12 +4439,11 @@ bra3_B871:
 	CLC
 	ADC ObjectYPos,X
 	STA ObjectYPos,X
-	BCS bra3_B883
+	BCS loc3_B883
 	SEC
 	SBC #$10
 	STA ObjectYPos,X
 	DEC ObjectYScreen,X
-bra3_B883:
 loc3_B883:
 	INY
 	LDA ($32),Y
@@ -4936,7 +4935,7 @@ bra3_BBE3:
 	STA ObjectYPos,X
 	BCS bra3_BBFF
 	CMP #$F0
-	BCC bra3_BC1D_RTS
+	BCC loc3_BC1D_RTS
 bra3_BBFF:
 	CLC
 	ADC #$10
@@ -4947,12 +4946,11 @@ bra3_BC0B:
 	CLC
 	ADC ObjectYPos,X
 	STA ObjectYPos,X
-	BCS bra3_BC1D_RTS
+	BCS loc3_BC1D_RTS
 	SEC
 	SBC #$10
 	STA ObjectYPos,X
 	DEC ObjectYScreen,X
-bra3_BC1D_RTS:
 loc3_BC1D_RTS:
 	RTS
 tbl3_BC1E:
