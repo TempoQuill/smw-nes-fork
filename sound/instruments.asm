@@ -272,6 +272,20 @@ ofs_Vol77:
 	.byte $01,$11
 	.byte $FF
 	.byte $00
+ofs_Vol72:
+	.byte $03,$13
+	.byte $03,$12
+	.byte $04,$11
+	.byte $FF
+	.byte $00
+ofs_Vol73:
+	.byte $02,$15
+	.byte $02,$14
+	.byte $02,$13
+	.byte $02,$12
+	.byte $02,$11
+	.byte $FF
+	.byte $00
 ofs_Vol78:
 	.byte $02,$17
 	.byte $01,$16
@@ -686,7 +700,6 @@ ofs_Pitch2F:
 	.byte $0A,$0D
 	.byte $ff
 	.byte $00
-
 ofs_Vol30:
 	.byte $01,$12
 	.byte $01,$14
@@ -694,3 +707,43 @@ ofs_Vol30:
 	.byte $7F,$16
 	.byte $ff
 	.byte $fe
+ofs_Vol13:
+	.byte $01,$15
+	.byte $02,$10
+	.byte $01,$17
+	.byte $02,$10
+	.byte $01,$19
+	.byte $01,$12
+	.byte $01,$10
+	.byte $01,$1f
+	.byte $01,$13
+	.byte $01,$10
+	.byte $01,$1e
+	.byte $01,$14
+	.byte $01,$11
+	.byte $01,$1c
+	.byte $01,$17
+	.byte $01,$11
+	.byte $01,$1b
+	.byte $01,$17
+	.byte $01,$12
+	.byte $01,$19
+	.byte $01,$16
+	.byte $01,$13
+	.byte $01,$18
+	.byte $01,$15
+	.byte $01,$13
+	.byte $01,$16
+	.byte $01,$14
+	.byte $01,$13
+	.byte $01,$15
+	.byte $01,$14
+	.byte $01,$12
+	.byte $02,$13
+	.byte $04,$12
+	.byte $01,$10
+	.byte $02,$11
+	.byte $01,$10
+	.byte $02,$11
+	.byte $ff
+	.byte $00

@@ -44,6 +44,7 @@ sfx_Switch = $20
 sfx_DryBones = $21
 sfx_Spring = $22
 sfx_Thwomp = $23
+sfx_Swooper = $24
 
 ;Music IDs
 mus_Title = $40
@@ -63,6 +64,7 @@ mus_Underwater = $4D
 mus_Silence = $4E
 mus_Ending = $4F
 mus_InvincibleStar = $50
+mus_Athletic = $51
 
 ;Music notes
 NRest = $00

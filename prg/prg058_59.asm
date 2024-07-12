@@ -19,7 +19,7 @@ tbl10_8000:
 	dw ofs_Vol10
 	dw ofs_Vol11
 	dw ofs_Duty12 ; 12.5%-25% x1
-	dw ofs_NA
+	dw ofs_Vol13
 	dw ofs_Vol14
 	dw ofs_Vol15
 	dw ofs_Pitch16
@@ -114,8 +114,8 @@ tbl10_8000:
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
-	dw ofs_NA
-	dw ofs_NA
+	dw ofs_Vol72
+	dw ofs_Vol73
 	dw ofs_Pitch74
 	dw ofs_Vol75
 	dw ofs_Vol76
@@ -1395,7 +1395,7 @@ tbl10_8E41:
 	dw DryBones_Footer
 	dw Spring_Footer
 	dw Thwomp_Footer
-	dw Empty_Footer
+	dw Swooper_Footer
 	dw Empty_Footer
 	dw Empty_Footer
 	dw Empty_Footer
@@ -1441,6 +1441,7 @@ tbl10_8E41:
 	dw Empty_Footer
 	dw Ending_Footer
 	dw InvincibleStar_Footer
+	dw Title_Footer
 Empty_Footer:
 	db $00
 	dw UnknownMusPtr
@@ -1819,6 +1820,7 @@ DPCM_PitchTable:
 	.include sound/sfx_DryBones.asm
 	.include sound/sfx_Spring.asm
 	.include sound/sfx_Thwomp.asm
+	.include sound/sfx_Swooper.asm
  ;include music data
 	.include sound/mus_Title.asm
 	.include sound/mus_GameOver.asm

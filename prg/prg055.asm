@@ -1759,7 +1759,7 @@ bra8_8ED8_RTS:
 bra8_8ED9:
 	CMP #$81
 	BNE bra8_8EE5
-	LDA #sfx_Thunder?
+	LDA #sfx_Swooper
 	STA SFXRegister
 	JMP jmp_54_B5BB
 	RTS

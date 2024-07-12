@@ -855,13 +855,13 @@ sub4_A4CE:
 	STA MusicRegister
 	RTS
 LevelMusicQueue:
-	db mus_Overworld, mus_Overworld, mus_Title, mus_Castle ;World 1
-	db mus_Overworld, mus_Title, mus_GhostHouse, mus_Castle ;World 2
+	db mus_Overworld, mus_Overworld, mus_Athletic, mus_Castle ;World 1
+	db mus_Overworld, mus_Athletic, mus_GhostHouse, mus_Castle ;World 2
 	db mus_Underground, mus_Underwater, mus_GhostHouse, mus_Castle ;World 3
-	db mus_Overworld, mus_ForestofIllusion, mus_Title, mus_Castle ;World 4
+	db mus_Overworld, mus_Athletic, mus_Overworld, mus_Castle ;World 4
 	db mus_Overworld, mus_GhostHouse, mus_Underwater, mus_Castle ;World 5
-	db mus_Overworld, mus_GhostHouse, mus_ForestofIllusion, mus_Castle ;World 6
-	db mus_Overworld, mus_ForestofIllusion, mus_GhostHouse, mus_Castle ;World 7
+	db mus_Overworld, mus_GhostHouse, mus_Overworld, mus_Castle ;World 6
+	db mus_Overworld, mus_Athletic, mus_GhostHouse, mus_Castle ;World 7
 	db mus_Overworld ;Yoshi's House
 	db $60
 ;-=-=-=-=-=--=-=-=-=-=-=-
