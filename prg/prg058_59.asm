@@ -108,9 +108,9 @@ tbl10_8000:
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
-	dw ofs_NA
-	dw ofs_NA
-	dw ofs_NA
+	dw ofs_Pitch6C
+	dw ofs_Vol6D
+	dw ofs_Vol6E
 	dw ofs_Pitch6F
 	dw ofs_Vol70
 	dw ofs_Vol71
