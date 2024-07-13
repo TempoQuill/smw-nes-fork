@@ -743,7 +743,7 @@ loc7_8474:
 	STA FreezeFlag
 	LDA ObjectVariables,X
 	AND #$7F
-	CMP #PlayerAnimationFrame
+	CMP #PlayerAnimFrame
 	BCC bra7_84C2_RTS
 	LDA #$00
 	STA ObjectSlot,X
@@ -3004,7 +3004,7 @@ ofs_961A:
 	db $01
 	db $90
 	db $FF
-ofs_961E:
+ofs_961E: ;fireball
 	db $01
 	db $01
 	db $84

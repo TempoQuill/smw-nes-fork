@@ -1532,7 +1532,7 @@ bra6_8AAF:
 	LDA ObjActionTimer,X
 	CMP #$18
 	BCS bra6_8ABD
-	LDA #PlayerAnimationFrame
+	LDA #PlayerAnimFrame
 	BNE bra6_8AC3
 bra6_8ABD:
 	CMP #$20

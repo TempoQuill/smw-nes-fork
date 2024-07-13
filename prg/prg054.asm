@@ -1602,7 +1602,7 @@ bra3_A7C4:
 		BPL @Stop ;Stop if the player is facing away from the object (facing left and to the right of it)
 
 bra3_A7E8:
-	LDX PlayerAnimationFrame
+	LDX PlayerAnimFrame
 	CPX #$06
 	BCC YoshiEatStop ;Make sure Yoshi's mouth is open
 	LDA tbl3_A85F,X
@@ -1657,9 +1657,9 @@ bra3_A83D:
 	SEC
 bra3_A83E:
 	BCS YoshiEatStop
-	LDX PlayerAnimationFrame
+	LDX PlayerAnimFrame
 	LDA tbl3_A86D,X
-	STA PlayerAnimationFrame
+	STA PlayerAnimFrame
 	LDX $A4
 	INC ObjectState,X
 	LDA $25
@@ -2226,7 +2226,7 @@ ObjectYHitBoxSizes:
 ;----------------------------------------
 ptr_AA7B:
 	LDY $A4 ;Get index for the current object
-	LDX PlayerAnimationFrame ;Get hitbox index for player
+	LDX PlayerAnimFrame ;Get hitbox index for player
 	CPX #$0C
 	BCC @Continue ;Only continue if the player isn't underwater or doing a special animation
 	;Otherwise, move to the next object function
