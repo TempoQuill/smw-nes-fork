@@ -1586,27 +1586,39 @@ REPT 15
 	db $3E ; E1 - F#2
 ENDR
 REPT 8
-	db $34 ; G2 - D#3
+	db $34 ; G2 - D3
 ENDR
-	db $2D
+	db $2D ; D#3
 	db $3E ; E3
 	db $3E ; F3
 	db $3E ; F#3
 	db $3E ; G3
-	db $28 ; G#3
-	db $28 ; A3
-	db $3C ; A#3
-	db $3E ; B3
-	db $3E ; C4
-	db $28 ; C#4
-	db $28 ; D4
-	db $3C ; D#4
-	db $3E ; E4
-	db $3E ; F4
-	db $3E ; F#4
-	db $3E ; G4
-	db $3E ; G#4
-	db $3E ; A4
+	db $3E ; G#3
+	db $2D ; A3
+	db $2D ; A#3
+	db $2D ; B3
+	db $2D ; C4
+	db $2D ; C#4
+	db $2D ; D4
+	db $2D ; D#4
+	db $2D ; E4
+	db $2D ; F4
+	db $2D ; F#4
+	db $2D ; G4
+	db $28 ; G#4
+	db $28 ; A4
+	db $3C ; A#4
+	db $3E ; B4
+	db $3E ; C5
+	db $28 ; C#5
+	db $28 ; D5
+	db $3C ; D#5
+	db $3E ; E5
+	db $3E ; F5
+	db $3E ; F#5
+	db $3E ; G5
+	db $3E ; G#5
+	db $3E ; A5
 DPCM_AddressTable:
 	db $7F			; C0
 	db Bb_DIM_DOWN >> 2	; C#0
@@ -1652,19 +1664,31 @@ DPCM_AddressTable:
 	db $7F			; F3
 	db $7F			; F#3
 	db $7F			; G3
-	db UC#4 >> 2		; G#3
-	db UD4 >> 2		; A3
-	db UD#4 >> 2		; A#3
-	db UE4 >> 2		; B3
-	db UF4 >> 2		; C4
-	db UC#4 >> 2		; C#4
-	db UD4 >> 2		; D4
-	db UD#4 >> 2		; D#4
-	db UE4 >> 2		; E4
-	db UF4 >> 2		; F4
-	db UF#4 >> 2		; F#4
-	db UG4 >> 2		; G4
-	db UG#4 >> 2		; G#4
+	db $7F			; G#3
+	db GH_AMBIENCE_1 >> 2	; A3
+	db GH_AMBIENCE_2 >> 2	; A#3
+	db GH_AMBIENCE_3 >> 2	; B3
+	db GH_AMBIENCE_4 >> 2	; C4
+	db GH_AMBIENCE_5 >> 2	; C#4
+	db GH_AMBIENCE_1 >> 2	; D4
+	db GH_AMBIENCE_2 >> 2	; D#4
+	db GH_AMBIENCE_3 >> 2	; E4
+	db GH_AMBIENCE_4 >> 2	; F4
+	db GH_AMBIENCE_5 >> 2	; F#4
+	db GH_AMBIENCE_6 >> 2	; G4
+	db UC#4 >> 2		; G#4
+	db UD4 >> 2		; A4
+	db UD#4 >> 2		; A#4
+	db UE4 >> 2		; B4
+	db UF4 >> 2		; C5
+	db UC#4 >> 2		; C#5
+	db UD4 >> 2		; D5
+	db UD#4 >> 2		; D#5
+	db UE4 >> 2		; E5
+	db UF4 >> 2		; F5
+	db UF#4 >> 2		; F#5
+	db UG4 >> 2		; G5
+	db UG#4 >> 2		; G#5
 	db UA4 >> 2		; A4
 DPCM_EndAddressTable:
 	dl $FF			; C0
@@ -1711,19 +1735,31 @@ DPCM_EndAddressTable:
 	dl $FF			; F3
 	dl $FF			; F#3
 	dl $FF			; G3
-	dl UC#4_END		; G#3
-	dl UD4_END		; A3
-	dl UD#4_END		; A#3
-	dl UE4_END		; B3
-	dl UF4_END		; C4
-	dl UC#4_END		; C#4
-	dl UD4_END		; D4
-	dl UD#4_END		; D#4
-	dl UE4_END		; E4
-	dl UF4_END		; F4
-	dl UF#4_END		; F#4
-	dl UG4_END		; G4
-	dl UG#4_END		; G#4
+	dl $FF			; G#3
+	dl GH_AMBIENCE_1_END2	; A3
+	dl GH_AMBIENCE_2_END2	; A#3
+	dl GH_AMBIENCE_3_END2	; B3
+	dl GH_AMBIENCE_4_END2	; C4
+	dl GH_AMBIENCE_5_END2	; C#4
+	dl GH_AMBIENCE_1_END	; D4
+	dl GH_AMBIENCE_2_END	; D#4
+	dl GH_AMBIENCE_3_END	; E4
+	dl GH_AMBIENCE_4_END	; F4
+	dl GH_AMBIENCE_5_END	; F#4
+	dl GH_AMBIENCE_6_END	; G4
+	dl UC#4_END		; G#4
+	dl UD4_END		; A4
+	dl UD#4_END		; A#4
+	dl UE4_END		; B4
+	dl UF4_END		; C5
+	dl UC#4_END		; C#5
+	dl UD4_END		; D5
+	dl UD#4_END		; D#5
+	dl UE4_END		; E5
+	dl UF4_END		; F5
+	dl UF#4_END		; F#5
+	dl UG4_END		; G5
+	dl UG#4_END		; G#5
 	dl UA4_END		; A4
 DPCM_PitchTable:
 	db $F			; C0
@@ -1770,20 +1806,32 @@ DPCM_PitchTable:
 	db $F			; F3
 	db $F			; F#3
 	db $F			; G3
-	db $E			; G#3
+	db $F			; G#3
 	db $E			; A3
 	db $E			; A#3
 	db $E			; B3
 	db $E			; C4
-	db $F			; C#4
+	db $E			; C#4
 	db $F			; D4
 	db $F			; D#4
 	db $F			; E4
 	db $F			; F4
 	db $F			; F#4
 	db $F			; G4
-	db $F			; G#4
-	db $F			; A4
+	db $E			; G#4
+	db $E			; A4
+	db $E			; A#4
+	db $E			; B4
+	db $E			; C5
+	db $F			; C#5
+	db $F			; D5
+	db $F			; D#5
+	db $F			; E5
+	db $F			; F5
+	db $F			; F#5
+	db $F			; G5
+	db $F			; G#5
+	db $F			; A5
  ;include sfx_ data
 	.include sound/sfx_SpinJump.asm
 	.include sound/sfx_Pause.asm

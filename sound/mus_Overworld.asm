@@ -868,75 +868,107 @@ Overworld_DPCMLoop:
 	.byte SongLoopEnd
 	.byte SongLoop,2
 	.byte NLen+11
-	.byte D4
+	.byte D5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+12
-	.byte F4
+	.byte F5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte D4
+	.byte D5
 	.byte NLen+6
 	.byte NRest
 	.byte NLen+3
-	.byte F4
+	.byte F5
 	.byte NLen+1
 	.byte NRest
 	.byte NLen+7
-	.byte G4
+	.byte G5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte G#4
+	.byte G#5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte A4
+	.byte A5
 	.byte NLen+6
 	.byte NRest
 	.byte NLen+3
-	.byte G#4
+	.byte G#5
 	.byte NLen+1
 	.byte NRest
 	.byte NLen+7
-	.byte G4
+	.byte G5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte F#4
+	.byte F#5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte A4
+	.byte A5
 	.byte NLen+6
 	.byte NRest
 	.byte NLen+3
-	.byte D4
+	.byte D5
 	.byte NLen+1
 	.byte NRest
 	.byte NLen+7
-	.byte D#4
+	.byte D#5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte E4
+	.byte E5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte F4
+	.byte F5
 	.byte NLen+10
 	.byte NRest
 	.byte NLen+12
-	.byte D4
+	.byte D5
 	.byte NLen+2
 	.byte NRest
 	.byte NLen+3
-	.byte F4
+	.byte F5
 	.byte NLen+6
 	.byte NRest
 	.byte NLen+3
-	.byte G4
+	.byte G5
+	.byte NLen+1
+	.byte NRest
+	.byte NLen+7
+	.byte G#5
+	.byte NLen+2
+	.byte NRest
+	.byte NLen+3
+	.byte A5
+	.byte NLen+2
+	.byte NRest
+	.byte NLen+3
+	.byte G#5
+	.byte NLen+6
+	.byte NRest
+	.byte NLen+3
+	.byte A5
+	.byte NLen+1
+	.byte NRest
+	.byte NLen+7
+	.byte F5
+	.byte NLen+2
+	.byte NRest
+	.byte NLen+3
+	.byte D5
+	.byte NLen+2
+	.byte NRest
+	.byte NLen+3
+	.byte C5
+	.byte NLen+6
+	.byte NRest
+	.byte NLen+3
+	.byte F5
 	.byte NLen+1
 	.byte NRest
 	.byte NLen+7
@@ -945,38 +977,6 @@ Overworld_DPCMLoop:
 	.byte NRest
 	.byte NLen+3
 	.byte A4
-	.byte NLen+2
-	.byte NRest
-	.byte NLen+3
-	.byte G#4
-	.byte NLen+6
-	.byte NRest
-	.byte NLen+3
-	.byte A4
-	.byte NLen+1
-	.byte NRest
-	.byte NLen+7
-	.byte F4
-	.byte NLen+2
-	.byte NRest
-	.byte NLen+3
-	.byte D4
-	.byte NLen+2
-	.byte NRest
-	.byte NLen+3
-	.byte C4
-	.byte NLen+6
-	.byte NRest
-	.byte NLen+3
-	.byte F4
-	.byte NLen+1
-	.byte NRest
-	.byte NLen+7
-	.byte G#3
-	.byte NLen+2
-	.byte NRest
-	.byte NLen+3
-	.byte A3
 	.byte NLen+2
 	.byte NRest
 	.byte SongLoopEnd
