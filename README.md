@@ -3,8 +3,8 @@ This is a very WIP hack of the disassembly of the unlicensed Dendy port of SMW. 
 Updates to this project are likely to be quite slow due to time and motivation but it is being worked on.
 
 # How to assemble
-Run "assemble.bat" .\
-(The assembler used can be found [here](https://github.com/parasyte/asm6).)
+Run "assemble.bat" or "assemble.sh" .\
+(The assembler used can be found [here](https://github.com/morskoyzmey/asm6).)
 
 # Current WIP task:
 These changes are not currently in the available build as they are not in a viable state yet .\
