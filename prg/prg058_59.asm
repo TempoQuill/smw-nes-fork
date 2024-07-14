@@ -67,7 +67,7 @@ tbl10_8000:
 	dw ofs_Vol40
 	dw ofs_Vol41
 	dw ofs_Vol42
-	dw ofs_NA
+	dw ofs_Vol43
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_Vol46

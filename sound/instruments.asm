@@ -944,3 +944,15 @@ ofs_Pitch6C:
 	.byte $7f,$00
 	.byte $FF
 	.byte $00
+ofs_Vol43:
+	.byte $01,$11
+	.byte $01,$12
+	.byte $01,$14
+	.byte $06,$16
+	.byte $0B,$15
+	.byte $10,$14
+	.byte $15,$13
+	.byte $1A,$12
+	.byte $7F,$11
+	.byte $FF
+	.byte $00
