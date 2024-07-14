@@ -43,7 +43,7 @@ tbl10_8000:
 	dw ofs_Vol28
 	dw ofs_Vol29
 	dw ofs_Pitch2A
-	dw ofs_Vol2B
+	dw ofs_NA
 	dw ofs_Vol2C
 	dw ofs_Duty2D ; 210121 x1
 	dw ofs_Vol2E
@@ -51,7 +51,7 @@ tbl10_8000:
 	dw ofs_Vol30
 	dw ofs_Vol31
 	dw ofs_Pitch32
-	dw ofs_Vol33
+	dw ofs_NA
 	dw ofs_Duty34 ; 3|2101 x1
 	dw ofs_Pitch35
 	dw ofs_Pitch36
@@ -70,7 +70,6 @@ tbl10_8000:
 	dw ofs_Vol43
 	dw ofs_NA
 	dw ofs_NA
-	dw ofs_Vol46
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
@@ -81,7 +80,8 @@ tbl10_8000:
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
-	dw ofs_Pitch51
+	dw ofs_NA
+	dw ofs_NA
 	dw ofs_Vol52
 	dw ofs_Vol53
 	dw ofs_NA
@@ -98,7 +98,7 @@ tbl10_8000:
 	dw ofs_NA
 	dw ofs_Duty38 ; 75%-12.5% x5
 	dw ofs_Vol61
-	dw ofs_Pitch62
+	dw ofs_NA
 	dw ofs_Pitch63
 	dw ofs_Pitch64
 	dw ofs_NA
