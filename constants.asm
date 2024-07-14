@@ -163,6 +163,8 @@ SongSweep = $f7
 VolSet = $F8
 DutySet = $F9
 PitchSet = $FA
+SongLoopVerb = $fB
+NLenAdd = $FC
 
 ; DMC Bank $28
 .enum 0

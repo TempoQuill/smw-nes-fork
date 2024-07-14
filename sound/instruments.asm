@@ -693,6 +693,80 @@ ofs_Vol30:
 	.byte $7F,$16
 	.byte $ff
 	.byte $fe
+ofs_Vol37:
+	.byte $01,$12
+	.byte $01,$14
+	.byte $01,$18
+	.byte $13,$16
+	.byte $13,$15
+	.byte $13,$14
+	.byte $14,$13
+	.byte $14,$12
+	.byte $14,$11
+	.byte $ff
+	.byte $00
+ofs_Vol42:
+	.byte $01,$11
+	.byte $01,$12
+	.byte $01,$14
+ofs_Vol31:
+	.byte $26,$13
+	.byte $27,$12
+	.byte $28,$11
+	.byte $ff
+	.byte $00
+ofs_Pitch32:
+	.byte $03,$00
+	.byte $03,$01
+	.byte $03,$02
+	.byte $03,$03
+	.byte $03,$04
+	.byte $03,$05
+	.byte $03,$06
+	.byte $03,$07
+	.byte $03,$08
+	.byte $03,$09
+	.byte $03,$0A
+	.byte $03,$0B
+	.byte $03,$0C
+	.byte $03,$0D
+	.byte $03,$0E
+	.byte $03,$0F
+	.byte $03,$10
+	.byte $03,$11
+	.byte $03,$12
+	.byte $03,$13
+	.byte $03,$14
+	.byte $03,$15
+	.byte $03,$16
+	.byte $03,$17
+	.byte $03,$18
+	.byte $03,$19
+	.byte $03,$1A
+	.byte $03,$1B
+	.byte $03,$1C
+	.byte $03,$1D
+	.byte $03,$1E
+	.byte $03,$1F
+	.byte $03,$20
+	.byte $03,$21
+	.byte $03,$22
+	.byte $03,$23
+	.byte $03,$24
+	.byte $03,$25
+	.byte $03,$26
+	.byte $ff
+	.byte $fe
+ofs_Pitch35:
+	.byte $7f,$fc
+	.byte $ff
+	.byte $fe
+ofs_Pitch36:
+	.byte $24,$ff
+	.byte $05,$fc
+	.byte $05,$02
+	.byte $ff
+	.byte $fc
 ofs_Vol13:
 	.byte $01,$15
 	.byte $02,$10
