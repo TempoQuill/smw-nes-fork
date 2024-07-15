@@ -5148,7 +5148,7 @@ bra3_BD18:
 	LDA #$00
 	STA $4B
 	LDA $4A
-	CMP #$06
+	CMP #$07 ; Equivalent to SNES version, now
 	BCC bra3_BD2C ;Branch if <6 enemies have been hit
 	LDX CurrentPlayer
 	INC Player1Lives,X ;If 7 more have been hit, give the current player a life
@@ -5157,7 +5157,7 @@ bra3_BD18:
 bra3_BD2C:
 	INC $4A ;Increment hit counter
 	CLC
-	ADC #sfx_EnemyHit2 ;Play next hit sound
+	ADC #sfx_EnemyHit3 ;Play next hit sound
 bra3_BD31:
 	STA SFXRegister ;Play appropriate sound
 	LDY $2B
