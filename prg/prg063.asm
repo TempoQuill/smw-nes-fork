@@ -30,8 +30,8 @@ jmp_63_E000:
 	STA M90_BG_CHR2 ;Update 3rd BG bank
 	LDA BGBank4
 	STA M90_BG_CHR3 ;Update 4th BG bank (This goes unused)
-	LDA SpriteBank1
-	STA M90_SP_CHR0 ;Update 1st sprite bank
+;	LDA SpriteBank1
+;	STA M90_SP_CHR0 ;Update 1st sprite bank
 	LDA SpriteBank2
 	STA M90_SP_CHR1 ;Update 2nd sprite bank
 	LDA SpriteBank3

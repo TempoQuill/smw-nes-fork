@@ -1,53 +1,23 @@
 ;disassembled by BZK 6502 Disassembler
 jmp_57_A000: ;PlayerAnimationChangeChk
 	LDA PlayerAction
-	CMP PlayerPrevAction
+	CMP PlayerPrevAction 
 	BEQ bra4_A020 ;Branch here if the player's action stays the same
-	BNE bra4_A014 ;If it doesn't, branch here
-;Unused
-	LDA PlayerXSpeed ;unlogged
-	ROR ;unlogged
-	ROR ;unlogged
-	ROR ;unlogged
-	ROR ;unlogged
-	AND #$0F ;unlogged
-	TAX ;unlogged
-	LDA tbl4_A095,X ;unlogged
-bra4_A014:
+	
+bra4_A014: ;if player action changes, go make a new animation and animation set pointer
 	STA PlayerAnimation ;Update the player's animation
-	LDA #$00
+	LDA #$FF
+	STA PlayerFrameDur
 	STA PlayerAnimFrame ;Switch to first frame of animation
-	JSR MakePlayerAnimPtr;PlayerAnimationSub	:DEBUG
-	JMP loc4_A03E
+	JSR MakePlayerAnimPtr ;PlayerAnimationSub	:DEBUG :we want this to make a new animation pointer and then sit on it until later
 bra4_A020:
-	CMP #$01
-	BNE bra4_A034
-	LDA PlayerXSpeed
-	ROR
-	ROR
-	ROR
-	ROR
-	AND #$0F
-	TAX
-	LDA tbl4_A095,X ;load animation from table
-	TAY ;move it to the y reg
-	JMP loc4_A035 ;jump
-bra4_A034:
-	TAY
-loc4_A035:
-	CPY PlayerAnimation ;compare current animation to frame loaded from table
-	BEQ bra4_A03E ;branch if they're equal
-	STY PlayerAnimation ;unlogged
-	JSR MakePlayerAnimPtr	;unlogged ;PlayerAnimationSub	:DEBUG
-bra4_A03E:
-loc4_A03E:
 	LDA PlayerAction
 	STA PlayerAction+1
-	JSR DecPlayerFrameLength
-	JSR LoadPlayerSprite	;potentially why Y updates are so slow, fix this DEBUG
+	JSR DecPlayerFrameLength ;we already have a set and direct anim ptr, so this should be fine
+	JSR ConfigPlayerSpr ;configure variables for new sprite settings 
 	LDA #$14 ;skip past first 5 sprites in OAM
 	STA $3C ;store in player OAM tracker byte
-	JSR sub3_F176
+	JSR sub3_F176 ;clear all sprites 
 	LDA PlayerAction+1
 	CMP $062C
 	BEQ bra4_A061
@@ -247,7 +217,10 @@ sub4_A14A:	;check what else references this, should be able to point Yoshi anims
 ;	BEQ MakePlayerAnimPtr ;Branch if the player isn't carrying anything
 ;	CLC ;If they are
 ;	ADC #$05 ;Make the player use the 2nd set of animations
-	
+
+;Lag sprite corruption caused by code order issue? 
+;seems like the corruption largely occurs when a sprite changes
+;perhaps the frame pointer isn't updating at the right time?	
 
 MakePlayerAnimPtr: ;Select player animation and set
 ;note for later, Anim ID is doubled, this will break Yoshi ptr as it doesn't need variant animations, fine for now though
@@ -270,8 +243,8 @@ MakePlayerAnimPtr: ;Select player animation and set
 	LDA PlayerAnimation 
 	ASL ;double the players animation ID to skip over holding anims by default
 	TAY
-	LDX Player1YoshiStatus
-	BNE MakeYoshiFramePtr ;if the player has Yoshi, branch
+;	LDX Player1YoshiStatus
+;	BNE MakeYoshiFramePtr ;if the player has Yoshi, branch
 	LDX PlayerHoldFlag
 	BEQ SkipSetPlayerHoldAnims ;if the player isn't holding anything, branch
 	INY ;if they are, offset anim ID by 1 to use holding variant
@@ -283,9 +256,7 @@ SkipSetPlayerHoldAnims:
 StorePlayerAnimPtr:	;store the animation pointer
 	STX PlayerAnimPtr
 	STA PlayerAnimPtr+1	
-;???STRUCTURE IS NEEDING FIX, check against base game, this should be part of player anim sub, need to restructure calls or routine
-	JMP PlayerAnimationSub ;quick fix, game isn't structured for these routines, need to polish this all DEBUG
-;	RTS 
+	RTS 
 UseMarioPowerAnims:
 	LDX BigMarioAnimTblLo,Y ;make Big player animation pointer			
 	LDA BigMarioAnimTblHi,Y
@@ -298,7 +269,7 @@ MakeYoshiFramePtr:
 	
 ;**********************************************************************************
 ;All code in this sectioned off portion is new 
-;MANY CODE CALLS FOR THESE ROUTINES ARE VERY WRONG AS THEY ARE MEANT FOR THE HUMMER ROUTINES
+;Code calls should now be right? I think things are executing in the right order now
 DecPlayerFrameLength: ;START here, this routine handles frame changes WITHIN an animation, NOT animation changes 
 	DEC PlayerFrameDur 
 	BMI AdvNextPlayerFrame ;if frame duration underflown, advance to next frame
@@ -309,7 +280,9 @@ DetectPlayerAnimLoopPoint:
 	BPL PlayerAnimationSub ;Continue looping animation, always				
 AdvNextPlayerFrame: ;if Player frame ended
 	INC PlayerAnimFrame ;advance to next frame
-PlayerAnimationSub: 								;Calls have been updated, test these !!!!!UPDATE CALLS TO THIS NAME< THEY ARE WRONG!
+PlayerAnimationSub: 
+	LDA #$24 	
+	STA M90_PRG3 ;Load the animation bank into the 3rd PRG slot	
 	LDA PlayerAnimFrame ;get current animation frame 
 	ASL 
 	ASL ;multiply it by 4 (anim data is 4 bytes per frame)
@@ -333,7 +306,7 @@ MakePlayerFramePtr:
 	STA PlayerVBob	
 	TXA 
 	AND #%11110000 
-	STA PlayerSpriteAttributes ;Need to add force mirroring bits code 
+	STA PlayerSpriteAttributes ;save mapping mirror state
 SetPlayerSize: ;configure new sprite size for player
 	LDY #$00 
 	LDA (PlayerFramePtr),Y
@@ -363,69 +336,38 @@ CalcPlayerVOfs: ;					NEED TO UPDATE OTHER CODE AS IT'S LIKELY DUPLICATE
 	RTS ;end 
 ;**********************************************************************************
 ;**********************************************************************************	
-;UNUSED!!
-LoadPlayerSprite: ;loads the player sprite 						Removed call	!!!!!!!!!!FIX CALLS FOR THIS NAME!!!!!!!!!
-;combines elements of PlayerAnimationSub and ConfigPlayerSprite 
-;Prep 	
-;	LDY #$00 ;Clear Y index/set to read first byte of sprite format (sprite width)
-;	LDA #$24
-;	STA M90_PRG3 ;Load animation bank into 3rd PRG slot
-;Get sprite object size
-;	LDA (PlayerFramePtr),Y ;get width byte
-;	AND #$3F ;Remove attribute bits (%00111111)
-;	STA PlayerWidth	
-;	LDA (PlayerFramePtr),Y ;reload width byte
-;	AND #$C0 ;remove width bits (%11000000) 
-;	STA PlayerSpriteAttributes ;get attributes from width mapping (This is used for sprites that mirror such as the front facing and climbing sprites)
-;	INY
-;	LDA (PlayerFramePtr),Y ;get height byte
-;	STA PlayerHeight	
-;	INY 
-;Get attribute pointer for the sprite's CHR bank
-;	LDA (PlayerFramePtr),Y ;get CHR bank byte
-;	ASL 
-;	TAX ;double it and move it to X
-;	LDA #$2F
-;	STA M90_PRG3 ;load palette mapping bank into 3rd PRG slot
-;	LDA CHRSprBankAttrs,X
-;	STA PlayerPalMappingLo ;load low byte of palette mapping pointer
-;	LDA CHRSprBankAttrs+1,X
-;	STA PlayerPalMappingHi ;load high byte of palette mapping pointer
-;Set base mirroring 
-;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Check what $24 does
-;	LDA #$24
-;	STA M90_PRG3 ;load player animation bank (bank 36) back into 3rd PRG slot
-;	LDA PlayerMovement
-;	AND #$F0 ;get the direction the player is facing
-;	EOR #$40 ;reverse it
-;	STA PlayerSpriteMirror ;set it to player sprite mirroring
-;	LDA #$00
-;	STA $24 ;clear UNKNOWN
-;	INY ; advance to next byte of mapping (Horizontal offset)
-;Get Horizontal Offset 
-;	LDA PlayerSpriteMirror
-;	AND #$40 ;if player's sprite is H mirrored (facing right)
-;	BNE bra4_A208 ;branch
-;Else if sprite not mirrored (facing left)
-;	LDA PlayerSprXPos
-;	SEC
-;	SBC (PlayerFramePtr),Y ;subtract x position by mapping offset
-;	STA PlayerSprXPosOfs ;set it as sprite X offset
-;	LDA #$00
-;	SBC #$00 ;subtract carry if present
-;	STA $20 ;store it
-;	JMP loc4_A218 ;Skip past next section
+;Remake necessary functions for every frame here
+ForcePlayerMirror:
+	LDA PlayerMovement
+	AND #$F0	;get the direction the player is facing
+	EOR #$40	;reverse it
+	STA PlayerSpriteMirror
+	JMP StoreMarioMirror
+PlayerLeftSprXOffset:
+	CLC 
+	ADC SpriteHOffsetTbl,Y ;add offset to sprite x position
+	JMP StorePlayerSprXOfs
+ConfigPlayerSpr: ;START HERE (replaces LoadPlayerSprite)
+	LDA PlayerMovement
+	AND #$F0 ;get the direction the player is facing
+	STA PlayerSpriteMirror ;set it to player sprite mirroring
+SetPlayerMirror: ;feels clunky, consider rework of this function
+	LDA PlayerSpriteAttributes ;used for temp compatibility with cape code
+	BMI ForcePlayerMirror ;if value is negative, force sprite to be mirrored	
+StoreMarioMirror:
+	LDA PlayerSpriteMirror
+;	EOR PlayerPalette ;apply mirroring 
+	STA ScratchRAM1 ;save composite result to zero page for faster access (Note, this needs to be moved to ZP later)	
+GetPlayerSprXOfs:
+	LDY PlayerWidth ;use player width to select X offset
+	LDA PlayerSprXPos;PlayerXPos 
+	LDX PlayerSpriteMirror
+	BNE PlayerLeftSprXOffset: ;if sprites are mirrored, branch
+	SEC 
+	SBC SpriteHOffsetRightTbl,Y ;Subtract offset from sprite x position
+StorePlayerSprXOfs:	
+	STA PlayerSprXPosOfs 
 	
-;bra4_A208: ;If Sprite H Mirrored
-;	LDA (PlayerFramePtr),Y
-;	SEC
-;	SBC #$08 ;subtract loaded mapping offset by 8
-;	CLC
-;	ADC PlayerSprXPos  ;add player X position to modified mapping offset
-;	STA PlayerSprXPosOfs ;set it as sprite X offset	
-;	LDA #$00
-;	ADC #$00 ;add carry if present
-;	STA $20 ;store it
 ;get Vertical Offset
 loc4_A218:
 	LDX #$00 ;set X to #$00
@@ -437,17 +379,17 @@ loc4_A218:
 	SBC PlayerVBob ;DEBUG ;subtract the bobbing V offset 
 	STA PlayerSprYPosOfs ;store it as the Y offset for the sprite
 	
-;	BPL bra4_A223 ;branch if offset is positive (only happens if sprite height is 00, unsure when this would ever occur though)
-;	LDX #$FF ;else if offset negative, set X to #$FF
+	BPL bra4_A223 ;branch if offset is positive (only happens if sprite height is 00, unsure when this would ever occur though)
+	LDX #$FF ;else if offset negative, set X to #$FF
 	
 bra4_A223: ;offset player vertically
 ;	CLC
 ;	ADC PlayerSprYPos ;add player vertical position to loaded vertical offset
 ;	STA PlayerSprYPosOfs ;set it as sprite Y offset 
-;	BCC bra4_A22B ;if carry clear (result less than 255) then branch to end of routine (leaves X untouched)
-;	INX ;increment X (Result: 00 or 01) (if X is #$FF this will underflow to be #$00) 
+	BCC bra4_A22B ;if carry clear (result less than 255) then branch to end of routine (leaves X untouched)
+	INX ;increment X (Result: 00 or 01) (if X is #$FF this will underflow to be #$00) 
 bra4_A22B:
-;	STX $22 ;Unknown purpose (possibly something to do with if the players V offset puts them off screen)
+	STX $22 ;Unknown purpose (possibly something to do with if the players V offset puts them off screen)
 	RTS ;end
 	
 PlayerSpriteVOffset: ;This table adjusts the sprite offset based on the height of the player, listed next to the offsets are the respective heights
@@ -712,7 +654,7 @@ bra4_A3BC:
 	INC $2E ;increment Mapping offset
 	LDA $2E
 	CMP #$10 ;these sprites are forced to each have #$10 (16) tiles it would appear
-	BCS bra4_A3CF ;If it exceeds #$10, branch to PlayerSpriteBuilder (build Yoshi sprite)
+	BCS PlayerSpriteBuilder ;If it exceeds #$10, branch to PlayerSpriteBuilder (build Yoshi sprite)
 	LDA PlayerMovement ;get current movement direction
 	EOR PlayerSpriteAttributes ;flip bits against sprite attributes
 	AND #$40 ;determine sprite mirror direction
@@ -743,77 +685,18 @@ SpriteHOffsetRightTbl: ;Horizontal offsets for sprites
 ;MAIN PLAYER SPRITE BUILDER
 ;Please excuse the poor coding on the first part here, this is very WIP and full of quick fixes
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-===-=-=-=-==-=-=-=-=-=-=--
-ForcePlayerMirror:
-	LDA PlayerMovement
-	AND #$F0	;get the direction the player is facing
-	EOR #$40	;reverse it
-	STA PlayerSpriteMirror
-	JMP StoreMarioMirror
-
-bra4_A3CF:
-JMP ConfigPlayerSpr ;point this elsewhere later, temp fix
-
-PlayerLeftSprXOffset:
-	CLC 
-	ADC SpriteHOffsetTbl,Y ;add offset to sprite x position
-	JMP StorePlayerSprXOfs
-PlayerSpriteBuilder: ;creates standard Mario sprites 
-;Hotfix
-	LDA PlayerMovement
-	AND #$F0 ;get the direction the player is facing
-	STA PlayerSpriteMirror ;set it to player sprite mirroring
-;DEBUG TEMP FIX
-	LDX PlayerWidth ;jank hotfix for 00 initialisation of sprite box causing underflow error
-	LDY PlayerHeight
-	BNE ConfigPlayerSpr
-	INX
-	INY
-	STX PlayerWidth
-	STY PlayerHeight
-
-ConfigPlayerSpr: ;START HERE
+PlayerSpriteBuilder:
 	LDA #$24
 	STA M90_PRG3 ;Load animation bank into 3rd slot
-	LDA PlayerSprYPos 
-;	CLC
-;	ADC PlayerVBob
-	STA PlayerSprYOfs
-SetPlayerMirror: ;feels clunky, consider rework of this function
-	LDA PlayerSpriteAttributes ;used for temp compatibility with cape code
-	BMI ForcePlayerMirror ;if value is negative, force sprite to be mirrored	
-StoreMarioMirror:
-	LDA PlayerSpriteMirror
-;	EOR PlayerPalette ;apply mirroring 
-	STA ScratchRAM1 ;save composite result to zero page for faster access (Note, this needs to be moved to ZP later)	
-GetPlayerSprXOfs:
-	LDY PlayerWidth ;use player width to select X offset
-	LDA PlayerSprXPos;PlayerXPos 
-	LDX PlayerSpriteMirror
-	BNE PlayerLeftSprXOffset: ;if sprites are mirrored, branch
-	SEC 
-	SBC SpriteHOffsetRightTbl,Y ;Subtract offset from sprite x position
-StorePlayerSprXOfs:	
-	STA PlayerSprXOfs 
-;
 Initialise:
 	LDX PlayerWidth ;setup loop counters
+	BEQ VSLS_RTS ;if width is 00, don't render the sprite
 	STX $3E ;WidthCounter
 	LDY PlayerHeight
 	STY $3F ;HeightCounter
 	LDX OAMtrack ;get current storage location offset
 	LDY #$02 ;Load offset for start of mapping data
- ;Fix ----- remove from here
-;	LDA (PlayerFramePtr),Y ;Temp fix, this should be performed when a sprite is loaded in the animation routine
-;	LDX PlayerPowerup ;until that's finished, we have jank fixes like this
-;	CPX #$02 
-;	BNE SkipDebugAnimFix 
-;	CLC 
-;	ADC #$01
-;SkipDebugAnimFix:
-;	LDX OAMtrack 
-;	STA SpriteBank1 
- ;Fix ----- to here when done
-	LDA PlayerSprXOfs ;get base X offset
+	LDA PlayerSprXPosOfs ;get base X offset
 ;**********************
 RepeatLoaderLoop: ;runs when height counter is 00 or at start of routine
 	STA MetaXTemp
@@ -2628,7 +2511,7 @@ tbl4_ACDE:
 	dw ofs_B7F7
 	dw ofs_B80F
 	dw ofs_B821
-jmp_57_AD04:
+jmp_57_AD04: ;DEBUG
 	LDA PlayerPowerupBuffer
 	BEQ bra4_AD1E
 	INC PlayerPowerupBuffer
@@ -3206,7 +3089,7 @@ bra4_B0FD:
 	SBC #$05
 	STA Player1YoshiStatus
 	JSR sub4_A14A
-	LDA #$00
+	LDA #$00;DEBUG was $00, this may or may not be correct for whatever it's doing
 	STA PlayerAnimFrame
 bra4_B113:
 	LDA Player1YoshiStatus

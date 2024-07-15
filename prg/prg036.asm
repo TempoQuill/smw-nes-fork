@@ -26,14 +26,14 @@ lda_36_C000: ;really no idea if we need any of these duplicates but most likely 
 	dw YoshiAnimTablesTbl_3 ;08
 	dw YoshiAnimTablesTbl_3 ;09 as far as I can tell these are all identical unique copies, but this hasn't been fully investigated
 	
-PlayerAnimSetTblLo:
-	db <YoshiAnimTablesTbl_1 ;placeholder
-	db <BigMarioAnimTblLo
-	db <SmallMarioAnimTblLo
-PlayerAnimSetTblHi:	
-	db >YoshiAnimTablesTbl_1 ;placeholder
-	db >BigMarioAnimTblLo
-	db >SmallMarioAnimTblLo
+;PlayerAnimSetTblLo:
+;	db <YoshiAnimTablesTbl_1 ;placeholder
+;	db <BigMarioAnimTblLo
+;	db <SmallMarioAnimTblLo
+;PlayerAnimSetTblHi:	
+;	db >YoshiAnimTablesTbl_1 ;placeholder
+;	db >BigMarioAnimTblLo
+;	db >SmallMarioAnimTblLo
 	
 ;**********************************************
 ;Small Mario standard animations
