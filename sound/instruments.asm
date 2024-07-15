@@ -897,3 +897,10 @@ ofs_Vol43:
 	.byte $7F,$11
 	.byte $FF
 	.byte $00
+ofs_Pitch2B:
+	.byte $01,$07
+	.byte $01,$03
+	.byte $01,$01
+	.byte $7f,$00
+	.byte $FF
+	.byte $FE
