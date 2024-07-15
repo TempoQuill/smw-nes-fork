@@ -178,7 +178,7 @@ bra6_8151:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #sfx_EnemyHit2
+	LDA #sfx_EnemyHit1
 	STA SFXRegister
 	LDX $A4
 	LDA #$81

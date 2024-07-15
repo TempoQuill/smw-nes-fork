@@ -1482,7 +1482,7 @@ bra7_8B3F:
 	INC ObjectState,X
 	LDA PlayerHoldFlag
 	BNE bra7_8B33_RTS
-	LDA #sfx_EnemyHit5
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	RTS
 ptr5_8B55:
@@ -2721,7 +2721,7 @@ loc7_9518:
 bra7_951E:
 	LDA ObjectState,X
 	BNE bra7_9527
-	LDY #sfx_Thud
+	LDY #sfx_ChuckHit
 	STY SFXRegister
 bra7_9527:
 	CMP #$10
@@ -3395,7 +3395,7 @@ bra7_999B:
 	STA ObjectVariables,X
 	LDA #$28
 	STA ObjectState,X
-	LDA #sfx_EnemyHit8
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	RTS
 ptr5_99BF:
@@ -4172,32 +4172,6 @@ bra7_9F8D:
 	LDA ObjXScreenDistance,X
 	BPL bra7_9F84
 	RTS
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
-	db $23
 
 OAMOLHandler1:
 	LDA YoshiUnmountedState

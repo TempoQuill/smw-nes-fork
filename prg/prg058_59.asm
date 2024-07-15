@@ -1385,6 +1385,7 @@ tbl10_8E41:
 	dw EnemyHit6_Footer
 	dw EnemyHit7_Footer
 	dw EnemyHit8_Footer
+	dw EnemyHit9_Footer
 	dw YoshiTongue_Footer
 	dw YoshiSwallow_Footer
 	dw YoshiFireSpit_Footer
@@ -1400,7 +1401,6 @@ tbl10_8E41:
 	dw BossHit_Footer
 	dw ChuckHit_Footer
 	dw Vine_Footer
-	dw Empty_Footer
 	dw Empty_Footer
 	dw Empty_Footer
 	dw Empty_Footer
@@ -1858,6 +1858,7 @@ DPCM_PitchTable:
 	.include sound/sfx_EnemyHit6.asm
 	.include sound/sfx_EnemyHit7.asm
 	.include sound/sfx_EnemyHit8.asm
+	.include sound/sfx_EnemyHit9.asm
 	.include sound/sfx_YoshiTongue.asm
 	.include sound/sfx_YoshiSwallow.asm
 	.include sound/sfx_YoshiFireSpit.asm

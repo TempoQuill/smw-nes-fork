@@ -1749,7 +1749,7 @@ ptr10_8CAF:
 	JSR Obj_CapeHitCheck
 	JSR Obj_PlayerHitCheck
 	JSR Obj_KillOnSpinJump
-	LDA #sfx_EnemyHit2
+	LDA #sfx_EnemyHit1
 	STA SFXRegister
 	LDA #$01
 	JSR RewardPoints

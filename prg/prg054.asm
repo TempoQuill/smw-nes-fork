@@ -1479,7 +1479,7 @@ CheckIfCapeKill:
 		STA ObjectVariables,X ;Reset object animation(?)
 		LDA #$01
 		JSR RewardPoints ;Give 200 points
-		LDA #sfx_EnemyHit2
+		LDA #sfx_EnemyHit1
 		STA SFXRegister ;Play hit sound
 		PLA
 		PLA ;Go back two calls and stop running code for this object
@@ -5059,7 +5059,7 @@ bra3_BC9A:
 bra3_BCA6_RTS:
 	RTS
 sub_54_BCA7:
-	LDA #sfx_EnemyHit2
+	LDA #sfx_EnemyHit1
 	STA SFXRegister
 	LDA #$30
 	STA PlayerYSpeed
@@ -5076,7 +5076,7 @@ sub_54_BCA7:
 ;Bounces the player back and gives them points while playing a sound effect. Calling the routine below it doesn't play the sound effect.
 ;----------------------------------------
 Obj_StompKnockback:
-	LDA #sfx_EnemyHit2
+	LDA #sfx_EnemyHit1
 	STA SFXRegister ;Play hit sound effect
 jmp_54_BCC2:
 	LDA #$08
@@ -5148,7 +5148,7 @@ bra3_BD18:
 bra3_BD2C:
 	INC $4A ;Increment hit counter
 	CLC
-	ADC #sfx_EnemyHit1 ;Play next hit sound
+	ADC #sfx_EnemyHit2 ;Play next hit sound
 bra3_BD31:
 	STA SFXRegister ;Play appropriate sound
 	LDY $2B
