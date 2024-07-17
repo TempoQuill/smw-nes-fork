@@ -3,7 +3,7 @@ Victory_P1:
 	.byte Transpose, 5
 	.byte DutySet, $38
 	.byte PitchSet, $00
-	.byte VolSet, $28
+	.byte VolSet, $18
 	.byte SegCall
 	.word Victory_Sweep
 	.byte Transpose, $00
@@ -17,7 +17,7 @@ Victory_P2:
 	.byte Transpose, 0
 	.byte DutySet, $38
 	.byte PitchSet, $00
-	.byte VolSet, $28
+	.byte VolSet, $18
 	.byte SegCall
 	.word Victory_Sweep
 	.byte Transpose, $0C

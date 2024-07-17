@@ -326,7 +326,7 @@ Athletic_P1Sub7:
 Athletic_P2:
 	.byte Transpose, 0
 	.byte DutySet, $79
-	.byte PitchSet, $3f
+	.byte PitchSet, $0F
 	.byte VolSet, $78
 	.byte NLen+5
 	.byte B3
@@ -638,7 +638,7 @@ Athletic_P2Sub3:
 	.byte SegEnd
 Athletic_Tri:
 	.byte Transpose, 0
-	.byte PitchSet, $3f
+	.byte PitchSet, $0F
 	.byte VolSet, $3e
 	.byte NLen+11
 	.byte F2

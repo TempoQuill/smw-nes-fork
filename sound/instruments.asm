@@ -282,7 +282,7 @@ ofs_Vol7F:
 	.byte $01,$03
 	.byte $ff
 	.byte $00
-ofs_Vol28: ; flat 3
+ofs_Vol18:
 	.byte $7f,$13
 	.byte $ff
 	.byte $fe
@@ -357,12 +357,8 @@ ofs_Duty2D:
 	.byte $fe,$40
 	.byte $ff
 	.byte $fe
-ofs_Vol29: ; flat 7
+ofs_Vol1C:
 	.byte $7f,$17
-	.byte $FF
-	.byte $FE
-ofs_Pitch3F:
-	.byte $7F,$FF
 	.byte $FF
 	.byte $FE
 ofs_Pitch2A:

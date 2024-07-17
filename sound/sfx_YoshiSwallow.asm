@@ -1,7 +1,7 @@
 YoshiSwallow_P2:
 	.byte SongSpeed, 1
 	.byte Transpose, $00
-	.byte DutySet, $60
+	.byte DutySet, $38
 	.byte PitchSet, $63
 	.byte VolSet, $61
 	.byte NLen+6

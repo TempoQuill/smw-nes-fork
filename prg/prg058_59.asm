@@ -24,11 +24,11 @@ tbl10_8000:
 	dw ofs_Vol15
 	dw ofs_Pitch16
 	dw ofs_Duty17 ; 50%-25% x1
-	dw ofs_Vol28 ; castle flat dynamics
+	dw ofs_Vol18 ; castle flat dynamics
 	dw ofs_Vol19
 	dw ofs_Vol1A
 	dw ofs_Vol1B
-	dw ofs_Vol29
+	dw ofs_Vol1C
 	dw ofs_Vol1D
 	dw ofs_Vol1E
 	dw ofs_Vol1F
@@ -40,8 +40,8 @@ tbl10_8000:
 	dw ofs_Vol25
 	dw ofs_Vol26
 	dw ofs_Vol27
-	dw ofs_Vol28
-	dw ofs_Vol29
+	dw ofs_NA
+	dw ofs_NA
 	dw ofs_Pitch2A
 	dw ofs_Pitch2B
 	dw ofs_Vol2C
@@ -63,7 +63,7 @@ tbl10_8000:
 	dw ofs_Duty3C ; 75%
 	dw ofs_Duty3D ; 12.5%
 	dw ofs_Vol3E
-	dw ofs_Pitch3F
+	dw ofs_NA
 	dw ofs_Vol40
 	dw ofs_Vol41
 	dw ofs_Vol42
@@ -96,7 +96,7 @@ tbl10_8000:
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
-	dw ofs_Duty38 ; 75%-12.5% x5
+	dw ofs_NA ; 75%-12.5% x5
 	dw ofs_Vol61
 	dw ofs_NA
 	dw ofs_Pitch63
