@@ -114,10 +114,6 @@ ofs_Duty38:
 	.byte $FE,$80
 	.byte $FF
 	.byte $00
-ofs_Pitch39:
-	.byte $FE,$FF
-	.byte $FF
-	.byte $FE
 ofs_Vol40:
 	.byte $02,$14
 	.byte $02,$12
@@ -236,9 +232,11 @@ ofs_Duty79:
 	.byte $FF
 	.byte $00
 ofs_Pitch7A:
-	.byte $01,$FF
+	.byte $0F,$00
+	.byte $03,$FF
+	.byte $03,$00
 	.byte $FF
-	.byte $FE
+	.byte $FC
 ofs_Pitch7C:
 	.byte $01,$FD
 	.byte $01,$FA
@@ -904,3 +902,18 @@ ofs_Pitch2B:
 	.byte $7f,$00
 	.byte $FF
 	.byte $FE
+ofs_Vol33:
+	.byte $01,$13
+	.byte $05,$12
+	.byte $05,$13
+	.byte $20,$13
+	.byte $FF
+	.byte $00
+ofs_Vol44:
+	.byte $01,$16
+	.byte $11,$14
+	.byte $11,$13
+	.byte $11,$12
+	.byte $11,$11
+	.byte $FF
+	.byte $00

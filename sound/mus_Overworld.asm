@@ -91,7 +91,7 @@ Overworld_P1Loop:
 	.word Overworld_P1Sub3
 	.byte Transpose, $18
 	.byte DutySet, $38
-	.byte PitchSet, $39
+	.byte PitchSet, $00
 	.byte VolSet, $11
 	.byte NLen+5
 	.byte SegCall
@@ -378,7 +378,7 @@ Overworld_P2Loop:
 	.byte F2
 	.byte Transpose, $18
 	.byte DutySet, $38
-	.byte PitchSet, $39
+	.byte PitchSet, $00
 	.byte VolSet, $11
 	.byte NLen+5
 	.byte SegCall

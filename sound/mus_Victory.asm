@@ -22,7 +22,7 @@ Victory_P2:
 	.word Victory_Sweep
 	.byte Transpose, $0C
 	.byte DutySet, $3D
-	.byte PitchSet, $7A
+	.byte PitchSet, $0F
 	.byte VolSet, $3E
 	.byte NLen+11
 	.byte F3
@@ -142,7 +142,7 @@ Victory_Sweep:
 Victory_Tri:
 	.byte Transpose, $0C
 	.byte DutySet, $3D
-	.byte PitchSet, $7A
+	.byte PitchSet, $0F
 	.byte VolSet, $3E
 	.byte NLen+54
 	.byte NRest

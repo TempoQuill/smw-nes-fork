@@ -51,13 +51,13 @@ tbl10_8000:
 	dw ofs_Vol30
 	dw ofs_Vol31
 	dw ofs_Pitch32
-	dw ofs_NA
+	dw ofs_Vol33
 	dw ofs_Duty34 ; 3|2101 x1
 	dw ofs_Pitch35
 	dw ofs_Pitch36
 	dw ofs_Vol37
 	dw ofs_Duty38 ; 50%
-	dw ofs_Pitch39
+	dw ofs_NA
 	dw ofs_Pitch3A
 	dw ofs_Vol3B
 	dw ofs_Duty3C ; 75%
@@ -68,7 +68,7 @@ tbl10_8000:
 	dw ofs_Vol41
 	dw ofs_Vol42
 	dw ofs_Vol43
-	dw ofs_NA
+	dw ofs_Vol44
 	dw ofs_NA
 	dw ofs_NA
 	dw ofs_NA
