@@ -548,12 +548,12 @@ MusicCommandTable:
 	dw musJump
 	dw musSpeed
 	dw musTransposition
-	dw musSweep
+	dw musSweep ; new
 	dw musVolumeEnv
 	dw musDutyCycle
 	dw musModulation
 	dw musVerboseLoop
-	dw musNoteLengthAddend
+	dw musNoteLengthAddend ; new
 	dw GaugeNoteLength
 	dw GaugeMusicByte
 	dw musEnd

@@ -163,7 +163,7 @@ SongSweep = $f7
 VolSet = $F8
 DutySet = $F9
 PitchSet = $FA
-SongLoopVerb = $fB
+SongLoopVerb = $FB ; verbose loop
 NLenAdd = $FC
 
 ; DMC Bank $28

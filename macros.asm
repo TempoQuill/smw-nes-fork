@@ -46,6 +46,12 @@ endm
 macro notelen x
 	db $80+x
 endm
+macro sndloop x
+	db $F2, x
+endm
+macro endloop
+	db $F3
+endm
 macro sndjump x
 	db $F4
 	dw x
@@ -65,6 +71,10 @@ macro transpose x
 	db $F6, x
 endm
 
+macro sweep x
+	db $F7, x
+endm
+
 macro volenv x
 	db $F8, x
 endm
@@ -75,6 +85,15 @@ endm
 
 macro pitch x
 	db $FA, x
+endm
+
+macro verbloop x, y
+	db $FB, x
+	dw y
+endm
+
+macro addlen x
+	db $FC, x
 endm
 
 ;Channel pointers
