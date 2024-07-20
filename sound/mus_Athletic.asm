@@ -944,6 +944,52 @@ Athletic_TriSub7:
 	.byte NRest
 	.byte SongLoopEnd
 	.byte SegEnd
+Athletic_Noise:
+	.byte PitchSet, 0
+	.byte VolSet, 0
+	.byte NLen+92
+	.byte NRest
+Athletic_NoiseLoop:
+	.byte SongLoop,7
+	.byte SegCall
+	.word Athletic_NoiseSub
+	.byte SongLoopEnd
+	.byte SongLoop,2
+	.byte NLen+5
+	.byte $39
+	.byte NLen+6
+	.byte $3B
+	.byte $39
+	.byte $3B
+	.byte SongLoopEnd
+	.byte SongLoop,7
+	.byte SegCall
+	.word Athletic_NoiseSub
+	.byte SongLoopEnd
+	.byte SongLoop,2
+	.byte NLen+11
+	.byte $39
+	.byte NLen+12
+	.byte $3B
+	.byte SongLoopEnd
+	.byte SongLoop,32
+	.byte SegCall
+	.word Athletic_NoiseSub
+	.byte SongLoopEnd
+	.byte SongJump
+	.word Athletic_NoiseLoop
+	.byte $ff
+Athletic_NoiseSub:
+	.byte NLen+11
+	.byte $3B
+	.byte NLen+12
+	.byte $39
+	.byte NLen+11
+	.byte $3B
+	.byte NLen+6
+	.byte $39
+	.byte $39
+	.byte SegEnd
 Athletic_End:
 	.byte $ff
 Athletic_Footer:
@@ -954,7 +1000,7 @@ Athletic_Footer:
 	.byte $02
 	.word Athletic_Tri
 	.byte $03
-	.word Athletic_End
+	.word Athletic_Noise
 	.byte $04
 	.word Athletic_End
 	.byte $ff

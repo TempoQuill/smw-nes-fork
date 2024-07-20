@@ -40,7 +40,7 @@ tbl10_8000:
 	dw ofs_Vol25
 	dw ofs_Vol26
 	dw ofs_Vol27
-	dw ofs_NA
+	dw ofs_Vol28
 	dw ofs_NA
 	dw ofs_Pitch2A
 	dw ofs_Pitch2B
@@ -1240,6 +1240,7 @@ UpdateDPCM_Quit:
 FetchVolume:
 	TYA
 	PHA
+	JSR CheckForBongos
 	LDA MusicVolumeDelay,X
 	TAY
 	CPY #$FF
@@ -1358,6 +1359,24 @@ bra10_8E32:
 	STA SoundQueue,Y ;Store in SFX queue
 bra10_8E40_RTS:
 	RTS
+
+CheckForBongos:
+	LDA MusicVolumeEnv, X
+	BEQ @MaybeRestore
+	CMP #$28
+	BNE @Ready
+	LDA Player1YoshiStatus
+	BNE @Ready
+	LDA #0
+	STA MusicVolumeEnv, X
+@Ready:
+	RTS
+@MaybeRestore:
+	LDA Player1YoshiStatus
+	BEQ @Ready
+	LDA #$28
+	STA MusicVolumeEnv, X
+	BNE @Ready
 
 tbl10_8E41:
 	dw Empty_Footer

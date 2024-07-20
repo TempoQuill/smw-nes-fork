@@ -760,6 +760,110 @@ Overworld_TriSub:
 	.byte NLen+3
 	.byte NRest
 	.byte SegEnd
+Overworld_Noise:
+	.byte PitchSet, 0
+	.byte VolSet, 0
+	.byte NLen+108
+	.byte NRest
+Overworld_NoiseLoop:
+	.byte SongLoop,5
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte NLen+27
+	.byte $3B
+	.byte SongLoopEnd
+	.byte SongLoop,4
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub3
+	.byte SongLoopEnd
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte NLen+27
+	.byte $3B
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte SegCall
+	.word Overworld_NoiseSub1
+	.byte SegCall
+	.word Overworld_NoiseSub2
+	.byte NLen+6
+	.byte $3B
+	.byte NLen+7
+	.byte NRest
+	.byte $3B
+	.byte $3B
+	.byte SongLoop,4
+	.byte NLen+3
+	.byte $38
+	.byte $38
+	.byte NLen+7
+	.byte $38
+	.byte $38
+	.byte $38
+	.byte NLen+6
+	.byte $38
+	.byte NLen+7
+	.byte $38
+	.byte $3B
+	.byte NRest
+	.byte SegCall
+	.word Overworld_NoiseSub3
+	.byte SongLoopEnd
+	.byte SongJump
+	.word Overworld_NoiseLoop
+	.byte $FF
+Overworld_NoiseSub1:
+	.byte NLen+6
+	.byte $39
+	.byte NLen+7
+	.byte $38
+	.byte $39
+	.byte $3B
+	.byte NLen+13
+	.byte $3A
+	.byte NLen+14
+	.byte $3B
+	.byte SegEnd
+Overworld_NoiseSub2:
+	.byte NLen+6
+	.byte $3B
+	.byte NLen+7
+	.byte $3A
+	.byte $39
+	.byte NRest
+	.byte SegEnd
+Overworld_NoiseSub3:
+	.byte NLen+6
+	.byte $39
+	.byte NLen+7
+	.byte $3A
+	.byte NRest
+	.byte $39
+	.byte NLen+27
+	.byte $3A
+	.byte SegEnd
 Overworld_DPCM:
 	.byte NLen+108
 	.byte NRest
@@ -1121,7 +1225,7 @@ Overworld_Footer:
 	db $02
 	.word Overworld_Tri
 	db $03
-	.word Overworld_End
+	.word Overworld_Noise
 	db $04
 	.word Overworld_DPCM
 	db $FF

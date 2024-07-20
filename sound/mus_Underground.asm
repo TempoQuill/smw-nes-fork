@@ -3,6 +3,8 @@ Underground_P1:
 	.byte DutySet, $7b
 	.byte PitchSet, 0
 	.byte VolSet, $6e
+	.byte NLen+1
+	.byte NRest
 Underground_P1Loop:
 	.byte NLen+5
 	.byte F3
@@ -26,6 +28,8 @@ Underground_P1Loop:
 	.byte $FF
 Underground_P2:
 	.byte Transpose, 0
+	.byte NLen+1
+	.byte NRest
 Underground_P2Loop:
 	.byte SongLoop,4
 	.byte SegCall
@@ -97,8 +101,10 @@ Underground_P2Sub1:
 	.byte C2
 	.byte SegEnd
 Underground_Tri:
-Underground_TriLoop:
 	.byte SongSpeed, 1
+	.byte NLen+1
+	.byte NRest
+Underground_TriLoop:
 	.byte Transpose, 0
 	.byte SongLoop,8
 	.byte SegCall
@@ -171,6 +177,27 @@ Underground_TriSub1:
 	.byte G#1
 	.byte A#1
 	.byte SegEnd
+Underground_Noise:
+	.byte PitchSet, 0
+	.byte VolSet, 0
+	.byte NLen+1
+	.byte NRest
+Underground_NoiseLoop:
+	.byte NLen+5
+	.byte $3B
+	.byte NRest
+	.byte $3C
+	.byte $3C
+	.byte NLen+10
+	.byte $3B
+	.byte $3C
+	.byte NRest
+	.byte $3D
+	.byte $3D
+	.byte NRest
+	.byte $F4
+	.word Underground_NoiseLoop
+	.byte $FF
 Underground_End:
 	.byte $FF
 Underground_Footer:
@@ -181,7 +208,7 @@ Underground_Footer:
 	.byte $02
 	.word Underground_P1
 	.byte $03
-	.word Underground_End
+	.word Underground_Noise
 	.byte $04
 	.word Underground_End
 	.byte $FF

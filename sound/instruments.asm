@@ -913,3 +913,10 @@ ofs_Vol44:
 	.byte $11,$11
 	.byte $FF
 	.byte $00
+ofs_Vol28:
+	.byte $01,$1F
+	.byte $01,$17
+	.byte $01,$13
+	.byte $01,$11
+	.byte $FF
+	.byte $00
