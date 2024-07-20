@@ -117,7 +117,7 @@ SmallMarioAnimTblHi:
 ;**********************************************
 ;Small Mario Animation data 
 ;**********************************************
-MsmallStand: ;TEST VERSION, random animation to check frame loading working until data is completed
+MsmallStand:
 	db $7E ;F1
 	dw PlayerSmall_Stand 
 	db $00 
@@ -274,57 +274,55 @@ MsmallHoldLookUp: ;new!
 	db $80
 	
 MsmallHoldSink: ;unused
-	dw pnt3_C2D8
+	dw PlayerSmall_HoldSwim
 	db $01
 	db $00
-	dw pnt3_C2D8
+	dw PlayerSmall_HoldSwim
 	db $80
 	db $00	
 MsmallHoldSwim: ;unused 
-	dw pnt3_C2D8
+	dw PlayerSmall_HoldSwim
 	db $03
 	db $00
-	dw pnt3_C2D8
+	dw PlayerSmall_HoldSwim
 	db $03
 	db $00
-	dw pnt3_C2D8
+	dw PlayerSmall_HoldSwim
 	db $80
 	db $00
-	
-
 ;**********************************************
 ;Small Mario mapping data
 ;**********************************************
 PlayerSmall_Stand: ;M
-	.db $02 ;width
-	.db	$03 ;height
-	.db $81 ;bank 
-	.db $00,$02,$04 ;tile IDs in columns left to right 
-	.db $01,$03,$05
+	db $02 ;width
+	db $03 ;height
+	db $81 ;bank 
+	db $00,$02,$04 ;tile IDs in columns left to right 
+	db $01,$03,$05
 PlayerSmall_Walk1: ;M
-	.db $02
-	.db	$03
-	.db $81
-	.db $00,$06,$07
-	.db $01,$03,$08
+	db $02
+	db $03
+	db $81
+	db $00,$06,$07
+	db $01,$03,$08
 PlayerSmall_Run1: ;M
-	.db $02
-	.db	$03 
-	.db $81
-	.db $00,$09,$0A 
-	.db $01,$03,$05
+	db $02
+	db $03 
+	db $81
+	db $00,$09,$0A 
+	db $01,$03,$05
 PlayerSmall_Run2: ;M
-	.db $02
-	.db	$03 
-	.db $81 
-	.db $00,$09,$0B 
-	.db $01,$03,$08
+	db $02
+	db $03 
+	db $81 
+	db $00,$09,$0B 
+	db $01,$03,$08
 PlayerSmall_RunJump: ;M
-	.db $02
-	.db	$03 
-	.db $85
-	.db $00,$0B,$0C
-	.db $01,$03,$0D
+	db $02
+	db $03 
+	db $85
+	db $00,$0B,$0C
+	db $01,$03,$0D
 PlayerSmall_Jump: ;M
 	db $02
 	db $03
@@ -338,25 +336,17 @@ PlayerSmall_Fall: ;M
 	db $00,$17,$19
 	db $01,$18,$1A
 PlayerSmall_Back: ;M
-	.db $02
-	.db	$03 
-	.db $85
-	.db $18,$1A,$3A
-	.db $19,$39,$3B
-PlayerSmall_Flipped: ;redundant
-	db $42
-	db $03
-	db $99
-	db $08
-	db $65, $64
-	db $7F, $66
-	db $61, $60
+	db $02
+	db $03 
+	db $85
+	db $18,$1A,$3A
+	db $19,$39,$3B
 PlayerSmall_Front: ;M
-	.db $02
-	.db	$03 
-	.db $85
-	.db $12,$14,$16 
-	.db $13,$15,$17
+	db $02
+	db $03 
+	db $85
+	db $12,$14,$16 
+	db $13,$15,$17
 PlayerSmall_Turn: ;UN (unused,define animation and state)
 	db $02
 	db $03
@@ -382,24 +372,18 @@ PlayerSmall_LookUpHold: ;M
 	db $0C, $18, $12
 	db $0D, $19, $13	
 PlayerSmall_Swim1: ;M
-	.db $02
-	.db	$03 
-	.db $85
-	.db $00,$04,$09
-	.db $01,$08,$0A
-PlayerSmall_Swim2: ;new! ;M
-	.db $02
-	.db	$03 
-	.db $85
-	.db $00,$04,$06
-	.db $01,$05,$07
-PlayerSmall_Climb1: ;M
 	db $02
-	db $03
-	db $87
-	db $12,$14,$16
-	db $13,$15,$17
-PlayerSmall_Climb2: ;redundant
+	db $03 
+	db $85
+	db $00,$04,$09
+	db $01,$08,$0A
+PlayerSmall_Swim2: ;new! ;M
+	db $02
+	db $03 
+	db $85
+	db $00,$04,$06
+	db $01,$05,$07
+PlayerSmall_Climb1: ;M
 	db $02
 	db $03
 	db $87
@@ -412,12 +396,6 @@ PlayerSmall_Victory: ;M
 	db $00,$15,$17
 	db $01,$16,$18
 PlayerSmall_Death1: ;M
-	db $02
-	db $03
-	db $8B
-	db $17,$19,$1B
-	db $18,$1A,$1C
-PlayerSmall_Death2: ;redundant
 	db $02
 	db $03
 	db $8B
@@ -441,14 +419,12 @@ PlayerSmall_DuckHold: ;M
 	db $87
 	db $06, $08
 	db $07, $09
-pnt3_C2D8: ;????????
+PlayerSmall_HoldSwim: ;UNUSED
+	db $02 ;placeholder data
 	db $02
-	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $62, $63
+	db $87
+	db $06, $08
+	db $07, $09
 PlayerPowerDown: ;new! no animation!
 	db $02
 	db $03
@@ -540,31 +516,24 @@ BigMarioAnimTblHi:
 	db >MfireShootSwim	
 	db >MfireShoot			;throw fire 13
 	db >MfireShoot
-	
-;**********************************************
-;Super Mario holding animations
-;**********************************************
-PlayerBigHold_AnimTbl:
-
 ;**********************************************
 ;Super Mario animation data 
 ;**********************************************
 MfireShootAir: ;placeholder data 
 	db $03 ;F1
-	dw PlayerBig_Stand 
+	dw PlayerBig_Swim3
 	db $00 
 	db $80 ;Loop F1
-MfireShootSwim:
+MfireShootSwim: ;placeholder data 
 	db $03 ;F1
-	dw PlayerBig_Stand 
+	dw PlayerBig_Swim3
 	db $00 
 	db $80 ;Loop F1
 MfireShoot:
 	db $03 ;F1
-	dw PlayerBig_Stand 
+	dw PlayerBig_FireThrow 
 	db $00 
 	db $80 ;Loop F1
-
 MbigStand:
 	db $03 ;F1
 	dw PlayerBig_Stand 
@@ -641,19 +610,19 @@ MbigFall:
 	db $80
 MbigSink:
 	db $7E
-	dw PlayerBig_Swim1
+	dw PlayerBig_Swim3
 	db $00 
 	db $80
 	
-MbigSwim:
+MbigSwim: ;add new frame!!
 	db $03
-	dw PlayerBig_RunJump 
+	dw PlayerBig_Swim1
 	db $00 
 	db $03
 	dw PlayerBig_Swim2
 	db $00 
 	db $03
-	dw PlayerBig_Swim1
+	dw PlayerBig_Swim3
 	db $00
 	db $80
 MbigClimb:
@@ -708,12 +677,10 @@ MbigHoldJump:
 	db $00 
 	db $80
 MbigHoldDuck:
+	db $7E
 	dw PlayerBig_DuckHold
-	db $08
 	db $00
-	dw PlayerBig_DuckHold
 	db $80
-	db $00
 MbigHoldFall:
 	db $7E
 	dw PlayerBig_HoldWalk2
@@ -744,124 +711,126 @@ MbigHoldLookUp: ;new!
 ;Super Mario mapping data
 ;**********************************************
 PlayerBig_Stand: ;M
-	.db $02 ;width
-	.db	$04 ;height
-	.db $80 ;bank 
-	.db $1B,$1D,$1F,$21 ;tile IDs in columns left to right 
-	.db $1C,$1E,$20,$22
+	db $02 ;width
+	db $04 ;height
+	db $80 ;bank 
+	db $1B,$1D,$1F,$21 ;tile IDs in columns left to right 
+	db $1C,$1E,$20,$22
 PlayerBig_Walk1: ;M
-	.db $02 
-	.db	$04 
-	.db $80 
-	.db $1B,$1D,$27,$29
-	.db $1C,$1E,$28,$2A
+	db $02 
+	db $04 
+	db $80 
+	db $1B,$1D,$27,$29
+	db $1C,$1E,$28,$2A
 PlayerBig_Walk2: ;M
-	.db $02 
-	.db	$04 
-	.db $80 
-	.db $1B,$1D,$23,$25
-	.db $1C,$1E,$24,$26
+	db $02 
+	db $04 
+	db $80 
+	db $1B,$1D,$23,$25
+	db $1C,$1E,$24,$26
 PlayerBig_Run1: ;M
-	.db $03
-	.db	$04 
-	.db $80
-	.db $FF,$FF,$2B,$FF
-	.db $1B,$1D,$2C,$2E
-	.db $1C,$1E,$2D,$2F
+	db $03
+	db $04 
+	db $80
+	db $FF,$FF,$2B,$FF
+	db $1B,$1D,$2C,$2E
+	db $1C,$1E,$2D,$2F
 PlayerBig_Run2: ;M
-	.db $03
-	.db	$04 
-	.db $80
-	.db $FF,$FF,$2B,$FF
-	.db $1B,$1D,$2C,$33
-	.db $1C,$1E,$32,$34
+	db $03
+	db $04 
+	db $80
+	db $FF,$FF,$2B,$FF
+	db $1B,$1D,$2C,$33
+	db $1C,$1E,$32,$34
 PlayerBig_Run3: ;M
-	.db $03
-	.db	$04 
-	.db $80
-	.db $FF,$FF,$2B,$FF
-	.db $1B,$1D,$2C,$30
-	.db $1C,$1E,$2D,$31
+	db $03
+	db $04 
+	db $80
+	db $FF,$FF,$2B,$FF
+	db $1B,$1D,$2C,$30
+	db $1C,$1E,$2D,$31
 PlayerBig_RunJump: ;M
-	.db $03 
-	.db	$04 
-	.db $82
-	.db $FF,$FF,$2C,$2F
-	.db $1B,$1D,$2D,$30
-	.db $2B,$39,$2E,$31
+	db $03 
+	db $04 
+	db $82
+	db $FF,$FF,$2C,$2F
+	db $1B,$1D,$2D,$30
+	db $2B,$39,$2E,$31
 PlayerBig_Jump: ;M
-	.db $02 
-	.db	$04 
-	.db $82
-	.db $1B,$1D,$1F,$21
-	.db $1C,$1E,$20,$22
+	db $02 
+	db $04 
+	db $82
+	db $1B,$1D,$1F,$21
+	db $1C,$1E,$20,$22
 PlayerBig_Fall: ;M
-	.db $02 
-	.db	$04 
-	.db $82
-	.db $23,$25,$27,$29
-	.db $24,$26,$28,$2A
+	db $02 
+	db $04 
+	db $82
+	db $23,$25,$27,$29
+	db $24,$26,$28,$2A
 PlayerBig_Front: ;M
-	.db $02 
-	.db	$04 
-	.db $8A
-	.db $1F,$21,$23,$25
-	.db $20,$22,$24,$26
+	db $02 
+	db $04 
+	db $8A
+	db $1F,$21,$23,$25
+	db $20,$22,$24,$26
 PlayerBig_Back: ;M
-	.db $02 
-	.db	$04 
-	.db $8A
-	.db $27,$29,$2B,$2D
-	.db $28,$2A,$2C,$2E
+	db $02 
+	db $04 
+	db $8A
+	db $27,$29,$2B,$2D
+	db $28,$2A,$2C,$2E
 PlayerBig_Turn: ;UN (no animation, define state)
 	.db $02
 	.db	$04 
 	.db $82
 	.db $32,$34,$36,$38
 	.db $33,$35,$37,$31
-PlayerBig_Duck:
+PlayerBig_Duck: ;M
 	db $02
-	db $03
-	db $84
-	db $39, $3A
-	db $3B, $3D
-	db $3C, $2B
+	db $02
+	db $86
+	db $1B, $1D
+	db $1C, $1E
 PlayerBig_LookUp: ;M
-	.db $02
-	.db	$04 
-	.db $80
-	.db $35,$37,$1F,$21
-	.db $36,$38,$20,$22
-PlayerBig_Swim1:
+	db $02
+	db $04 
+	db $80
+	db $35,$37,$1F,$21
+	db $36,$38,$20,$22
+PlayerBig_Swim1: ;M
 	db $03
 	db $04
-	db $85
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $7C, $7D, $FF
-	db $73, $7B, $75
-PlayerBig_Swim2:
+	db $84
+	db $FF,$FF,$29,$2B
+	db $1B,$1D,$31,$2C
+	db $1C,$1E,$32,$24
+PlayerBig_Swim2: ;M
 	db $03
 	db $04
-	db $85
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $77, $78, $FF
-	db $73, $7A, $76
-PlayerBig_Climb1:
+	db $84
+	db $FF,$FF,$25,$27
+	db $1B,$1D,$2F,$28
+	db $1C,$1E,$30,$24
+PlayerBig_Swim3: ;M new!
+	db $03
+	db $04
+	db $84
+	db $FF,$FF,$1F,$22
+	db $1B,$1D,$20,$23
+	db $1C,$1E,$21,$24
+PlayerBig_Climb1: ;M
 	db $02
 	db $04
 	db $88
-	db $29, $2A
-	db $2B, $2C
-	db $2D, $2E
-	db $2F, $30
-PlayerBig_Victory: ;U
-	.db $02 
-	.db	$04 
-	.db $8A
-	.db $2F,$31,$33,$35
-	.db $30,$32,$34,$36
+	db $00,$02,$04,$06
+	db $01,$03,$05,$07
+PlayerBig_Victory: ;M
+	db $02 
+	db $04 
+	db $8A
+	db $2F,$31,$33,$35
+	db $30,$32,$34,$36
 PlayerBig_Hold: ;M
 	db $02
 	db $04
@@ -880,20 +849,24 @@ PlayerBig_HoldWalk2: ;M
 	db $80
 	db $1B,$1D,$39,$30
 	db $1C,$1E,$3A,$31
-PlayerBig_DuckHold:
+PlayerBig_DuckHold: ;M
 	db $02
 	db $03
 	db $86
-	db $08
-	db $B4, $B5
-	db $B6, $B7
-	db $B8, $B9
+	db $1F,$21,$23
+	db $20,$22,$24
 PlayerBig_LookUpHold: ;M
-	.db $02
-	.db	$04 
-	.db $80
-	.db $35,$37,$39,$2E
-	.db $36,$38,$3A,$2F
+	db $02
+	db $04 
+	db $80
+	db $35,$37,$39,$2E
+	db $36,$38,$3A,$2F
+PlayerBig_FireThrow: ;M
+	db $02
+	db $04
+	db $86
+	db $25,$27,$32,$34
+	db $26,$31,$33,$35
 ;**********************************************
 ;Yoshi Animation tbls, work on these later
 ;**********************************************

@@ -751,7 +751,7 @@ pnt2_E610:
 	STA Player1YoshiStatus ;Remove Yoshi
 	LDA #$39
 	STA M90_PRG1 ;Swap player bank into 2nd PRG slot
-	JSR sub4_A14A ;Jump
+	JSR MakePlayerAnimPtr ;Jump
 	LDA #$03
 	STA a:EventPart ;Skip to 3rd part of event
 bra3_E62F:
@@ -1140,7 +1140,7 @@ sub3_E904:
 	STA InvincibilityTimer ;Clear ALL player variables
 	LDA #$39
 	STA M90_PRG1 ;Swap player bank (bank 57) into 2nd PRG slot
-	JSR sub4_A14A ;Jump
+	JSR MakePlayerAnimPtr ;Jump
 	JSR jmp_57_A000 ;Jump
 	JSR sub3_E9C4 ;Jump
 	LDX #$70
@@ -1169,7 +1169,7 @@ sub3_E965:
 	STA Player1YoshiStatus ;Stop riding Yoshi
 	LDA #$39
 	STA M90_PRG1 ;Swap player bank into 2nd PRG slot
-	JSR sub4_A14A ;Jump
+	JSR MakePlayerAnimPtr ;Jump
 	LDA #$02
 	STA YoshiUnmountedState ;Set Yoshi to be ducking down
 	LDA PlayerYPosDup

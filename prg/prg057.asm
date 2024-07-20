@@ -1,36 +1,37 @@
 ;disassembled by BZK 6502 Disassembler
-jmp_57_A000: ;PlayerAnimationChangeChk
-	LDA PlayerAction
-	CMP PlayerPrevAction 
-	BEQ bra4_A020 ;Branch here if the player's action stays the same
-	
-bra4_A014: ;if player action changes, go make a new animation and animation set pointer
-	STA PlayerAnimation ;Update the player's animation
+DoPlayerActionChange:
+	STA PlayerAction+1 ;update prev player action and current anim
+	STA PlayerAnimation 
 	LDA #$FF
 	STA PlayerFrameDur
-	STA PlayerAnimFrame ;Switch to first frame of animation
-	JSR MakePlayerAnimPtr ;PlayerAnimationSub	:DEBUG :we want this to make a new animation pointer and then sit on it until later
-bra4_A020:
+	STA PlayerAnimFrame ;reset the animation vars
+	JSR MakePlayerAnimPtr ;make a new animation ptr	; was PlayerAnimationSub
+	BNE bra4_A020 ;always 
+jmp_57_A000: ;PlayerAnimationChangeChk START HERE!!!
 	LDA PlayerAction
-	STA PlayerAction+1
-	JSR DecPlayerFrameLength ;we already have a set and direct anim ptr, so this should be fine
+	CMP PlayerPrevAction 
+	BNE DoPlayerActionChange ;Branch if player action has changed
+bra4_A020:
+	JSR DecPlayerFrameLength
 	JSR ConfigPlayerSpr ;configure variables for new sprite settings 
-	LDA #$14 ;skip past first 5 sprites in OAM
-	STA $3C ;store in player OAM tracker byte
+	LDA #$14 
+	STA $3C ;skip past first 5 sprites in OAM
 	JSR sub3_F176 ;clear all sprites 
 	LDA PlayerAction+1
-	CMP $062C
+	CMP $062C ;previous, previous player action?
 	BEQ bra4_A061
 	STA $062C
 	LDA #$00
 	STA $0629
 	STA $0627
+	
 bra4_A061:
 	JSR sub4_A0CD
 	LDA Event
 	CMP #$01
 	BEQ bra4_A06D
 	JSR sub4_B938
+	
 bra4_A06D:
 	LDA FreezeFlag
 	BNE bra4_A094_RTS
@@ -52,26 +53,7 @@ bra4_A07F:
 	STA $4B
 bra4_A094_RTS:
 	RTS
-tbl4_A095: ;Animation table 
-	db $01 ;player walk cycle
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $02
-	db $02
-	db $02
-	db $03
-	db $03
-	db $03
-	db $04
-	db $04
-	db $05
-	db $05
-	db $05
-	db $60
+	
 BubbleXMovement:
 	db $01
 	db $01
@@ -194,57 +176,19 @@ bra4_A119:
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;PLAYER SPRITES AND ANIMATION
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;The following code is under modification and might be a bit janky for a while, this will be Fixed
+;The following code is under modification and might be a bit janky for a while, this will be fixed
 ;for now I just want to get the basics working and worry about tidying it up later
 ;some other animation routine functions need to be moved in here as well I think, there are some at the start bank
-
-sub4_A14A:	;check what else references this, should be able to point Yoshi anims directly to their table and remove this part
-;this routine made a pointer for animation SETS, not directly to animations, that was done after DecPlayerFrameLength
-;	LDA Player1YoshiStatus
-;	ASL ;Multiply current yoshi status by 2
-;	TAX ;Move it to the x offset
-;	LDA #$24
-;	STA M90_PRG3 ;Load animation bank into 3rd slot
-;Pick Animation table
-;	LDA lda_36_C000,X
-;	STA $32 ;Get lower pointer bytes
-;	LDA lda_36_C000+1,X
-;	STA $33 ;Get upper pointer bytes
-;	LDA PlayerPowerup 
-;	LDY Player1YoshiStatus
-;	BNE MakePlayerAnimPtr ;Branch if the player has Yoshi
-;	LDY PlayerHoldFlag
-;	BEQ MakePlayerAnimPtr ;Branch if the player isn't carrying anything
-;	CLC ;If they are
-;	ADC #$05 ;Make the player use the 2nd set of animations
-
-;Lag sprite corruption caused by code order issue? 
-;seems like the corruption largely occurs when a sprite changes
-;perhaps the frame pointer isn't updating at the right time?	
-
-MakePlayerAnimPtr: ;Select player animation and set
+;check what else references this, should be able to point Yoshi anims directly to their table and remove this part
 ;note for later, Anim ID is doubled, this will break Yoshi ptr as it doesn't need variant animations, fine for now though
-;Consider a pointer instead of hard coding, it would save a little space without much detriement
-;PAnimTablePickTEST:
-;	LDX #$02 ;Yoshi
-;	LDA Player1YoshiStatus
-;	BEQ NoYoshi
-;	BNE MakeAnimSetPtr ;always 
-;NoYoshi:
-;	DEX ;power mario
-;	LDA PlayerPowerup
-;	BNE HERE ;if powered up, skip
-;	DEX  ;small mario
-;HERE:	
-;	load and store ptr
-
+MakePlayerAnimPtr: ;Select player animation and set
 	LDA #$24 	
 	STA M90_PRG3 ;Load the animation bank into the 3rd PRG slot
 	LDA PlayerAnimation 
 	ASL ;double the players animation ID to skip over holding anims by default
 	TAY
 ;	LDX Player1YoshiStatus
-;	BNE MakeYoshiFramePtr ;if the player has Yoshi, branch
+;	BNE MakeYoshiAnimPtr ;if the player has Yoshi, branch
 	LDX PlayerHoldFlag
 	BEQ SkipSetPlayerHoldAnims ;if the player isn't holding anything, branch
 	INY ;if they are, offset anim ID by 1 to use holding variant
@@ -261,15 +205,13 @@ UseMarioPowerAnims:
 	LDX BigMarioAnimTblLo,Y ;make Big player animation pointer			
 	LDA BigMarioAnimTblHi,Y
 	BNE StorePlayerAnimPtr ;always
-MakeYoshiFramePtr: 
+MakeYoshiAnimPtr: 
 	LDX Yoshi_AnimTbl,Y ;make Yoshi player animation pointer
 	INY ;Yoshi tbl unfinished, load both bytes from this tbl for now
 	LDA Yoshi_AnimTbl,Y
 	BNE StorePlayerAnimPtr ;always
-	
 ;**********************************************************************************
 ;All code in this sectioned off portion is new 
-;Code calls should now be right? I think things are executing in the right order now
 DecPlayerFrameLength: ;START here, this routine handles frame changes WITHIN an animation, NOT animation changes 
 	DEC PlayerFrameDur 
 	BMI AdvNextPlayerFrame ;if frame duration underflown, advance to next frame
@@ -692,8 +634,6 @@ Initialise:
 	LDX PlayerWidth ;setup loop counters
 	BEQ VSLS_RTS ;if width is 00, don't render the sprite
 	STX $3E ;WidthCounter
-	LDY PlayerHeight
-	STY $3F ;HeightCounter
 	LDX OAMtrack ;get current storage location offset
 	LDY #$02 ;Load offset for start of mapping data
 	LDA PlayerSprXPosOfs ;get base X offset
@@ -702,7 +642,7 @@ RepeatLoaderLoop: ;runs when height counter is 00 or at start of routine
 	STA MetaXTemp
 	LDA PlayerHeight 
 	STA $3F ;HeightCounter
-	LDA PlayerSprYPosOfs ;PlayerSprYOfs ;get base Y offset
+	LDA PlayerSprYPosOfs ;get base Y offset
 	STA MetaYTemp
 ;**********************
 GetPlayerTile: ;main loop point here <---
@@ -712,9 +652,9 @@ GetPlayerTile: ;main loop point here <---
 	STA $0201, X  
 	LDA ScratchRAM1;PlayerPalette ;StorePlayerAtts:
 	STA $0202, X
-	LDA MetaYTemp ;sets Y position of sprite rows 
+	LDA MetaYTemp ;sets Y position of sprite tile
 	STA $0200, X 
-	LDA MetaXTemp ;sets X position of sprite columns
+	LDA MetaXTemp ;sets X position of sprite tile
 	STA $0203, X
 UpdateOAMTracker; add one tile to OAM space tracker
 	INX
@@ -738,11 +678,13 @@ SpaceColumnPositive: ;column spacing for when facing right
 	LDA MetaXTemp
 	CLC
 	ADC #$08
+;	BCC RepeatLoaderLoop ;always (test this)
 	JMP RepeatLoaderLoop
 SpaceColumnNegative: ;reverse column spacing for when facing left
 	LDA MetaXTemp
 	SEC
 	SBC #$08
+	;BCS RepeatLoaderLoop ;always (test this)
 	JMP RepeatLoaderLoop	
 VSLS_RTS:
 	STX OAMtrack ;store the updated storage offset
@@ -1767,7 +1709,7 @@ loc4_A92C:
 	STA $34 ;store loaded animation value
 	BMI bra4_A936 ;branch ahead if a value above $7F is loaded
 	STY PlayerPowerup ;else, set cape to moving (#$04 loaded earlier)
-	JSR sub4_A14A ;jump to sub (check if Yoshi present or player carrying objects)
+	JSR MakePlayerAnimPtr ;jump to sub (check if Yoshi present or player carrying objects)
 ;coderoll on return
 bra4_A936:
 	LDY PlayerPowerup ;get player powerup
@@ -2104,7 +2046,7 @@ loc4_AB16:
 	STA $0627 ;Clear frame offset
 	LDA #$03
 	STA PlayerPowerup ;set cape to static 
-	JSR sub4_A14A ;Select if Yoshi is present or if carrying object
+	JSR MakePlayerAnimPtr ;Select if Yoshi is present or if carrying object
 	LDA #$08 ;load #$08 on return
 bra4_AB2D:
 	JMP loc4_A96C ;jump to check for Yoshi
@@ -2175,7 +2117,7 @@ loc4_AB70:
 	STA $0627 ;clear cape frame picker
 	LDA #$03
 	STA PlayerPowerup ;set cape to static
-	JSR sub4_A14A ;;Select if Yoshi is present or if carrying object
+	JSR MakePlayerAnimPtr ;;Select if Yoshi is present or if carrying object
 	LDA #$00 ;clear A
 	JMP loc4_A96C ;jump to check for Yoshi 
 loc4_AB82:
@@ -2511,7 +2453,7 @@ tbl4_ACDE:
 	dw ofs_B7F7
 	dw ofs_B80F
 	dw ofs_B821
-jmp_57_AD04: ;DEBUG
+jmp_57_AD04: ;DEBUG need to thoroughly test this fix POWERUP CHANGE EVENT (?)
 	LDA PlayerPowerupBuffer
 	BEQ bra4_AD1E
 	INC PlayerPowerupBuffer
@@ -2521,7 +2463,10 @@ jmp_57_AD04: ;DEBUG
 	BCC bra4_AD1D_RTS
 	LDA #$00
 	STA PlayerPowerupBuffer
-	JMP sub4_A14A
+	LDA #$FF ;reset the anim vars (fix occasional out of range anim ptr crash)
+	STA PlayerFrameDur
+	STA PlayerAnimFrame
+	JMP MakePlayerAnimPtr
 bra4_AD1D_RTS:
 	RTS
 bra4_AD1E:
@@ -2576,7 +2521,7 @@ bra4_AD76:
 	STA Event
 	PLA
 	PLA
-	JMP sub4_A14A
+	JMP MakePlayerAnimPtr
 bra4_AD8B_RTS:
 	RTS
 sub4_AD8C:
@@ -2629,7 +2574,7 @@ bra4_ADE2:
 	CMP PlayerHoldFlag2 ;if the player's carry flag is equal to its duplicate,
 	BEQ bra4_ADF0 ;branch
 	STA PlayerHoldFlag2 ;if not, make it equal
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 bra4_ADF0:
 	LDY InvincibilityTimer
 	BEQ bra4_AE14_RTS ;Stop if the timer is empty
@@ -3088,9 +3033,9 @@ bra4_B0FD:
 	SEC ;If about to swallow item, continue
 	SBC #$05
 	STA Player1YoshiStatus
-	JSR sub4_A14A
-	LDA #$00;DEBUG was $00, this may or may not be correct for whatever it's doing
-	STA PlayerAnimFrame
+	JSR MakePlayerAnimPtr
+;	LDA #$00;DEBUG was $00, this may or may not be correct for whatever it's doing
+;	STA PlayerAnimFrame
 bra4_B113:
 	LDA Player1YoshiStatus
 	CMP #$04
@@ -3212,7 +3157,7 @@ sub4_B1DE:
 	CLC
 	ADC #$05
 	STA Player1YoshiStatus
-	JMP sub4_A14A
+	JMP MakePlayerAnimPtr
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;YOSHI FIRE SPAWN
@@ -3603,7 +3548,7 @@ DismountYoshiRoutine:
 	LDA #$00
 	STA Player1YoshiStatus ;get off yoshi
 	STA YoshiExitStatus
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDA #$04
 	STA YoshiUnmountedState
 	LDA PlayerYPosDup ;get player y position
@@ -3992,7 +3937,7 @@ sub4_B741:
 	STA YoshiTongueState
 bra4_B75C:
 	STY Player1YoshiStatus
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDA #$00
 	STA PlayerState
 	STA $062E
@@ -4112,7 +4057,7 @@ bra4_B835:
 	JSR sub4_B8C0
 	LDA #$06
 	STA Player1YoshiStatus ;Make Yoshi swallow
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDA #sfx_YoshiSwallow
 	STA SFXRegister ;Play swallow sound
 	RTS
@@ -4215,7 +4160,7 @@ ofs_B8DE:
 	STA YoshiExitStatus
 	LDA #$07
 	STA PlayerAction ;set to ducking
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDX #$00
 	LDY #$14
 	JSR ActionTimerRoutine ;Wait one 20 frame tick
