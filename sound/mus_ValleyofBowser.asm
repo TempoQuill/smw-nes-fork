@@ -1,5 +1,5 @@
 ValleyofBowser_P1:
-	.byte SongSpeed, $01
+	.byte SongSpeed, 1
 	.byte Transpose, $02
 	.byte DutySet, $3B
 	.byte PitchSet, $05
@@ -29,7 +29,7 @@ ValleyofBowser_P1Loop:
 	.byte G#2
 	.byte $F4
 	.word ValleyofBowser_P1Loop
-	.byte $FF
+	db $FF
 ValleyofBowser_P2:
 ValleyofBowser_P2Loop:
 	.byte Transpose, $00
@@ -43,7 +43,7 @@ ValleyofBowser_P2Loop:
 	.byte B1
 	.byte $F4
 	.word ValleyofBowser_P2Loop
-	.byte $FF
+	db $FF
 ValleyofBowser_P2Sub:
 	.byte PitchSet, $39
 	.byte NLen+7
@@ -97,41 +97,13 @@ ValleyofBowser_TriLoop:
 	.byte G#2
 	.byte $F4
 	.word ValleyofBowser_TriLoop
-	.byte $FF
+	db $FF
 ValleyofBowser_Noise:
 ValleyofBowser_NoiseLoop:
 	.byte Transpose, $01
-	.byte DutySet, 0
+	.byte DutySet, $00
 	.byte PitchSet, 0
 	.byte VolSet, $53
-	.byte NLen+7
-	.byte $1e
-	.byte NLen+8
-	.byte $20
-	.byte NLen+7
-	.byte $20
-	.byte NLen+8
-	.byte $20
-	.byte NLen+7
-	.byte $28
-	.byte NLen+8
-	.byte $20
-	.byte NLen+7
-	.byte $20
-	.byte NLen+8
-	.byte $20
-	.byte NLen+7
-	.byte $20
-	.byte NLen+8
-	.byte $20
-	.byte NLen+7
-	.byte $1e
-	.byte NLen+8
-	.byte $20
-	.byte NLen+7
-	.byte $28
-	.byte NLen+8
-	.byte $20
 	.byte NLen+7
 	.byte $20
 	.byte NLen+8
@@ -139,17 +111,29 @@ ValleyofBowser_NoiseLoop:
 	.byte $F4
 	.word ValleyofBowser_NoiseLoop
 	.byte $FF
-ValleyofBowser_End:
+ValleyofBowser_DPCM:
+	.byte Transpose, $00
+ValleyofBowser_DPCMLoop:
+	.byte NLen+30
+	.byte KickDrum
+	.byte NLen+45
+	.byte PowerSnare
+	.byte NLen+15
+	.byte KickDrum
+	.byte NLen+30
+	.byte PowerSnare
+	.byte SongJump
+	.word ValleyofBowser_DPCMLoop
 	.byte $FF
 ValleyofBowser_Footer:
-	.byte NRest
+	db NRest
 	.word ValleyofBowser_P1
-	.byte $01
+	db $01
 	.word ValleyofBowser_P2
-	.byte $02
+	db $02
 	.word ValleyofBowser_Tri
-	.byte $03
+	db $03
 	.word ValleyofBowser_Noise
-	.byte $04
-	.word ValleyofBowser_End
-	.byte $FF
+	db $04
+	.word ValleyofBowser_DPCM
+	db $FF

@@ -1,133 +1,133 @@
 ;Disassembled by BZK 6502 Disassembler
 tbl10_8000:
-	dw ofs_8100
-	dw ofs_8104
-	dw ofs_8110
-	dw ofs_8116
-	dw ofs_811C
-	dw ofs_8124
-	dw ofs_8140
-	dw ofs_8146
-	dw ofs_814A
-	dw ofs_8158
-	dw ofs_815C
-	dw ofs_8176
-	dw ofs_8180
-	dw ofs_818A
-	dw ofs_8194
-	dw ofs_819C
-	dw ofs_81A6
-	dw ofs_81AC
-	dw ofs_81C2
-	dw ofs_81CD
-	dw ofs_81D9
-	dw ofs_81E3
-	dw ofs_81ED
-	dw ofs_81F7
-	dw ofs_81FF
-	dw ofs_8203
-	dw ofs_821F
-	dw ofs_822B
-	dw ofs_823B
-	dw ofs_8241
-	dw ofs_8245
-	dw ofs_8249
-	dw ofs_824F
-	dw ofs_826F
-	dw ofs_8275
-	dw ofs_827D
-	dw ofs_828D
-	dw ofs_8291
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_CourseClearVolume28
-	dw ofs_CheckpointVolume29
-	dw ofs_CheckpointPitch2A
-	dw ofs_8293
-	dw ofs_VolOW2C
-	dw ofs_DutyOW2D
-	dw ofs_829D
-	dw ofs_82B5
-	dw ofs_82BF
-	dw ofs_82C9
-	dw ofs_82D1
-	dw ofs_82FD
-	dw ofs_831B
-	dw ofs_8100
-	dw ofs_8327
-	dw ofs_8337
-	dw ofs_833F
-	dw ofs_8343
-	dw ofs_PitchVOB3A
-	dw ofs_VolInv3B
-	dw ofs_DutyInv3C
-	dw ofs_DutyOW3D
-	dw ofs_VolOW3E
-	dw ofs_CheckpointPitch3F
-	dw ofs_834F
-	dw ofs_835F
-	dw ofs_8379
-	dw ofs_8381
-	dw ofs_8397
-	dw ofs_83A1
-	dw ofs_83B3
-	dw ofs_83C7
-	dw ofs_840B
-	dw ofs_840F
-	dw ofs_8413
-	dw ofs_8425
-	dw ofs_842B
-	dw ofs_8431
-	dw ofs_8437
-	dw ofs_8100
-	dw ofs_843D
-	dw ofs_844E
-	dw ofs_845E
-	dw ofs_8462
-	dw ofs_846E
-	dw ofs_8472
-	dw ofs_8486
-	dw ofs_84B0
-	dw ofs_84B4
-	dw ofs_84C0
-	dw ofs_8100
-	dw ofs_84CC
-	dw ofs_84D0
-	dw ofs_84DE
-	dw ofs_84EE
-	dw ofs_8508
-	dw ofs_8520
-	dw ofs_8528
-	dw ofs_853E
-	dw ofs_8554
-	dw ofs_8576
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8598
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_859A
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_8100
-	dw ofs_85A0
-	dw ofs_85A8
-	dw ofs_8100
-	dw Vol_Hats
-	dw Vol_HonkyTonk
-	dw Duty_HonkyTonk
-	dw SquarePitchSFX_Coin
-	dw ofs_85B3
-	dw JumpSFXPitch
-	dw SquareVolSFX_1UP
-	dw SquareVolSFX_Pause
-	dw TriangleSFX
+	dw ofs_NA
+	dw ofs_Vol01
+	dw ofs_Vol02
+	dw ofs_Vol03
+	dw ofs_Pitch04
+	dw ofs_Pitch05
+	dw ofs_Pitch06
+	dw ofs_Duty07 ; 50%
+	dw ofs_Vol08
+	dw ofs_Vol09
+	dw ofs_Vol0A
+	dw ofs_Pitch0B
+	dw ofs_Vol0C
+	dw ofs_Pitch0D
+	dw ofs_Duty0E ; 12.5%-25%-50% x1
+	dw ofs_Pitch0F
+	dw ofs_Vol10
+	dw ofs_Vol11
+	dw ofs_Duty12 ; 12.5%-25% x1
+	dw ofs_NA
+	dw ofs_Vol14
+	dw ofs_Vol15
+	dw ofs_Pitch16
+	dw ofs_Duty17 ; 50%-25% x1
+	dw ofs_Vol28 ; castle flat dynamics
+	dw ofs_Vol19
+	dw ofs_Vol1A
+	dw ofs_Vol1B
+	dw ofs_Vol29
+	dw ofs_Vol1D
+	dw ofs_Vol1E
+	dw ofs_Vol1F
+	dw ofs_Vol20
+	dw ofs_Vol21
+	dw ofs_Vol22
+	dw ofs_Vol23
+	dw ofs_Vol24
+	dw ofs_Vol25
+	dw ofs_Vol26
+	dw ofs_Vol27
+	dw ofs_Vol28
+	dw ofs_Vol29
+	dw ofs_Pitch2A
+	dw ofs_Vol2B
+	dw ofs_Vol2C
+	dw ofs_Duty2D ; 210121 x1
+	dw ofs_Vol2E
+	dw ofs_Pitch2F
+	dw ofs_Vol30
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_Vol33
+	dw ofs_Duty34 ; 3|2101 x1
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_Duty38 ; 50%
+	dw ofs_Pitch39
+	dw ofs_Pitch3A
+	dw ofs_Vol3B
+	dw ofs_Duty3C ; 75%
+	dw ofs_Duty3D ; 12.5%
+	dw ofs_Vol3E
+	dw ofs_Pitch3F
+	dw ofs_Vol40
+	dw ofs_Vol41
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_Vol46
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_Pitch51
+	dw ofs_Vol52
+	dw ofs_Vol53
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_Duty60 ; 75%-12.5% x5
+	dw ofs_Vol61
+	dw ofs_Pitch62
+	dw ofs_Pitch63
+	dw ofs_Pitch64
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_NA
+	dw ofs_Pitch74
+	dw ofs_Vol75
+	dw ofs_Vol76
+	dw ofs_Vol77
+	dw ofs_Vol78
+	dw ofs_Duty79 ; 75%-25% x1
+	dw ofs_Pitch7A
+	dw ofs_Duty7B ; 25%
+	dw ofs_Pitch7C
+	dw ofs_Vol7D
+	dw ofs_Vol7E
+	dw ofs_Vol7F
 	.include sound/instruments.asm
 jmp_58_85BE:
 	LDA SFXRegister
@@ -137,11 +137,19 @@ bra10_85C4:
 	LDA MusicRegister
 	CMP MusicBackup ;Check if the BGM has changed
 	BEQ bra10_85D5_RTS ;If not, stop
+IFNDEF RGME_PATCH
 	LDA MusicRegister ;If it has, back up the song ID
+ELSE
+	LDA #mus_Silence
+	STA MusicRegister
+ENDIF
 	STA MusicBackup
+IFDEF RGME_PATCH
+	RTS
+ENDIF
 bra10_85CE:
 	JSR sub10_8E2F
-	LDA #$00
+	LDA #0
 	STA SFXRegister ;Clear SFX register
 bra10_85D5_RTS:
 	RTS
@@ -440,8 +448,7 @@ InvalidNoteLength:
 	JSR sub10_8E20
 	JMP GaugeMusicByte
 musDummy:
-	JSR sub10_8E20
-	RTS
+	JMP sub10_8E20
 	LDX $060A
 	BEQ bra10_881F_RTS
 	LDX #$FF
@@ -476,7 +483,6 @@ GaugePitch:
 	BNE bra10_883B
 	JSR sub10_8E20
 	JMP loc10_8A0A
-	RTS
 bra10_883B:
 	PHA
 	LDA CurrentTrackID
@@ -527,8 +533,7 @@ bra10_8871:
 	STA Pulse1Pitch,X
 loc10_8878:
 	JSR sub10_8A65
-	JSR sub10_8E20
-	RTS
+	JMP sub10_8E20
 GaugeMusicCommand:
 	AND #$0F
 	ASL
@@ -782,15 +787,16 @@ sub10_8A65:
 	STA Pulse1FinalPitch+1,X
 	JSR sub10_8A7A
 	JSR sub10_8AAB
-	JSR sub10_8ADC
-	RTS
+	JMP sub10_8ADC
+
 sub10_8A7A:
 	LDA CurrentTrackID
-	AND #$0F
+	AND #%1111 ;Mask out lower nybble
 	TAX
 	CPX #$04
-	BMI bra10_8A85
+	BMI bra10_8A85 ;Branch if it's commands F0 to F3
 	RTS
+
 bra10_8A85:
 	LDX CurrentTrackOffset
 	LDY CurrentTrackPointerOffset
@@ -808,6 +814,7 @@ bra10_8A85:
 	LDA (SoundPointer),Y
 	STA Pulse1VolumeDelay,X
 	RTS
+
 sub10_8AAB:
 	LDA CurrentTrackID
 	AND #$0F
@@ -856,29 +863,32 @@ bra10_8AE7:
 	LDA (SoundPointer),Y
 	STA Pulse1PitchDelay,X
 	RTS
+
 sub10_8B0D:
 	LDX CurrentTrackPointerOffset
 	LDA MusicPointer,X
 	STA SoundPointer
 	LDA MusicPointer+1,X
 	STA SoundPointer+1
-	JSR sub10_8E20
+	
+	JSR sub10_8E20 ;Move to next byte
 	LDY #$00
 	LDA (SoundPointer),Y
 	LDX CurrentTrackOffset
 	RTS
+
 sub10_8B25:
 	JSR sub10_8B2F
 	JSR sub10_8BA2
-	JSR sub10_8C15
-	RTS
+	JMP sub10_8C15
+
 sub10_8B2F:
 	LDA CurrentTrackID
 	AND #$0F
 	TAX
 	CPX #$04
 	BPL bra10_8BA1_RTS
-bra10_8B39:
+
 loc10_8B39:
 	LDX CurrentTrackOffset
 	LDA Pulse1VolumeDelay,X
@@ -888,6 +898,8 @@ loc10_8B39:
 	LDX CurrentTrackOffset
 	LDA Pulse1VolumeDelay,X
 	BNE bra10_8B9E
+	
+	;Move to next RLE tag
 	LDX CurrentTrackPointerOffset
 	LDA #$02
 	CLC
@@ -898,13 +910,14 @@ loc10_8B39:
 	ADC Pulse1VolumePointer+1,X
 	STA Pulse1VolumePointer+1,X
 	STA SoundPointer+1
+	
 	LDX CurrentTrackOffset
 	LDY #$00
 	LDA (SoundPointer),Y
 	STA Pulse1VolumeDelay,X
 	TAY
 	CPY #$FF
-	BNE bra10_8B39
+	BNE loc10_8B39
 	LDX CurrentTrackPointerOffset
 	LDY #$01
 	LDA (SoundPointer),Y
@@ -929,13 +942,14 @@ bra10_8B9E:
 	DEC Pulse1VolumeDelay,X
 bra10_8BA1_RTS:
 	RTS
+
 sub10_8BA2:
 	LDA CurrentTrackID
 	AND #$0F
 	TAX
 	CPX #$02
 	BPL bra10_8C14_RTS
-bra10_8BAC:
+
 loc10_8BAC:
 	LDX CurrentTrackOffset
 	LDA Pulse1DutyDelay,X
@@ -961,7 +975,7 @@ loc10_8BAC:
 	STA Pulse1DutyDelay,X
 	TAY
 	CPY #$FF
-	BNE bra10_8BAC
+	BNE loc10_8BAC
 	LDX CurrentTrackPointerOffset
 	LDY #$01
 	LDA (SoundPointer),Y
@@ -1301,8 +1315,13 @@ loc10_8E1B:
 	PLA
 	TAY
 	RTS
+
+;----------------------------------------
+;SUBROUTINES ($8E20, $8E23)
+;Increments the pointer for channel data, optionally ignoring the index for the current channel if the second subroutine is called.
+;----------------------------------------
 sub10_8E20:
-	LDX CurrentTrackPointerOffset
+	LDX CurrentTrackPointerOffset ;Get current channel
 sub_58_8E23:
 	INC MusicPointer,X
 	LDA MusicPointer,X
@@ -1338,6 +1357,7 @@ bra10_8E32:
 	STA SoundQueue,Y ;Store in SFX queue
 bra10_8E40_RTS:
 	RTS
+
 tbl10_8E41:
 	dw Empty_Footer
 	dw SpinJump_Footer
@@ -1369,6 +1389,38 @@ tbl10_8E41:
 	dw YoshiFireSpit_Footer
 	dw Checkpoint_Footer
 	dw Chainsaw_Footer
+	dw HitBlock_Footer
+	dw FireBall_Footer
+	dw Switch_Footer
+	dw DryBones_Footer
+	dw Spring_Footer
+	dw Thwomp_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
+	dw Empty_Footer
 	dw Empty_Footer
 	dw Empty_Footer
 ;Music pointers
@@ -1413,114 +1465,114 @@ Empty_Footer:
 UnknownMusPtr:
 	db $FF
 NotePitchTable:
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $0000
-	dw $07F2 ;A-0
-	dw $0780 ;A#0
-	dw SongLoopPointer ;B-0
-	dw $06AE ;C-1
-	dw $064E ;C#1
-	dw $05F4 ;D-1
-	dw $059E ;D#1
-	dw $054D ;E-1
-	dw $0501 ;F-1
-	dw $04B9
-	dw $0475
-	dw $0435
-	dw $03F9
-	dw $03C0
-	dw $038A
-	dw $0357
-	dw $0327
-	dw $02FA
-	dw $02CF
-	dw $02A7
-	dw $0281
-	dw $025D
-	dw $023B
-	dw $021B
-	dw $01FC
-	dw $01E0
-	dw $01C5
-	dw $01AC
-	dw $0194
-	dw $017D
-	dw $0168
-	dw $0153
-	dw $0140
-	dw $012E
-	dw $011D
-	dw $010D
-	dw $00FE
-	dw $00F0
-	dw $00E2
-	dw $00D6
-	dw $00CA
-	dw $00BE
-	dw $00B4
-	dw $00AA
-	dw $00A0
-	dw $0097
-	dw $008F
-	dw $0087
-	dw $007F
-	dw $0078
-	dw $0071
-	dw $006B
-	dw $0065
-	dw $005F
-	dw $005A
-	dw $0055
-	dw $0050
-	dw $004C
-	dw $0047
-	dw $0043
-	dw $0040
-	dw $003C
-	dw $0039
-	dw $0035
-	dw $0032
-	dw $0030
-	dw $002D
-	dw $002A
-	dw $0028
-	dw $0026
-	dw $0024
-	dw $0022
-	dw $0020
-	dw $001E
-	dw $001C
-	dw $001B
-	dw $0019
-	dw $0018
-	dw $0016
-	dw $0015
-	dw $0014
-	dw $0013
-	dw $0012
-	dw $0011
-	dw $0010
-	dw $000F
-	dw $000E
-	dw $000D
-	dw $000C
-	dw $000B
-	dw $000A
-	dw $0009
-	dw $0008
-	dw $0007
-	dw $0006
-	dw $0005
-	dw $0004
-	dw $0003
-	dw $0002
+	.dw $d5b
+	.dw $c9c
+	.dw $be6
+	.dw $b3b
+	.dw $a9a
+	.dw $a01
+	.dw $972
+	.dw $8ea
+	.dw $86a
+	.dw $7f1
+	.dw $77f
+	.dw $713
+	.dw $d5b >> 1
+	.dw $c9c >> 1
+	.dw $be6 >> 1
+	.dw $b3b >> 1
+	.dw $a9a >> 1
+	.dw $a01 >> 1
+	.dw $972 >> 1
+	.dw $8ea >> 1
+	.dw $86a >> 1
+	.dw $7f1 >> 1
+	.dw $77f >> 1
+	.dw $713 >> 1
+	.dw $d5b >> 2
+	.dw $c9c >> 2
+	.dw $be6 >> 2
+	.dw $b3b >> 2
+	.dw $a9a >> 2
+	.dw $a01 >> 2
+	.dw $972 >> 2
+	.dw $8ea >> 2
+	.dw $86a >> 2
+	.dw $7f1 >> 2
+	.dw $77f >> 2
+	.dw $713 >> 2
+	.dw $d5b >> 3
+	.dw $c9c >> 3
+	.dw $be6 >> 3
+	.dw $b3b >> 3
+	.dw $a9a >> 3
+	.dw $a01 >> 3
+	.dw $972 >> 3
+	.dw $8ea >> 3
+	.dw $86a >> 3
+	.dw $7f1 >> 3
+	.dw $77f >> 3
+	.dw $713 >> 3
+	.dw $d5b >> 4
+	.dw $c9c >> 4
+	.dw $be6 >> 4
+	.dw $b3b >> 4
+	.dw $a9a >> 4
+	.dw $a01 >> 4
+	.dw $972 >> 4
+	.dw $8ea >> 4
+	.dw $86a >> 4
+	.dw $7f1 >> 4
+	.dw $77f >> 4
+	.dw $713 >> 4
+	.dw $d5b >> 5
+	.dw $c9c >> 5
+	.dw $be6 >> 5
+	.dw $b3b >> 5
+	.dw $a9a >> 5
+	.dw $a01 >> 5
+	.dw $972 >> 5
+	.dw $8ea >> 5
+	.dw $86a >> 5
+	.dw $7f1 >> 5
+	.dw $77f >> 5
+	.dw $713 >> 5
+	.dw $d5b >> 6
+	.dw $c9c >> 6
+	.dw $be6 >> 6
+	.dw $b3b >> 6
+	.dw $a9a >> 6
+	.dw $a01 >> 6
+	.dw $972 >> 6
+	.dw $8ea >> 6
+	.dw $86a >> 6
+	.dw $7f1 >> 6
+	.dw $77f >> 6
+	.dw $713 >> 6
+	.dw $d5b >> 7
+	.dw $c9c >> 7
+	.dw $be6 >> 7
+	.dw $b3b >> 7
+	.dw $a9a >> 7
+	.dw $a01 >> 7
+	.dw $972 >> 7
+	.dw $8ea >> 7
+	.dw $86a >> 7
+	.dw $7f1 >> 7
+	.dw $77f >> 7
+	.dw $713 >> 7
+	.dw $d5b >> 8
+	.dw $c9c >> 8
+	.dw $be6 >> 8
+	.dw $b3b >> 8
+	.dw $a9a >> 8
+	.dw $a01 >> 8
+	.dw $972 >> 8
+	.dw $8ea >> 8
+	.dw $86a >> 8
+	.dw $7f1 >> 8
+	.dw $77f >> 8
+	.dw $713 >> 8
 DPCM_BankTable:
 	db $3E ; C0
 REPT 6
@@ -1532,12 +1584,10 @@ ENDR
 REPT 15
 	db $3E ; E1 - F#2
 ENDR
-REPT 6
-	db $34 ; G2 - C3
+REPT 8
+	db $34 ; G2 - D#3
 ENDR
-	db $3E ; C#3
-	db $3E ; D3
-	db $3E ; D#3
+	db $2D
 	db $3E ; E3
 	db $3E ; F3
 	db $3E ; F#3
@@ -1594,9 +1644,9 @@ DPCM_AddressTable:
 	db G_SUS_UP >> 2	; A#2
 	db YOSHI1 >> 2		; B2
 	db YOSHI2 >> 2		; C3
-	db $7F			; C#3
-	db $7F			; D3
-	db $7F			; D#3
+	db SWIM >> 2		; C#3
+	db KICK_DRUM >> 2	; D3
+	db POWER_SNARE >> 2	; D#3
 	db $7F			; E3
 	db $7F			; F3
 	db $7F			; F#3
@@ -1653,9 +1703,9 @@ DPCM_EndAddressTable:
 	dl G_SUS_UP_END		; A#2
 	dl YOSHI1_END		; B2
 	dl YOSHI2_END		; C3
-	dl $FF			; C#3
-	dl $FF			; D3
-	dl $FF			; D#3
+	dl SWIM_END		; C#3
+	dl KICK_DRUM_END	; D3
+	dl POWER_SNARE_END	; D#3
 	dl $FF			; E3
 	dl $FF			; F3
 	dl $FF			; F#3
@@ -1740,7 +1790,7 @@ DPCM_PitchTable:
 	.include sound/sfx_Swim.asm
 	.include sound/sfx_Beep.asm
 	.include sound/sfx_YoshiCoin.asm
-	.include sound/sfx_1up.asm
+	.include sound/sfx_1UP.asm
 	.include sound/sfx_Coin.asm
 	.include sound/sfx_Powerup.asm
 	.include sound/sfx_Warp.asm
@@ -1763,6 +1813,12 @@ DPCM_PitchTable:
 	.include sound/sfx_YoshiFireSpit.asm
 	.include sound/sfx_Checkpoint.asm
 	.include sound/sfx_Chainsaw.asm
+	.include sound/sfx_HitBlock.asm
+	.include sound/sfx_FireBall.asm
+	.include sound/sfx_Switch.asm
+	.include sound/sfx_DryBones.asm
+	.include sound/sfx_Spring.asm
+	.include sound/sfx_Thwomp.asm
  ;include music data
 	.include sound/mus_Title.asm
 	.include sound/mus_GameOver.asm

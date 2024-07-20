@@ -1,8 +1,8 @@
 ;Button bits
-buttonA = %10000000
-buttonB = %01000000
-buttonSelect = %00100000
-buttonStart= %00010000
+btnA = %10000000
+btnB = %01000000
+btnSelect = %00100000
+btnStart= %00010000
 dirUp = %00001000
 dirDown = %00000100
 dirLeft = %00000010
@@ -15,7 +15,7 @@ sfx_Jump = $03
 sfx_Swim = $04
 sfx_Beep = $05
 sfx_YoshiCoin = $06
-sfx_1up = $07
+sfx_1UP = $07
 sfx_Coin = $08
 sfx_Powerup = $09
 sfx_Warp = $0A
@@ -38,27 +38,33 @@ sfx_YoshiSwallow = $1A
 sfx_YoshiFireSpit = $1B
 sfx_Checkpoint = $1C
 sfx_Cutter = $1D
+sfx_HitBlock = $1E
+sfx_FireBall = $1F
+sfx_Switch = $20
+sfx_DryBones = $21
+sfx_Spring = $22
+sfx_Thwomp = $23
 
 ;Music IDs
-mus_Title = $20
-mus_GameOver = $21
-mus_Death = $22
-mus_Victory = $23
-mus_MainMap = $24
-mus_YoshisIsland = $25
-mus_ValleyofBowser = $26
-mus_VanillaDome = $27
-mus_ForestofIllusion = $28
-mus_Overworld = $29
-mus_Underground = $2A
-mus_GhostHouse = $2B
-mus_Castle = $2C
-mus_Underwater = $2D
-mus_Silence = $2E
-mus_Ending = $2F
-mus_InvincibleStar = $30
+mus_Title = $40
+mus_GameOver = $41
+mus_Death = $42
+mus_Victory = $43
+mus_MainMap = $44
+mus_YoshisIsland = $45
+mus_ValleyofBowser = $46
+mus_VanillaDome = $47
+mus_ForestofIllusion = $48
+mus_Overworld = $49
+mus_Underground = $4A
+mus_GhostHouse = $4B
+mus_Castle = $4C
+mus_Underwater = $4D
+mus_Silence = $4E
+mus_Ending = $4F
+mus_InvincibleStar = $50
 
-;Music Note IDs
+;Music notes
 NRest = $00
 C1 = $0C
 C#1 = $0D
@@ -133,6 +139,12 @@ A6 = $51
 A#6 = $52
 B6 = $53
 C7 = $54
+C#7 = $55
+D7 = $56
+D#7 = $57
+E7 = $58
+F7 = $59
+
 ;Music Commands
 NLen = $80
 SegCall = $F0
@@ -275,7 +287,7 @@ Ab_DIM_UP_END:
 .ende
 
 ; DMC Bank $34
-.enum $160
+.enum $f4
 Bb_DIM_UP:	.dsb $11
 Bb_DIM_UP_END:
 	.dsb 3
@@ -294,6 +306,18 @@ YOSHI1_END:
 YOSHI2:		.dsb $2d
 YOSHI2_END:
 	.dsb 3
+SWIM:		.dsb $4a
+SWIM_END:
+	.dsb 2
+KICK_DRUM:	.dsb $d
+KICK_DRUM_END:
+	.dsb 3
+.ende
+; DMC Bank $2D
+.enum $e0
+POWER_SNARE:	.dsb $4b
+POWER_SNARE_END:
+	.dsb 1
 .ende
 
 .enum 1
@@ -333,6 +357,9 @@ BDiminishedUp:			.dsb 1
 GSuspendedUp:			.dsb 1
 SFXYoshi1:			.dsb 1
 SFXYoshi2:			.dsb 1
+SFXSwim:			.dsb 1
+KickDrum:			.dsb 1
+PowerSnare:
 .ende
 
 ;Player action

@@ -30,8 +30,8 @@ jmp_63_E000:
 	STA M90_BG_CHR2 ;Update 3rd BG bank
 	LDA BGBank4
 	STA M90_BG_CHR3 ;Update 4th BG bank (This goes unused)
-	LDA SpriteBank1
-	STA M90_SP_CHR0 ;Update 1st sprite bank
+;	LDA SpriteBank1
+;	STA M90_SP_CHR0 ;Update 1st sprite bank
 	LDA SpriteBank2
 	STA M90_SP_CHR1 ;Update 2nd sprite bank
 	LDA SpriteBank3
@@ -125,8 +125,8 @@ bra3_E0F0:
 bra3_E0F8: ;OAM writing for in level sprites
 	LDA #$00
 	STA PPUOAMAddr
-	LDA #$02 ; this is the start address $0200
-	STA OAMDMA ;set OAM to copy sprite all data from $0200-$02FF
+	LDA #$02 ; this is the start address SpriteMem+0
+	STA OAMDMA ;set OAM to copy sprite all data from SpriteMem+0-$02FF
 	
 	LDA PPUMaskMirror
 	STA PPUMask
@@ -340,25 +340,28 @@ loc3_E2BE:
 	JMP jmp_41_A000 ;Jump
 	RTS
 
+	.db $00,$00,$00 ; whited out code
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+	.db $00,$00
+VerifyEntryAtTableE329:
+	LDA a:Event
+	CMP #$16
+	BCS @Quit
+	ASL
+	RTS
+@Quit:
+	PLA
+	PLA
+	RTS
 ;-----UNUSED CODE START-----
 ;Seems to be an early routine for loading levels
-	LDA a:Event
-	ASL
-	TAY ;Get the event pointer
-	LDA tbl3_E2DB,Y 
-	STA $32 ;Load lower byte of pointer
-	LDA tbl3_E2DB+1,Y
-	STA $33 ;Load upper byte of pointer
-	JMP ($32) ;Jump to the loaded pointer
-tbl3_E2DB:
-	dw pnt2_E2E5
-	dw pnt2_E316
-	dw pnt2_E316
-	dw pnt2_E316
-	dw pnt2_E316
 pnt2_E2E5:
 	LDA zInputBottleNeck
-	AND #buttonA
+	AND #btnA
 	BEQ bra3_E2FE ;If the A button is pressed,
 	INC LevelNumber ;Increment level number
 	LDA LevelNumber
@@ -369,23 +372,21 @@ pnt2_E2E5:
 	INC WorldNumber ;Carry over world number (1-5 would become 2-1)
 bra3_E2FE:
 	LDA zInputBottleNeck
-	AND #buttonStart
+	AND #btnStart
 	BEQ bra3_E315 ;If start is pressed,
 	INC a:GameState ;Set game state to 'in level'
 	LDA #$00
 	STA a:Event ;Clear event triggers
 	LDA #$05
 	STA PalTransition
-	JSR sub3_F919 ;Jump
+	JMP sub3_F919 ;Jump
 bra3_E315:
 	RTS
 pnt2_E316:
 	RTS
-;-----UNUSED CODE END-----
 
 loc3_E317:
-	LDA a:Event
-	ASL
+	JSR VerifyEntryAtTableE329
 	TAY ;Get the pointer for the current event
 	LDA tbl3_E329,Y
 	STA $32 ;Load lower byte of pointer
@@ -542,7 +543,7 @@ loc3_E45F:
 	LDA EndingFreezeFlag
 	BNE bra3_E47C ;Skip this check if at the ending cutscene
 	LDA zInputBottleNeck
-	AND #buttonStart
+	AND #btnStart
 	BEQ bra3_E47C ;If start pressed
 	LDA #$00
 	STA JYEasterEggInput ;Clear Easter egg input
@@ -556,13 +557,13 @@ bra3_E47C:
 	BEQ bra3_E494 ;Branch if game not paused
 	JSR JYScreenTrigger ;Jump
 	LDA zInputBottleNeck
-	AND #buttonSelect
+	AND #btnSelect
 	BEQ bra3_E494 ;If select pressed,
 	INC a:EventPart ;Start level transition
 	LDX CurrentPlayer
 	INC Player1Lives,X ;Temporarily increment current player's life count
 bra3_E494:
-	JSR sub3_F27F ;Jump
+	JMP sub3_F27F ;Jump
 	RTS
 loc3_E498:
 	LDA #$00
@@ -576,7 +577,7 @@ loc3_E498:
 	STA a:EventPart ;End level transition
 	LDA #$16
 	STA a:Event
-	JSR sub3_E4BA ;Jump
+	JMP sub3_E4BA ;Jump
 	RTS
 sub3_E4BA:
 	LDX CurrentPlayer ;Set index for current player
@@ -697,7 +698,7 @@ pnt2_E597:
 	STA a:EventPart ;Go to first part of event
 	LDA #$16
 	STA a:Event ;Trigger map fade-in
-	JSR sub3_E4BA
+	JMP sub3_E4BA
 	RTS
 sub3_E5B6:
 	INC ActionFrameCount ;Increment frame count for player action
@@ -710,7 +711,7 @@ sub3_E5B6:
 	BCC bra3_E5CE ;Branch if the loaded tick count isn't reached
 bra3_E5CB:
 	PLA
-	PLA ;Pull accumulator from stack twice (Not sure what this is for)
+	PLA ;Eject immediate source address
 	RTS
 bra3_E5CE:
 	LDA #$00
@@ -730,7 +731,7 @@ sub3_E5D4:
 	STA M90_PRG1 ;Swap bank 61 into 2nd PRG slot
 	JSR jmp_61_AE8F
 	LDA #$00
-	STA $062B
+	STA ObjFrameCounter
 	LDA #$34
 	STA M90_PRG1 ;Swap bank 52 into 2nd PRG slot
 	LDA #$80
@@ -738,19 +739,19 @@ sub3_E5D4:
 	JSR jmp_52_A080 ;Jump
 	JSR jmp_52_A089 ;Jump
 	JSR jmp_52_A000 ;Jump
-	JSR sub3_E9C4 ;Jump
+	JMP sub3_E9C4 ;Jump
 	RTS
 pnt2_E610:
 	JSR sub3_ED14 ;Jump
 	JSR sub3_F27F ;Jump
 	LDA zInputBottleNeck
-	AND #$C0
+	AND #btnA|btnB
 	BEQ bra3_E62F ;If A or B are pressed,
 	LDA #$00
 	STA Player1YoshiStatus ;Remove Yoshi
 	LDA #$39
 	STA M90_PRG1 ;Swap player bank into 2nd PRG slot
-	JSR sub4_A14A ;Jump
+	JSR MakePlayerAnimPtr ;Jump
 	LDA #$03
 	STA a:EventPart ;Skip to 3rd part of event
 bra3_E62F:
@@ -938,7 +939,7 @@ pnt2_E774:
 	STA a:EventPart ;Clear event part
 	LDA #$16
 	STA a:Event ;Set event number to 16h
-	JSR sub3_E4BA ;Jump
+	JMP sub3_E4BA ;Jump
 	RTS
 pnt2_E79E:
 	INC a:Event ;Increment event number (go right to next event)
@@ -952,7 +953,7 @@ pnt2_E7A2:
 	LDA #$36
 	STA M90_PRG1 ;Swap bank 54 into 2nd PRG slot
 	LDA #$00
-	STA $062B
+	STA ObjFrameCounter
 	LDA #$34
 	STA M90_PRG1 ;Swap bank 52 into 2nd PRG slot
 	LDA #$80
@@ -960,7 +961,7 @@ pnt2_E7A2:
 	JSR jmp_52_A080 ;Jump
 	JSR jmp_52_A089 ;Jump
 	JSR jmp_52_A000 ;Jump
-	JSR sub3_E9C4 ;Jump
+	JMP sub3_E9C4 ;Jump
 	RTS
 pnt2_E7D0:
 	LDA #$39
@@ -1026,7 +1027,7 @@ bra3_E840:
 	STA a:EventPart ;Set event part
 	LDA #$16
 	STA a:Event
-	JSR sub3_E4BA
+	JMP sub3_E4BA
 	RTS
 pnt2_E85F:
 	LDA a:EventPart
@@ -1139,7 +1140,7 @@ sub3_E904:
 	STA InvincibilityTimer ;Clear ALL player variables
 	LDA #$39
 	STA M90_PRG1 ;Swap player bank (bank 57) into 2nd PRG slot
-	JSR sub4_A14A ;Jump
+	JSR MakePlayerAnimPtr ;Jump
 	JSR jmp_57_A000 ;Jump
 	JSR sub3_E9C4 ;Jump
 	LDX #$70
@@ -1168,7 +1169,7 @@ sub3_E965:
 	STA Player1YoshiStatus ;Stop riding Yoshi
 	LDA #$39
 	STA M90_PRG1 ;Swap player bank into 2nd PRG slot
-	JSR sub4_A14A ;Jump
+	JSR MakePlayerAnimPtr ;Jump
 	LDA #$02
 	STA YoshiUnmountedState ;Set Yoshi to be ducking down
 	LDA PlayerYPosDup
@@ -1214,11 +1215,11 @@ sub3_E9C4:
 	JSR jmp_57_A8DE
 	LDA #$34
 	STA M90_PRG1 ;Swap bank 52 into 2nd PRG slot
-	JSR jmp_52_A0F3
+	JMP jmp_52_A0F3
 	RTS
 JYScreenTrigger:
 	LDA zInputBottleNeck
-	CMP #buttonStart
+	CMP #btnStart
 	BEQ JYTriggerDone ;Stop if the game is unpaused.
 	LDA zInputBottleNeck
 	BEQ JYTriggerDone ;If any button is being pressed,
@@ -1241,7 +1242,7 @@ ClearJYInputs:
 	
 ;This is the 8 button code needed to trigger the JY easter egg screen
 JYScreenInputs:
-	db dirUp, dirRight, buttonA, dirDown, dirRight, buttonB, dirUp, dirLeft
+	db dirUp, dirRight, btnA, dirDown, dirRight, btnB, dirUp, dirLeft
 tbl3_EA10:
 	dw pnt2_EA48
 	dw pnt2_EA48
@@ -2003,7 +2004,7 @@ sub3_ED14:
 	JSR jmp_52_A080
 	JSR jmp_52_A089
 	JSR jmp_52_A000
-	JSR sub3_E9C4 ;Jump
+	JMP sub3_E9C4 ;Jump
 	RTS
 sub3_ED48:
 	LDA #$24
@@ -2046,7 +2047,7 @@ pnt2_ED93:
 	LDA #$00
 	STA PlayerAction ;Make player stand still
 	JSR sub3_E5D4 ;Jump
-	LDA #sfx_Warp
+	LDA #sfx_PowerDown
 	STA SFXRegister ;Play warp sound
 	JSR sub3_F27F ;Jump
 	INC a:EventPart ;Go to next part of event
@@ -2156,7 +2157,7 @@ bra3_EE72:
 	LDA ActionFrameCount
 	CMP #$02
 	BNE bra3_EE84
-	LDA #sfx_Warp
+	LDA #sfx_PowerDown
 	STA SFXRegister
 bra3_EE84:
 	LDX #$00
@@ -2209,7 +2210,7 @@ pnt2_EEC8:
 	LDA ActionFrameCount
 	CMP #$02
 	BNE bra3_EEEB
-	LDA #$10
+	LDA #sfx_Thwomp
 	STA SFXRegister
 bra3_EEEB:
 	LDX #$00
@@ -2526,10 +2527,10 @@ bra3_F15B:
 	LDA ($34),Y
 	STA $33
 	JMP ($32)
-;-----------------------------***********************
+;----------------------------------------
 ;Clear sprites from screen during gameplay
-;This mus_t happen before sprites are sent to $0200
-;-----------------------------***********************
+;This must happen before sprites are sent to $0200
+;----------------------------------------
 sub3_F176:
 	LDA #$F8 ;Y position (offscreen)
 	LDX #$00 ;storage offset
@@ -2562,6 +2563,7 @@ bra3_F195:
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;CONTROLLER READING
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=	
+; Routine imported from VulpReich to deal with DPCM
 UpdateJoypad:
 	; Work around DPCM sample bug.
 	; Some inputs are skipped, leading to polling corruption
@@ -3670,7 +3672,7 @@ PauseChk:
 	LDA DataBank2 ;Otherwise, continue
 	CMP #$26 ;Check if the final boss area is loaded
 	BNE BGAnimSub ;If not, do standard BG animation
-	JSR sub3_F90B ;If it is, animate the clown car instead
+	JMP sub3_F90B ;If it is, animate the clown car instead
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ; BG BANK ANIMATION
@@ -4802,3 +4804,4 @@ MapperProtectLoop:
 	db $01
 	db $02
 	db $01
+

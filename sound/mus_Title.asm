@@ -1,5 +1,5 @@
 Title_P1:
-	.byte SongSpeed, $01
+	.byte SongSpeed, 1
 	.byte Transpose, $1f
 	.byte DutySet, $38
 	.byte PitchSet, $05
@@ -287,7 +287,7 @@ Title_P1Loop:
 	.byte NRest
 	.byte SongJump
 	.word Title_P1Loop
-	.byte $FF
+	db $FF
 Title_P2:
 	.byte Transpose, $13
 	.byte DutySet, $38
@@ -588,7 +588,7 @@ Title_P2Loop:
 	.byte G2
 	.byte SongJump
 	.word Title_P2Loop
-	.byte $FF
+	db $FF
 Title_IntroOctaveHop:
 	.byte NLen+6
 	.byte G3
@@ -806,16 +806,16 @@ Title_TriSub4:
 	.byte NRest
 	.byte SegEnd
 Title_End:
-	.byte $FF
+	db $FF
 Title_Footer:
-	.byte NRest
+	db NRest
 	.word Title_P1
-	.byte $01
+	db $01
 	.word Title_P2
-	.byte $02
+	db $02
 	.word Title_Tri
-	.byte $03
+	db $03
 	.word Title_End
-	.byte $04
+	db $04
 	.word Title_End
-	.byte $FF
+	db $FF

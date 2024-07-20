@@ -1,5 +1,5 @@
 ;disassembled by BZK 6502 Disassembler
-	.incbin tilesets/ts_unused3.bin
+	incbin tilesets/ts_unused3.bin
 	
 	db $17
 	db $00
@@ -50,7 +50,7 @@
 	SEC
 	SBC PlayerXPosDup
 	STA ObjectXDistance,X
-	LDA a:PlayerAnimationFrame,X
+	LDA a:PlayerAnimFrame,X
 	db $00
 	db $00
 	db $00
@@ -258,7 +258,7 @@ bra14_8759:
 	JSR GetMovementData
 bra14_8766:
 	LDY #$00
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$08
 	BNE bra14_8770
 	INY
@@ -329,7 +329,7 @@ bra14_87EE:
 bra14_87FF:
 loc14_87FF:
 	db $AD
-	.incbin tilesets/ts_bowser.bin
+	incbin tilesets/ts_bowser.bin
 	db $00
 	db $00
 	db $00
@@ -685,9 +685,9 @@ bra14_8FF4:
 	STA ObjectYDistance,X
 	LDA ObjectYScreen,X
 	
-	.incbin tilesets/ts_unused5.bin
-	
+	incbin tilesets/ts_unused5.bin
 	db $42
+
 	BCS bra14_960D
 	LDA #$0F
 	STA ObjectSlot,Y
@@ -695,7 +695,7 @@ bra14_8FF4:
 	STA ObjectState,Y
 bra14_960D:
 	CPY ObjectCount
-	BCC $95F7
+	BCC $95F7 ;Broken corrupted branch
 	RTS
 	CMP #$01
 	BEQ bra14_9619
@@ -905,7 +905,7 @@ tbl14_97DD:
 	db $98
 	db $40
 	db $98
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra14_97F6_RTS
 	LDA ObjectVariables,X
@@ -921,4 +921,4 @@ bra14_97F7:
 	STA $06E1
 	db $BD
 	
-.incbin tilesets/ts_unused6.bin
+incbin tilesets/ts_unused6.bin

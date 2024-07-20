@@ -1179,11 +1179,11 @@ ptr8_E67F:
 	CMP #$FF
 	BEQ bra_E697_RTS
 	CMP #$F0
-	BNE bra_E693
+	BNE sub_E698
 	STA $26
 	RTS
 bra_E693:
-	JSR sub_E698
+	JMP sub_E698
 	RTS
 bra_E697_RTS:
 	RTS
@@ -1648,11 +1648,11 @@ ptr8_E973:
 	CMP #$FF
 	BEQ bra_E98B_RTS
 	CMP #$F0
-	BNE bra_E987
+	BNE sub_E98C
 	STA $26
 	RTS
 bra_E987:
-	JSR sub_E98C
+	JMP sub_E98C
 	RTS
 bra_E98B_RTS:
 	RTS
@@ -2844,7 +2844,7 @@ bra_EE86:
 loc_EE99:
 	STA P1Score+1,Y ;Store added high byte
 	INC Player1Lives,X
-	LDA #$07 ;Load 1up sound effect
+	LDA #sfx_1UP ;Load 1up sound effect
 bra_EEA1:
 	STA SFXRegister ;Play the loaded sound effect
 	LDA PlayerColXPos
@@ -4019,7 +4019,7 @@ bra_F403:
 	STA PlayerColYPos
 	RTS
 bra_F406:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra_F428_RTS
 	LDA PlayerColXPos

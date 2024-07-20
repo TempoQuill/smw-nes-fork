@@ -3,18 +3,18 @@ TilemapPointers:
 	dw TitleLogo
 	dw EndingScreen
 	dw ThankYouScreen
-	dw CopyrightScreen
+	dw UpdatedCopyrightData
 	dw YoshiHouse ;Unused
 TitleLogo:
-	.incbin screens/TitleLogo.bin
+	incbin screens/TitleLogo.bin
 EndingScreen:
-	.incbin screens/EndingScreen.bin
+	incbin screens/EndingScreen.bin
 ThankYouScreen:
-	.incbin screens/ThankYouScreen.bin
+	incbin screens/ThankYouScreen.bin
 CopyrightScreen:
-	.incbin screens/CopyrightScreen.bin
+	incbin screens/CopyrightScreen.bin
 YoshiHouse:
-	.incbin screens/YoshiHouse.bin ;Unused
+	incbin screens/YoshiHouse.bin ;Unused
 	db $11, $30, $2A, $0E
 	db $11, $38, $26, $0E
 	db $11, $37, $2A, $1A
@@ -201,7 +201,7 @@ loc2_889C:
 	CMP #$FF
 	BEQ bra2_88D5
 	ORA $31
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDA $26
 	STA SpriteMem,X
 	LDA $2E
@@ -221,9 +221,9 @@ bra2_88C7:
 	LDA $27
 	SBC #$40
 bra2_88CB:
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA ($38),Y
-	STA $0202,X
+	STA SpriteMem+2,X
 	INC $2B
 bra2_88D5:
 	INY
@@ -391,10 +391,8 @@ tbl2_8986:
 tbl2_8A0C:
 	db $00
 	db $00
-	db $A0 ;1/2 Player Text X Position
-	db $80 ;1/2 Player Text Y Position
-	db $90 ;Cursor X Position
-	db $80 ;Cursor Y Position
+	db $A0, $80 ;1/2 Player Text X/Y Position
+	db $90, $80 ;Cursor X/Y Position
 	db $40 ;Unknown
 	db $20 ;Unknown
 	db $50
@@ -407,65 +405,44 @@ tbl2_8A0C:
 	db $AA
 	db $50
 	db $AA
-TitleSpriteFrameTypes:
-	db $00
-	db $00
-	db $00
-	db $00
-	db $00
-	db $00
-	db $01
-	db $0B
-	db $01
-	db $03
-	db $01
-	db $03
-	db $01
-	db $03 ;Koopa Walk 1
-	db $01
-	db $01 ;Koopa Walk 2
-	db $01
-	db $01 ;Rex Walk 1
-	db $01
-	db $05 ;Rex Walk 2
-	db $01
-	db $05
-	db $01
-	db $07
-	db $01
-	db $07 ;Super Koopa Fly 1
-	db $01
-	db $02 ;Super Koopa Fly 2
-	db $01
-	db $02
-	db $01
-	db $06
-	db $01
-	db $06 ;Mario Walk 1
-	db $01
-	db $08 ;Mario Walk 2
-	db $01
-	db $08 ;Yoshi Walk 1
-	db $01
-	db $09 ;Yoshi Walk 2
-	db $01
-	db $0A
-	db $01
-	db $0A
-	db $01
-	db $0A
-	db $01
-	db $0A
-	db $01
-	db $0A
 
-;=====Animation format=====
+;----------------------------------------
+;Title Screen Sprites
+TitleSpriteFrameTypes:
+	db $00, $00
+	db $00, $00
+	db $00, $00
+	db $01, $0B
+	db $01, $03
+	db $01, $03
+	db $01, $03 ;Koopa Walk 1
+	db $01, $01 ;Koopa Walk 2
+	db $01, $01 ;Rex Walk 1
+	db $01, $05 ;Rex Walk 2
+	db $01, $05
+	db $01, $07
+	db $01, $07 ;Super Koopa Fly 1
+	db $01, $02 ;Super Koopa Fly 2
+	db $01, $02
+	db $01, $06
+	db $01, $06 ;Mario Walk 1
+	db $01, $08 ;Mario Walk 2
+	db $01, $08 ;Yoshi Walk 1
+	db $01, $09 ;Yoshi Walk 2
+	db $01, $0A
+	db $01, $0A
+	db $01, $0A
+	db $01, $0A
+	db $01, $0A
+
+;----------------------------------------
+;Animation Format
 ;Sprite1, Sprite2, Bank, Speed, Index
-;	Sprite1 - 1st frame of animation
-;	Sprite2 - 2nd frame of animation 
-;	Bank - 1K CHR bank
-;	Speed - Animation speed in frames
-;	Index - 1K CHR slot used. Can be $00, $40, $80, or $C0 for slots 1 through 4 respectively.
+;Sprite1 - 1st frame of animation
+;Sprite2 - 2nd frame of animation 
+;Bank - 1K CHR bank
+;Speed - Animation speed in frames
+;Index - 1K CHR slot used. Can be $00, $40, $80, or $C0 for slots 1 through 4 respectively.
 TitleSpriteAnimations:
 	dw pnt3_8A6C
 	dw SprMap_TitleKoopaAnim
@@ -1494,27 +1471,37 @@ SprMap_MapYoshi_SwimRight2:
 	db $6D
 	db $6C
 	db $6B
+
+;----------------------------------------
+;SUBROUTINE ($8DF8)
+;----------------------------------------
 sub_42_8DF8:
+;Load sprite into memory
 	STA GS0SpriteFrame,X ;Load sprite frame
 	ASL
 	TAY ;Get pointer for it
 	LDA tbl2_8A0C,Y
 	STA GS0SpriteXPos,X ;Set X position for sprite (only works for menu?)
 	LDA tbl2_8A0C+1,Y
-	STA GS0SpriteYPos,X ;Set Y position for sprite (only works for menu?)
+	STA GS0SpriteYPos,X ;Set Y position for sprite (only used for menu?)
 	LDA TitleSpriteFrameTypes,Y
 	STA GS0SpriteFlags,X ;Store flags for animation frame (useless/unknown?)
 	LDA TitleSpriteFrameTypes+1,Y
-	STA GS0SpriteSlot,X ;Store sprite type for corresponding animation frame
+	STA GS0SpriteSlot,X ;Load sprite
+	
+;Load sprite animation and bank
 	ASL
-	TAX ;Get pointer for corresponding slot ID
+	TAX ;Get index for current sprite
+	;Load sprite animation pointer
 	LDA TitleSpriteAnimations,X
 	STA GS0SpriteAnimPtr
 	LDA TitleSpriteAnimations+1,X
-	STA GS0SpriteAnimPtr+1 ;Load sprite animation pointer
+	STA GS0SpriteAnimPtr+1
+	;Load sprite's bank
 	LDY #$02
 	LDA (GS0SpriteAnimPtr),Y
-	STA GS0SpriteBankNum ;Load sprite bank from 3rd byte
+	STA GS0SpriteBankNum ;Load sprite bank
+	;Account for sprite's CHR bank
 	LDY #$04
 	LDA (GS0SpriteAnimPtr),Y ;Load 5th byte of animation data
 	LSR
@@ -1522,13 +1509,14 @@ sub_42_8DF8:
 	LSR
 	LSR
 	LSR
-	LSR ;Shift out bits 0 - 5
+	LSR ;Shift out 6 bits to get sprite bank index
 	TAX ;Set 1K bank to swap
 	LDA GS0SpriteBankNum
 	STA SpriteBank1,X ;Swap the bank out in the set bank
 	RTS
 
-;Unused code -----
+;----------------------------------------
+;Unused code
 ;Seems to be an earlier, more robust version of the transition screen code, plus a blank HUD. The first screen is identical to the "GAME OVER" tilemap, although the rest are pretty garbled.
 	TAX
 	LDA tbl2_8E62,X
@@ -1559,11 +1547,11 @@ tbl2_8E62:
 	db $40
 	db $40
 tbl2_8E67:
-	.hex 2B40
-	.hex 2140
-	.hex 2140
-	.hex 2140
-	.hex 2140
+	hex 2B40
+	hex 2140
+	hex 2140
+	hex 2140
+	hex 2140
 tbl2_8E71:
 	dw ofs_8E7B
 	dw ofs_8EFB
@@ -2002,54 +1990,54 @@ bra2_903B:
 bra2_904F:
 	LDA $30
 	BEQ bra2_9057
-	JSR sub2_9151
+	JMP sub2_9151
 	RTS
 bra2_9057:
-	JSR sub2_90B1
+	JMP sub2_90B1
 	RTS
 bra2_905B:
 	LDA #$00
 	STA $0379
 	JSR sub2_90D3
-	LDA #$05
+	LDA #sfx_Beep
 	STA SFXRegister
 	LDA $037F
 	TAX
-	LDA tbl2_9071,X
+	LDA WorldMusicUpdateTable,X
 	STA MusicRegister
 	RTS
-tbl2_9071:
-	db $25 ;overworld map music settings
-	db $25
-	db $25
-	db $25
-	db $25
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $24
-	db $28
-	db $28
-	db $28
-	db $28
-	db $28
-	db $27
-	db $27
-	db $27
-	db $27
-	db $27
-	db $27
-	db $26
-	db $26
+WorldMusicUpdateTable:
+	db mus_YoshisIsland ;world select music settings
+	db mus_YoshisIsland
+	db mus_YoshisIsland
+	db mus_YoshisIsland
+	db mus_YoshisIsland ;World 1
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap      ;World 2
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap      ;World 3
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap
+	db mus_MainMap      ;World 4
+	db mus_ForestofIllusion
+	db mus_ForestofIllusion
+	db mus_ForestofIllusion
+	db mus_ForestofIllusion
+	db mus_ForestofIllusion ;World 5
+	db mus_VanillaDome
+	db mus_VanillaDome
+	db mus_VanillaDome
+	db mus_VanillaDome ;World 6
+	db mus_VanillaDome
+	db mus_VanillaDome
+	db mus_ValleyofBowser
+	db mus_ValleyofBowser ;World 7
 	db $00
 tbl2_9091:
 	db $07
@@ -4149,7 +4137,7 @@ bra2_999F:
 	LDA $032F
 	AND #$03
 bra2_99A6:
-	STA $0202,X
+	STA SpriteMem+2,X
 	INX
 	INX
 	INX
@@ -5240,3 +5228,59 @@ sub2_9E7A:
 	ADC #$08
 	STA $028F,Y
 	RTS
+UpdatedCopyrightData:
+	.db $20,$00
+
+	.db $7f,$00
+	.db $7f,$00
+	.db $2c,$00
+; 0a
+	.db $80 | (@a2 - @a1)
+@a1:
+	.db $AD,$AE
+	.db "1995" + $70
+	.db $AC,$00
+	.db "2024" + $70
+@a2:
+; 16
+	.db $34,$00
+; 0a
+	.db $80 | (@a4 - @a3)
+@a3:
+	.db "TEMPO" + $6F
+	.db $00, $00
+	.db "QUILL" + $6F
+@a4:
+; 16
+	.db $30,$00
+; 06
+	.db $80 | (@a6 - @a5)
+@a5:
+	.db "SOMARI" + $6F
+	.db $00
+	.db "THE" + $6F
+	.db $00
+	.db "ADVENTURER" + $6F
+@a6:
+; 1b
+	.db $67,$00
+; 02
+	.db $80 | (@a8 - @a7)
+@a7:
+	.db "ORIGINAL" + $6F
+	.db $00
+	.db "CODE" + $6F
+	.db $00
+	.db "BY" + $6F
+	.db $00
+	.db "HUMMER" + $6F
+	.db $00
+	.db "TEAM" + $6F
+@a8:
+; 1e
+	.db $7f,$00
+	.db $7f,$00
+	.db $7f,$00
+	.db $45,$00
+; $2400
+	.db $ff,$ff,$ff ; terminator

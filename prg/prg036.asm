@@ -1,6 +1,21 @@
 ; 0x048010-0x04A00F
-lda_36_C000: 
-	dw MarioAnimTablesTbl   ;00 No Yoshi
+;Planning to further trim these tables as progress is made but for now they are working and there are less of them
+
+;----------------------
+;ANIMATION FORMAT
+;ExampleAnimName:
+;	db $03 ;frame duration, negative duration indicates this is a loop point, incrementing the 1's column will add 1 to the return frame
+;	dw ExampleFrameName ;mapping/frame name
+;	db $01 ;upper nybble indicates forced mirroring if negative, lower nybble is the vertical offset of the frame
+;----------------------
+
+
+;**********************************************
+;Player character selection tbl
+;Mario, Yoshi, hard code if possible to remove this
+;**********************************************
+lda_36_C000: ;really no idea if we need any of these duplicates but most likely they will all be removed
+	dw YoshiAnimTablesTbl_1  ;00 No Yoshi 
 	dw YoshiAnimTablesTbl_1 ;01 if Yoshi present (all entries on this table point to the same thing)
 	dw YoshiAnimTablesTbl_2 ;02 
 	dw YoshiAnimTablesTbl_2 ;03 Because Yoshi Status is doubled for use as an index this table is long
@@ -10,2063 +25,851 @@ lda_36_C000:
 	dw YoshiAnimTablesTbl_3 ;07
 	dw YoshiAnimTablesTbl_3 ;08
 	dw YoshiAnimTablesTbl_3 ;09 as far as I can tell these are all identical unique copies, but this hasn't been fully investigated
-MarioAnimTablesTbl:
-	dw PlayerSmall_AnimTbl
-	dw PlayerBig_AnimTbl
-	dw PlayerFire_AnimTbl
-	dw PlayerCapeStatic_AnimTbl
-	dw PlayerCapeMove_AnimTbl
-	dw PlayerSmallHold_AnimTbl
-	dw PlayerBigHold_AnimTbl
-	dw PlayerFireHold_AnimTbl
-	dw PlayerCapeStaticHold_AnimTbl
-	dw PlayerCapeMoveHold_AnimTbl
-PlayerSmall_AnimTbl:	;Player Action (associated with animation)
-	dw MsmallStand		;nothing 	00
-	dw MsmallWalk		;walking 	01
-	dw MsmallRun		;running 	02
-	dw MsmallWalk		;unused  	03
-	dw MsmallJump		;jumping 	04
-	dw MsmallSpin		;spin    	05
-	dw MsmallTurn		;skid    	06
-	dw MsmallDuck		;duck    	07
-	dw MsmallUp			;look up 	08
-	dw MsmallLeap		;run jump   09
-	dw MsmallFall		;Falling 	0A note that this is specifically for falling from a ledge, not a jump
-	dw MsmallSink		;sink    	0B
-	dw MsmallSwim		;swim    	0C
-	dw MsmallClimbIdle	;climb   	0D
-	dw MsmallClimb		;climb move	0E
-	dw MsmallLeap		;flying		0F
-	dw MsmallWin		;victory	10
-	dw MsmallDie		;dead		11
-PlayerSmallHold_AnimTbl:
-	dw MsmallHold
-	dw MsmallHoldWalk
-	dw MsmallHoldRun
-	dw MsmallHoldWalk
-	dw MsmallHoldJump
-	dw MsmallSpin
-	dw MsmallTurn
-	dw MsmallHoldDuck
-	dw MsmallUp
-	dw MsmallHoldJump
-	dw MsmallHoldFall
-	dw MsmallHoldSink
-	dw MsmallHoldSwim
-	dw MsmallClimbIdle
-	dw MsmallClimb
-	dw MsmallHoldJump
-	dw MsmallWin
-	dw MsmallDie
+	
+;PlayerAnimSetTblLo:
+;	db <YoshiAnimTablesTbl_1 ;placeholder
+;	db <BigMarioAnimTblLo
+;	db <SmallMarioAnimTblLo
+;PlayerAnimSetTblHi:	
+;	db >YoshiAnimTablesTbl_1 ;placeholder
+;	db >BigMarioAnimTblLo
+;	db >SmallMarioAnimTblLo
+	
+;**********************************************
+;Small Mario standard animations
+;When I untangle the animation system from the players action system, I should be able to shorten these tables quite a bit further
+;for now though they are made to remain compatible with the exisiting routines
+;**********************************************
+SmallMarioAnimTblLo: ;norm, hold, norm, hold
+	db <MsmallStand		;nothing 	00
+	db <MsmallHold
+	db <MsmallWalk		;walking 	01
+	db <MsmallHoldWalk
+	db <MsmallRun		;running 	02
+	db <MsmallHoldRun
+	db <MsmallWalk		;unused  	03
+	db <MsmallHoldWalk
+	db <MsmallJump		;jumping 	04
+	db <MsmallHoldJump
+	db <MsmallSpin		;spin    	05
+	db <MsmallSpin
+	db <MsmallTurn		;skid    	06
+	db <MsmallTurn
+	db <MsmallDuck		;duck    	07
+	db <MsmallHoldDuck
+	db <MsmallUp		;look up 	08
+	db <MsmallHoldLookUp
+	db <MsmallLeap		;run jump   09
+	db <MsmallHoldJump
+	db <MsmallFall		;Falling 	0A note that this is specifically for falling from a ledge, not a jump
+	db <MsmallHoldFall
+	db <MsmallSink		;sink    	0B
+	db <MsmallHoldSink
+	db <MsmallSwim		;swim    	0C
+	db <MsmallHoldSwim
+	db <MsmallClimbIdle	;climb   	0D
+	db <MsmallClimbIdle
+	db <MsmallClimb		;climb move	0E
+	db <MsmallClimb
+	db <MsmallLeap		;flying		0F
+	db <MsmallHoldJump
+	db <MsmallWin		;victory	10
+	db <MsmallWin
+	db <MsmallDie		;dead		11
+	db <MsmallDie
+SmallMarioAnimTblHi:
+	db >MsmallStand		;nothing 	00
+	db >MsmallHold
+	db >MsmallWalk		;walking 	01
+	db >MsmallHoldWalk
+	db >MsmallRun		;running 	02
+	db >MsmallHoldRun
+	db >MsmallWalk		;unused  	03
+	db >MsmallHoldWalk
+	db >MsmallJump		;jumping 	04
+	db >MsmallHoldJump
+	db >MsmallSpin		;spin    	05
+	db >MsmallSpin
+	db >MsmallTurn		;skid    	06
+	db >MsmallTurn
+	db >MsmallDuck		;duck    	07
+	db >MsmallHoldDuck
+	db >MsmallUp		;look up 	08
+	db >MsmallHoldLookUp
+	db >MsmallLeap		;run jump   09
+	db >MsmallHoldJump
+	db >MsmallFall		;Falling 	0A note that this is specifically for falling from a ledge, not a jump
+	db >MsmallHoldFall
+	db >MsmallSink		;sink    	0B
+	db >MsmallHoldSink
+	db >MsmallSwim		;swim    	0C
+	db >MsmallHoldSwim
+	db >MsmallClimbIdle	;climb   	0D
+	db >MsmallClimbIdle
+	db >MsmallClimb		;climb move	0E
+	db >MsmallClimb
+	db >MsmallLeap		;flying		0F
+	db >MsmallHoldJump
+	db >MsmallWin		;victory	10
+	db >MsmallWin
+	db >MsmallDie		;dead		11
+	db >MsmallDie
+;**********************************************
+;Small Mario Animation data 
+;**********************************************
 MsmallStand:
-	dw PlayerSmall_Stand
-	db $0A
-	db $00
-	dw PlayerSmall_Stand
-	db $80
-	db $00
+	db $7E ;F1
+	dw PlayerSmall_Stand 
+	db $00 
+	db $80 ;Loop F1
 MsmallWalk:
-	dw PlayerSmall_Stand
-	db $04
-	db $00
+	db $04 ;F1
 	dw PlayerSmall_Walk1
-	db $04
-	db $00
-	dw PlayerSmall_Stand
-	db $80
-	db $00
+	db $01 
+	db $04 ;F2
+	dw PlayerSmall_Stand 
+	db $00 
+	db $80 ;Loop F1
 MsmallRun:
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
-	dw PlayerSmall_Stand
-	db $02
-	db $00
-	dw PlayerSmall_Walk1
-	db $02
-	db $00
+	db $02 ;F1
 	dw PlayerSmall_Run1
-	db $02
-	db $00
+	db $0 
+	db $02 ;F2
 	dw PlayerSmall_Run2
-	db $02
-	db $00
-	dw PlayerSmall_Run1
-	db $02
-	db $00
-	dw PlayerSmall_Run2
-	db $02
-	db $00
-	dw PlayerSmall_Run1
-	db $90
-	db $00
+	db $01 
+	db $80 ;Loop F1
 MsmallJump:
+	db $23 ;F1
 	dw PlayerSmall_Jump
-	db $23
+	db $00 
+	db $03 ;F2
+	dw PlayerSmall_Fall ;remove this frame later, anim controller should make this work properly 
 	db $00
-	dw PlayerSmall_Fall
-	db $02
-	db $00
-	dw PlayerSmall_Fall
-	db $81
-	db $00
+	db $81 ;Loop F2
 MsmallLeap:
+	db $03 ;F
 	dw PlayerSmall_RunJump
-	db $0A
 	db $00
-	dw PlayerSmall_RunJump
-	db $80
-	db $00
+	db $80 ;Loop F1
 MsmallSpin:
-	dw PlayerSmall_Stand
-	db $01
-	db $00
+	db $01 ;F1
+	dw PlayerSmall_Stand 
+	db $00 
+	db $01 ;F2
 	dw PlayerSmall_Back
-	db $01
-	db $00
-	dw PlayerSmall_Flipped
-	db $01
-	db $00
+	db $00 
+	db $01 ;F3
+	dw PlayerSmall_Stand ;mirrored
+	db $F0 
+	db $01 ;F4
 	dw PlayerSmall_Front
-	db $01
-	db $00
-	dw PlayerSmall_Stand
-	db $80
-	db $00
+	db $00 
+	db $80 ;Loop F1
 MsmallTurn:
+	db $7E ;F1
 	dw PlayerSmall_Turn
-	db $0A
-	db $00
-	dw PlayerSmall_Turn
-	db $80
-	db $00
+	db $00 
+	db $80 ;Loop F1
 MsmallDuck:
+	db $7E ;F1
 	dw PlayerSmall_Duck
-	db $08
-	db $00
-	dw PlayerSmall_Duck
-	db $80
-	db $00
+	db $00 
+	db $80 ;Loop F1
 MsmallUp:
+	db $7E ;F1
 	dw PlayerSmall_LookUp
-	db $02
-	db $00
-	dw PlayerSmall_LookUp
-	db $80
-	db $00
+	db $00 
+	db $80 ;Loop F1	
 MsmallFall:
+	db $7E ;F1
 	dw PlayerSmall_Fall
-	db $02
-	db $00
-	dw PlayerSmall_Fall
-	db $80
-	db $00
+	db $00 
+	db $80 ;Loop F1
 MsmallSink:
+	db $7E ;F1
 	dw PlayerSmall_Swim1
-	db $01
-	db $00
-	dw PlayerSmall_Swim1
-	db $80
-	db $00
+	db $00 
+	db $80 ;Loop F1
 MsmallSwim:
-	dw PlayerSmall_RunJump
-	db $03
-	db $00
+	db $03 ;F1
+	dw PlayerSmall_Swim2
+	db $00 
+	db $03 ;F2
 	dw PlayerSmall_Swim1
-	db $03
 	db $00
+	db $03 ;F3
 	dw PlayerSmall_RunJump
-	db $80
 	db $00
+	db $80 ;Loop F1
 MsmallClimbIdle:
+	db $7E ;F1
 	dw PlayerSmall_Climb1
-	db $08
 	db $00
-	dw PlayerSmall_Climb1
-	db $80
-	db $00
+	db $80 ;Loop F1
 MsmallClimb:
+	db $06 ;F1
 	dw PlayerSmall_Climb1
-	db $08
 	db $00
-	dw PlayerSmall_Climb2
-	db $08
-	db $00
-	dw PlayerSmall_Climb1
-	db $80
-	db $00
+	db $06 ;F2
+	dw PlayerSmall_Climb1 ;Mirrored
+	db $F0
+	db $80 ;Loop F1
 MsmallWin:
+	db $0A ;F1
 	dw PlayerSmall_Victory
-	db $0A
 	db $00
-	dw PlayerSmall_Victory
-	db $80
-	db $00
+	db $80 ;Loop F1
 MsmallDie:
+	db $28 ;F1
 	dw PlayerSmall_Death1
-	db $28
 	db $00
+	db $08 ;F2
 	dw PlayerSmall_Death1
-	db $08
 	db $00
-	dw PlayerSmall_Death2
-	db $08
-	db $00
-	dw PlayerSmall_Death1
-	db $81
-	db $00
+	db $08 ;F3
+	dw PlayerSmall_Death1 ;mirrored
+	db $F0
+	db $81 ;loop F1
+	
 MsmallHold:
+	db $7E ;F1
 	dw PlayerSmall_Hold
-	db $0A
 	db $00
-	dw PlayerSmall_Hold
 	db $80
-	db $00
 MsmallHoldWalk:
+	db $03 ;F1
 	dw PlayerSmall_Hold
-	db $04
 	db $00
+	db $03 ;F2
 	dw PlayerSmall_HoldWalk
-	db $04
-	db $00
-	dw PlayerSmall_Hold
+	db $01
 	db $80
-	db $00
 MsmallHoldRun:
+	db $02 ;F1
 	dw PlayerSmall_Hold
-	db $02
 	db $00
+	db $02 ;F2
 	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $90
-	db $00
+	db $01
+	db $80	
 MsmallHoldJump:
+	db $7E ;F1
 	dw PlayerSmall_HoldWalk
-	db $23
 	db $00
-	dw PlayerSmall_HoldWalk
-	db $02
-	db $00
-	dw PlayerSmall_HoldWalk
-	db $81
-	db $00
+	db $80	
 MsmallHoldDuck:
+	db $7E ;F1
 	dw PlayerSmall_DuckHold
-	db $08
 	db $00
-	dw PlayerSmall_DuckHold
 	db $80
-	db $00
-	dw PlayerSmall_Hold
-	db $02
-	db $00
-	dw PlayerSmall_Hold
-	db $80
-	db $00
 MsmallHoldFall:
+	db $7E ;F1
 	dw PlayerSmall_HoldWalk
-	db $02
 	db $00
-	dw PlayerSmall_HoldWalk
 	db $80
+MsmallHoldLookUp: ;new!
+	db $7E ;F1
+	dw PlayerSmall_LookUpHold
 	db $00
-MsmallHoldSink:
-	dw pnt3_C2D8
+	db $80
+	
+MsmallHoldSink: ;unused
+	dw PlayerSmall_HoldSwim
 	db $01
 	db $00
-	dw pnt3_C2D8
+	dw PlayerSmall_HoldSwim
+	db $80
+	db $00	
+MsmallHoldSwim: ;unused 
+	dw PlayerSmall_HoldSwim
+	db $03
+	db $00
+	dw PlayerSmall_HoldSwim
+	db $03
+	db $00
+	dw PlayerSmall_HoldSwim
 	db $80
 	db $00
-MsmallHoldSwim:
-	dw pnt3_C2D8
-	db $03
-	db $00
-	dw pnt3_C2D8
-	db $03
-	db $00
-	dw pnt3_C2D8
-	db $80
-	db $00
-PlayerSmall_Stand:
+;**********************************************
+;Small Mario mapping data
+;**********************************************
+PlayerSmall_Stand: ;M
+	db $02 ;width
+	db $03 ;height
+	db $81 ;bank 
+	db $00,$02,$04 ;tile IDs in columns left to right 
+	db $01,$03,$05
+PlayerSmall_Walk1: ;M
 	db $02
 	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $60, $61
-PlayerSmall_Walk1:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $6E, $6F
-	db $70, $71
-	db $6A, $6B
-PlayerSmall_Run1:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $60, $6C
-PlayerSmall_Run2:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $6E, $6F
-	db $70, $71
-	db $6A, $6D
-PlayerSmall_RunJump:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $68, $69
-PlayerSmall_Jump:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $74, $75
-	db $76, $77
-	db $78, $79
-PlayerSmall_Fall:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $7A, $7B
-	db $7C, $7D
-	db $57, $5C
-PlayerSmall_Back:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $48, $49
-	db $4A, $4B
-	db $4C, $4D
-PlayerSmall_Flipped:
-	db $42
-	db $03
-	db $99
-	db $08
-	db $65, $64
-	db $7F, $66
-	db $61, $60
-PlayerSmall_Front:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $4E, $4F
-	db $56, $58
-	db $59, $5A
-PlayerSmall_Turn:
-	db $02
-	db $03
-	db $9A
-	db $08
-	db $A9, $AB
-	db $AC, $AE
-	db $AD, $AF
-PlayerSmall_Duck:
-	db $02
-	db $02
-	db $99
-	db $08
-	db $50, $51
-	db $52, $53
-PlayerSmall_LookUp:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $5B, $5D
-	db $5E, $5F
-	db $60, $61
-PlayerSmall_Swim1:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $62, $63
-PlayerSmall_Climb1:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $48, $49
-	db $4A, $4B
-	db $72, $73
-PlayerSmall_Climb2:
-	db $42
-	db $03
-	db $99
-	db $08
-	db $49, $48
-	db $4B, $4A
-	db $73, $72
-PlayerSmall_Victory:
-	db $02
-	db $03
-	db $98
-	db $08
-	db $0E, $0D
-	db $10, $0F
-	db $12, $11
-PlayerSmall_Death1:
-	db $02
-	db $03
-	db $98
-	db $08
-	db $18, $19
-	db $1A, $1B
-	db $1C, $1D
-PlayerSmall_Death2:
-	db $42
-	db $03
-	db $98
-	db $08
-	db $19, $18
-	db $1B, $1A
-	db $1D, $1C
-PlayerSmall_Hold:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $40, $41
-PlayerSmall_HoldWalk:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $6E, $6F
-	db $70, $71
-	db $42, $43
-PlayerSmall_DuckHold:
-	db $02
-	db $02
-	db $99
-	db $08
-	db $44, $45
-	db $46, $47
-pnt3_C2D8:
-	db $02
-	db $03
-	db $99
-	db $08
-	db $64, $65
-	db $66, $7F
-	db $62, $63
-PlayerBig_AnimTbl:
-	dw MbigStand
-	dw MbigWalk
-	dw MbigRun
-	dw MbigWalk
-	dw MbigJump
-	dw MbigSpin
-	dw MbigTurn
-	dw MbigDuck
-	dw MbigLookUp
-	dw MbigLeap
-	dw MbigFall
-	dw MbigSink
-	dw MbigSwim
-	dw MbigClimb
-	dw MbigClimbMove
-	dw MbigLeap
-	dw MbigWin
-PlayerBigHold_AnimTbl:
-	dw MbigHold
-	dw MbigHoldWalk
-	dw MbigHoldRun
-	dw MbigHoldWalk
-	dw MbigHoldJump
-	dw MbigSpin
-	dw MbigTurn
-	dw MbigHoldDuck
-	dw MbigLookUp
-	dw MbigSink
-	dw MbigHoldFall
-	dw MbigSink
-	dw MbigHoldSwim
-	dw MbigClimb
-	dw MbigClimbMove
-	dw MbigSink
-	dw MbigWin
-MbigStand:
-	dw PlayerBig_Stand
-	db $0A
-	db $00
-	dw PlayerBig_Stand
-	db $80
-	db $00
-MbigWalk:
-	dw PlayerBig_Walk1
-	db $04
-	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerBig_Stand
-	db $04
-	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerBig_Walk1
-	db $04
-	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerBig_Stand
-	db $04
-	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerBig_Walk1
-	db $80
-	db $00
-MbigRun:
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Run1
-	db $02
-	db $00
-	dw PlayerBig_Run2
-	db $02
-	db $00
-	dw PlayerBig_Run3
-	db $02
-	db $00
-	dw PlayerBig_Run2
-	db $02
-	db $00
-	dw PlayerBig_Run1
-	db $90
-	db $00
-MbigJump:
-	dw PlayerBig_Jump
-	db $23
-	db $00
-	dw PlayerBig_Fall
-	db $02
-	db $00
-	dw PlayerBig_Fall
 	db $81
-	db $00
-MbigLeap:
-	dw PlayerBig_RunJump
-	db $0A
-	db $00
-	dw PlayerBig_RunJump
-	db $80
-	db $00
-MbigSpin:
-	dw PlayerBig_Front
-	db $01
-	db $00
-	dw PlayerBig_Back
-	db $01
-	db $00
-	dw PlayerBig_Side1
-	db $01
-	db $00
-	dw PlayerBig_Side2
-	db $01
-	db $00
-	dw PlayerBig_Front
-	db $80
-	db $00
-MbigTurn:
-	dw PlayerBig_Turn
-	db $0A
-	db $00
-	dw PlayerBig_Turn
-	db $80
-	db $00
-MbigDuck:
-	dw PlayerBig_Duck
-	db $08
-	db $00
-	dw PlayerBig_Duck
-	db $80
-	db $00
-MbigLookUp:
-	dw PlayerBig_LookUp
+	db $00,$06,$07
+	db $01,$03,$08
+PlayerSmall_Run1: ;M
 	db $02
-	db $00
-	dw PlayerBig_LookUp
-	db $80
-	db $00
-MbigFall:
-	dw PlayerBig_Fall
-	db $02
-	db $00
-	dw PlayerBig_Fall
-	db $80
-	db $00
-MbigSink:
-	dw PlayerBig_Swim1
-	db $01
-	db $00
-	dw PlayerBig_Swim1
-	db $80
-	db $00
-MbigSwim:
-	dw PlayerBig_RunJump
-	db $03
-	db $00
-	dw PlayerBig_Swim2
-	db $03
-	db $00
-	dw PlayerBig_Swim1
-	db $03
-	db $00
-	dw PlayerBig_Swim2
-	db $03
-	db $00
-	dw PlayerBig_Fall
-	db $80
-	db $00
-MbigClimb:
-	dw PlayerBig_Climb1
-	db $08
-	db $00
-	dw PlayerBig_Climb1
-	db $80
-	db $00
-MbigClimbMove:
-	dw PlayerBig_Climb1
-	db $08
-	db $00
-	dw PlayerBig_Climb2
-	db $08
-	db $00
-	dw PlayerBig_Climb1
-	db $80
-	db $00
-MbigWin:
-	dw PlayerBig_Victory
-	db $0A
-	db $00
-	dw PlayerBig_Victory
-	db $80
-	db $00
-MbigHold:
-	dw PlayerBig_Hold
-	db $0A
-	db $00
-	dw PlayerBig_Hold
-	db $80
-	db $00
-MbigHoldWalk:
-	dw PlayerBig_HoldWalk1
-	db $04
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $04
-	db $00
-	dw PlayerBig_Hold
-	db $04
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $04
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $04
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $04
-	db $00
-	dw PlayerBig_Hold
-	db $04
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $04
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $80
-	db $00
-MbigHoldRun:
-	dw PlayerBig_HoldWalk1
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_Hold
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_Hold
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_Hold
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_Hold
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_Hold
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $90
-	db $00
-MbigHoldJump:
-	dw PlayerBig_HoldWalk1
-	db $23
-	db $00
-	dw PlayerBig_HoldWalk1
-	db $02
-	db $00
-	dw PlayerBig_HoldWalk1
+	db $03 
 	db $81
-	db $00
-MbigHoldDuck:
-	dw PlayerBig_DuckHold
-	db $08
-	db $00
-	dw PlayerBig_DuckHold
-	db $80
-	db $00
-	dw PlayerBig_LookUp
+	db $00,$09,$0A 
+	db $01,$03,$05
+PlayerSmall_Run2: ;M
 	db $02
-	db $00
-	dw PlayerBig_LookUp
-	db $80
-	db $00
-MbigHoldFall:
-	dw PlayerBig_HoldWalk2
+	db $03 
+	db $81 
+	db $00,$09,$0B 
+	db $01,$03,$08
+PlayerSmall_RunJump: ;M
 	db $02
-	db $00
-	dw PlayerBig_HoldWalk2
-	db $80
-	db $00
-MbigHoldSwim:
-	dw PlayerBig_Swim1
-	db $03
-	db $00
-	dw PlayerBig_Swim1
-	db $03
-	db $00
-	dw PlayerBig_Swim1
-	db $03
-	db $00
-	dw PlayerBig_Swim1
-	db $03
-	db $00
-	dw PlayerBig_Swim1
-	db $80
-	db $00
-PlayerBig_Stand:
-	db $02
-	db $04
-	db $84
-	db $08
-	db $29, $33
-	db $32, $34
-	db $35, $37
-	db $36, $38
-PlayerBig_Walk1:
-	db $02
-	db $04
-	db $84
-	db $08
-	db $31, $23
-	db $2A, $2C
-	db $2D, $2F
-	db $2E, $30
-PlayerBig_Walk2:
-	db $02
-	db $04
-	db $84
-	db $08
-	db $21, $23
-	db $22, $24
-	db $25, $27
-	db $26, $28
-PlayerBig_Run1:
-	db $03
-	db $04
+	db $03 
 	db $85
-	db $08
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $64, $65, $68
-	db $66, $67, $FF
-PlayerBig_Run3:
+	db $00,$0B,$0C
+	db $01,$03,$0D
+PlayerSmall_Jump: ;M
+	db $02
 	db $03
-	db $04
+	db $83
+	db $00,$13,$15
+	db $12,$14,$16
+PlayerSmall_Fall: ;M
+	db $02
+	db $03
+	db $83
+	db $00,$17,$19
+	db $01,$18,$1A
+PlayerSmall_Back: ;M
+	db $02
+	db $03 
 	db $85
-	db $08
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $6D, $6E, $68
-	db $6F, $70, $FF
-PlayerBig_Run2:
-	db $03
-	db $04
+	db $18,$1A,$3A
+	db $19,$39,$3B
+PlayerSmall_Front: ;M
+	db $02
+	db $03 
 	db $85
-	db $08
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $69, $6A, $68
-	db $6B, $6C, $FF
-PlayerBig_RunJump:
-	db $03
-	db $04
-	db $85
-	db $08
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $71, $72, $68
-	db $73, $74, $76
-PlayerBig_Jump:
-	db $02
-	db $04
-	db $89
-	db $08
-	db $61, $62
-	db $63, $64
-	db $65, $6E
-	db $67, $70
-PlayerBig_Fall:
-	db $02
-	db $04
-	db $89
-	db $08
-	db $69, $6A
-	db $6B, $6C
-	db $6D, $6E
-	db $6F, $70
-PlayerBig_Front:
-	db $02
-	db $04
-	db $88
-	db $08
-	db $21, $22
-	db $23, $24
-	db $25, $26
-	db $27, $28
-PlayerBig_Back:
-	db $42
-	db $04
-	db $89
-	db $08
-	db $74, $7B
-	db $76, $7C
-	db $78, $77
-	db $7A, $79
-PlayerBig_Side1:
-	db $02
-	db $04
-	db $84
-	db $08
-	db $29, $33
-	db $32, $34
-	db $35, $37
-	db $36, $38
-PlayerBig_Side2:
-	db $42
-	db $04
-	db $84
-	db $08
-	db $33, $29
-	db $34, $32
-	db $37, $35
-	db $38, $36
-PlayerBig_Turn:
-	db $02
-	db $04
-	db $86
-	db $08
-	db $A8, $AA
-	db $A9, $AB
-	db $AC, $AE
-	db $AD, $AF
-PlayerBig_Duck:
+	db $12,$14,$16 
+	db $13,$15,$17
+PlayerSmall_Turn: ;UN (unused,define animation and state)
 	db $02
 	db $03
-	db $84
-	db $08
-	db $39, $3A
-	db $3B, $3D
-	db $3C, $2B
-PlayerBig_LookUp:
+	db $83
+	db $06,$08,$0A
+	db $07,$09,$0B
+PlayerSmall_Duck: ;M
 	db $02
-	db $04
+	db $02
 	db $87
-	db $08
-	db $F3, $F4
-	db $F5, $F6
-	db $F7, $F8
-	db $F9, $FA
-PlayerBig_Swim1:
-	db $03
-	db $04
-	db $85
-	db $08
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $7C, $7D, $FF
-	db $73, $7B, $75
-PlayerBig_Swim2:
-	db $03
-	db $04
-	db $85
-	db $08
-	db $7F, $61, $FF
-	db $62, $63, $FF
-	db $77, $78, $FF
-	db $73, $7A, $76
-PlayerBig_Climb1:
+	db $02, $04
+	db $03, $05
+PlayerSmall_LookUp: ;M
 	db $02
-	db $04
-	db $88
-	db $08
-	db $29, $2A
-	db $2B, $2C
-	db $2D, $2E
-	db $2F, $30
-PlayerBig_Climb2:
-	db $42
-	db $04
-	db $88
-	db $08
-	db $2A, $29
-	db $2C, $2B
-	db $2E, $2D
-	db $30, $2F
-PlayerBig_Victory:
+	db $03
+	db $81
+	db $0C, $0E, $04
+	db $0D, $0F, $05
+PlayerSmall_LookUpHold: ;M
 	db $02
-	db $04
+	db $03
+	db $81
+	db $0C, $18, $12
+	db $0D, $19, $13	
+PlayerSmall_Swim1: ;M
+	db $02
+	db $03 
+	db $85
+	db $00,$04,$09
+	db $01,$08,$0A
+PlayerSmall_Swim2: ;new! ;M
+	db $02
+	db $03 
+	db $85
+	db $00,$04,$06
+	db $01,$05,$07
+PlayerSmall_Climb1: ;M
+	db $02
+	db $03
+	db $87
+	db $12,$14,$16
+	db $13,$15,$17
+PlayerSmall_Victory: ;M
+	db $02
+	db $03
+	db $8D
+	db $00,$15,$17
+	db $01,$16,$18
+PlayerSmall_Death1: ;M
+	db $02
+	db $03
 	db $8B
-	db $08
-	db $E9, $EA
-	db $EB, $EC
-	db $ED, $EE
-	db $EF, $F0
-PlayerBig_Hold:
-	db $02
-	db $04
-	db $86
-	db $08
-	db $BA, $A2
-	db $A1, $A3
-	db $B0, $B2
-	db $B1, $B3
-PlayerBig_HoldWalk1:
-	db $02
-	db $04
-	db $86
-	db $08
-	db $BA, $A2
-	db $A1, $A3
-	db $A4, $A6
-	db $A5, $A7
-PlayerBig_HoldWalk2:
-	db $02
-	db $04
-	db $86
-	db $08
-	db $BA, $A2
-	db $A1, $A3
-	db $AA, $AC
-	db $AB, $AD
-PlayerBig_DuckHold:
+	db $17,$19,$1B
+	db $18,$1A,$1C
+PlayerSmall_Hold: ;M
 	db $02
 	db $03
-	db $86
-	db $08
-	db $B4, $B5
-	db $B6, $B7
-	db $B8, $B9
-PlayerFire_AnimTbl:
-	dw MfireStand
-	dw MfireWalk
-	dw MfireRun
-	dw MfireWalk
-	dw MfireJump
-	dw MfireSpin
-	dw MfireTurn
-	dw MfireDuck
-	dw MfireLookup
-	dw MfireLeap
-	dw MfireFall
-	dw MfireSink
-	dw MfireSwim
-	dw MfireClimb
-	dw MfireClimbMove
-	dw MfireLeap ;unused
-	dw MfireWin
-	dw MfireShootAir
-	dw MfireShootSwim
-	dw MfireShoot
-PlayerFireHold_AnimTbl:
-	dw MfireHold
-	dw MfireHoldWalk
-	dw MfireHoldRun
-	dw MfireHoldWalk
-	dw MfireHoldJump
-	dw MfireSpin
-	dw MfireTurn
-	dw MfireHoldDuck
-	dw MfireLookup
-	dw MfireSink
-	dw MfireHoldSwim ;unused but fully implemented
-	dw MfireSink
-	dw MfireSwim
-	dw MfireClimb
-	dw MfireClimbMove
-	dw MfireSink
-	dw MfireWin
-	dw MfireShootAir
-	dw MfireShootSwim
-	dw MfireShoot
-MfireStand:
-	dw PlayerFire_Stand
-	db $0A
-	db $00
-	dw PlayerFire_Stand
-	db $80
-	db $00
-MfireWalk:
-	dw PlayerFire_Walk1
-	db $04
-	db $00
-	dw PlayerFire_Walk2
-	db $04
-	db $00
-	dw PlayerFire_Stand
-	db $04
-	db $00
-	dw PlayerFire_Walk2
-	db $04
-	db $00
-	dw PlayerFire_Walk1
-	db $04
-	db $00
-	dw PlayerFire_Walk2
-	db $04
-	db $00
-	dw PlayerFire_Stand
-	db $04
-	db $00
-	dw PlayerFire_Walk2
-	db $04
-	db $00
-	dw PlayerFire_Walk1
-	db $80
-	db $00
-MfireRun:
-	dw PlayerFire_Walk1
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Stand
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Walk1
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Stand
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Walk1
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Stand
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Walk1
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Stand
-	db $02
-	db $00
-	dw PlayerFire_Walk2
-	db $02
-	db $00
-	dw PlayerFire_Run1
-	db $02
-	db $00
-	dw PlayerFire_Run2
-	db $02
-	db $00
-	dw PlayerFire_Run3
-	db $02
-	db $00
-	dw PlayerFire_Run2
-	db $02
-	db $00
-	dw PlayerFire_Run1
-	db $90
-	db $00
-MfireJump:
-	dw PlayerFire_Jump
-	db $23
-	db $00
-	dw PlayerFire_Fall
-	db $02
-	db $00
-	dw PlayerFire_Fall
 	db $81
-	db $00
-MfireLeap:
-	dw PlayerFire_RunJump
-	db $0A
-	db $00
-	dw PlayerFire_RunJump
-	db $80
-	db $00
-MfireSpin:
-	dw PlayerFire_Front
-	db $01
-	db $00
-	dw PlayerFire_Back
-	db $01
-	db $00
-	dw PlayerFire_Stand
-	db $01
-	db $00
-	dw PlayerFire_Flipped
-	db $01
-	db $00
-	dw PlayerFire_Front
-	db $80
-	db $00
-MfireTurn:
-	dw PlayerFire_Turn
-	db $0A
-	db $00
-	dw PlayerFire_Turn
-	db $80
-	db $00
-MfireDuck:
-	dw PlayerFire_Duck
-	db $08
-	db $00
-	dw PlayerFire_Duck
-	db $80
-	db $00
-MfireLookup:
-	dw PlayerFire_LookUp
+	db $00, $10, $12
+	db $01, $11, $13
+PlayerSmall_HoldWalk: ;M
 	db $02
-	db $00
-	dw PlayerFire_LookUp
-	db $80
-	db $00
-MfireFall:
-	dw PlayerFire_Fall
+	db $03
+	db $81
+	db $00, $14, $16
+	db $01, $15, $17
+PlayerSmall_DuckHold: ;M
 	db $02
-	db $00
-	dw PlayerFire_Fall
-	db $80
-	db $00
-MfireSink:
-	dw PlayerFire_Swim1
-	db $01
-	db $00
-	dw PlayerFire_Swim1
-	db $80
-	db $00
-MfireSwim:
-	dw PlayerFire_RunJump
+	db $02
+	db $87
+	db $06, $08
+	db $07, $09
+PlayerSmall_HoldSwim: ;UNUSED
+	db $02 ;placeholder data
+	db $02
+	db $87
+	db $06, $08
+	db $07, $09
+PlayerPowerDown: ;new! no animation!
+	db $02
 	db $03
-	db $00
-	dw PlayerFire_Swim2
-	db $03
-	db $00
-	dw PlayerFire_Swim1
-	db $03
-	db $00
-	dw PlayerFire_Swim2
-	db $03
-	db $00
-	dw PlayerFire_Fall
-	db $80
-	db $00
-MfireClimb:
-	dw PlayerFire_Climb1
-	db $08
-	db $00
-	dw PlayerFire_Climb1
-	db $80
-	db $00
-MfireClimbMove:
-	dw PlayerFire_Climb1
-	db $08
-	db $00
-	dw PlayerFire_Climb2
-	db $08
-	db $00
-	dw PlayerFire_Climb1
-	db $80
-	db $00
-MfireWin:
-	dw PlayerFire_Victory
-	db $0A
-	db $00
-	dw PlayerFire_Victory
-	db $80
-	db $00
-MfireShootAir:
-	dw PlayerFire_Swim1
-	db $03
-	db $00
-	dw PlayerFire_Swim1
-	db $80
-	db $00
-MfireShootSwim:
-	dw PlayerFire_Swim2
-	db $03
-	db $00
-	dw PlayerFire_Swim1
-	db $03
-	db $00
-	dw PlayerFire_Swim1
-	db $80
-	db $00
+	db $85
+	db $33,$35,$37
+	db $34,$36,$38
+;**********************************************
+;Super Mario standard animations
+;**********************************************
+BigMarioAnimTblLo:
+	db <MbigStand 			;nothing 	00
+	db <MbigHold
+	db <MbigWalk			;walking 	01
+	db <MbigHoldWalk
+	db <MbigRun				;running 	02
+	db <MbigHoldRun
+	db <MbigWalk			;unused  	03
+	db <MbigHoldWalk
+	db <MbigJump			;jumping 	04
+	db <MbigHoldJump
+	db <MbigSpin 			;spin    	05
+	db <MbigSpin
+	db <MbigTurn			;skid    	06 (Unused)
+	db <MbigTurn
+	db <MbigDuck			;duck    	07
+	db <MbigHoldDuck
+	db <MbigLookUp			;look up 	08
+	db <MbigHoldLookUp
+	db <MbigLeap			;run jump   09
+	db <MbigSink
+	db <MbigFall			;Falling 	0A note that this is specifically for falling from a ledge, not a jump
+	db <MbigHoldFall
+	db <MbigSink			;sink    	0B
+	db <MbigSink
+	db <MbigSwim			;swim    	0C
+	db <MbigHoldSwim
+	db <MbigClimb			;climb   	0D
+	db <MbigClimb
+	db <MbigClimbMove		;climb move	0E
+	db <MbigClimbMove
+	db <MbigLeap			;flying		0F
+	db <MbigSink
+	db <MbigWin				;victory	10	
+	db <MbigWin
+	db <MfireShootAir		;jump fire  11 ;ADD THESE IN!!!
+	db <MfireShootAir
+	db <MfireShootSwim		;swim fire  12
+	db <MfireShootSwim	
+	db <MfireShoot			;throw fire 13
+	db <MfireShoot
+BigMarioAnimTblHi:
+	db >MbigStand 			;nothing 	00
+	db >MbigHold
+	db >MbigWalk			;walking 	01
+	db >MbigHoldWalk
+	db >MbigRun				;running 	02
+	db >MbigHoldRun
+	db >MbigWalk			;unused  	03
+	db >MbigHoldWalk
+	db >MbigJump			;jumping 	04
+	db >MbigHoldJump
+	db >MbigSpin 			;spin    	05
+	db >MbigSpin
+	db >MbigTurn			;skid    	06 (Unused)
+	db >MbigTurn
+	db >MbigDuck			;duck    	07
+	db >MbigHoldDuck
+	db >MbigLookUp			;look up 	08
+	db >MbigHoldLookUp
+	db >MbigLeap			;run jump   09
+	db >MbigSink
+	db >MbigFall			;Falling 	0A note that this is specifically for falling from a ledge, not a jump
+	db >MbigHoldFall
+	db >MbigSink			;sink    	0B
+	db >MbigSink
+	db >MbigSwim			;swim    	0C
+	db >MbigHoldSwim
+	db >MbigClimb			;climb   	0D
+	db >MbigClimb
+	db >MbigClimbMove		;climb move	0E
+	db >MbigClimbMove
+	db >MbigLeap			;flying		0F
+	db >MbigSink
+	db >MbigWin				;victory	10	
+	db >MbigWin
+	db >MfireShootAir		;jump fire  11 ;ADD THESE IN!!!
+	db >MfireShootAir
+	db >MfireShootSwim		;swim fire  12
+	db >MfireShootSwim	
+	db >MfireShoot			;throw fire 13
+	db >MfireShoot
+;**********************************************
+;Super Mario animation data 
+;**********************************************
+MfireShootAir: ;placeholder data 
+	db $03 ;F1
+	dw PlayerBig_Swim3
+	db $00 
+	db $80 ;Loop F1
+MfireShootSwim: ;placeholder data 
+	db $03 ;F1
+	dw PlayerBig_Swim3
+	db $00 
+	db $80 ;Loop F1
 MfireShoot:
-	dw PlayerFire_Shoot
-	db $03
-	db $00
-	dw PlayerFire_Shoot
-	db $80
-	db $00
-MfireHold:
-	dw PlayerFire_Hold
-	db $0A
-	db $00
-	dw PlayerFire_Hold
-	db $80
-	db $00
-MfireHoldWalk:
-	dw PlayerFire_HoldWalk1
-	db $04
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $04
-	db $00
-	dw PlayerFire_Hold
-	db $04
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $04
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $04
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $04
-	db $00
-	dw PlayerFire_Hold
-	db $04
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $04
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $80
-	db $00
-MfireHoldRun:
-	dw PlayerFire_HoldWalk1
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_Hold
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_Hold
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_Hold
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_Hold
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_Hold
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $90
-	db $00
-MfireHoldJump:
-	dw PlayerFire_HoldWalk1
-	db $23
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk1
-	db $81
-	db $00
-MfireHoldDuck:
-	dw PlayerFire_DuckHold
-	db $08
-	db $00
-	dw PlayerFire_DuckHold
-	db $80
-	db $00
-MfireHoldSwim:
-	dw PlayerFire_HoldWalk2
-	db $02
-	db $00
-	dw PlayerFire_HoldWalk2
-	db $80
-	db $00
-PlayerFire_Stand:
-	db $02
-	db $04
-	db $80
-	db $08
-	db $2C, $2E
-	db $2D, $2F
-	db $18, $1A
-	db $19, $1B
-PlayerFire_Walk1:
-	db $02
-	db $04
-	db $80
-	db $08
-	db $00, $02
-	db $01, $03
-	db $04, $06
-	db $05, $07
-PlayerFire_Walk2:
-	db $02
-	db $04
-	db $80
-	db $08
-	db $0A, $0C
-	db $0B, $0D
-	db $0E, $28
-	db $0F, $29
-PlayerFire_Run1:
-	db $03
-	db $04
-	db $83
-	db $08
-	db $D6, $E3, $FF
-	db $E2, $E4, $FF
-	db $F0, $F2, $FC
-	db $F1, $F3, $FF
-PlayerFire_Run3:
-	db $03
-	db $04
-	db $83
-	db $08
-	db $D6, $E3, $FF
-	db $E2, $E4, $FF
-	db $F8, $FA, $FC
-	db $F9, $FB, $FF
-PlayerFire_Run2:
-	db $03
-	db $04
-	db $83
-	db $08
-	db $D6, $E3, $FF
-	db $E2, $E4, $FF
-	db $F4, $F6, $FC
-	db $F5, $F7, $FF
-PlayerFire_RunJump:
-	db $03
-	db $04
-	db $83
-	db $08
-	db $D6, $E3, $FF
-	db $E2, $E4, $FF
-	db $C0, $C2, $C6
-	db $C1, $C3, $C7
-PlayerFire_Jump:
-	db $02
-	db $04
-	db $83
-	db $08
-	db $D8, $DA
-	db $D9, $DB
-	db $DC, $E0
-	db $DD, $E1
-PlayerFire_Fall:
-	db $02
-	db $04
-	db $83
-	db $08
-	db $E9, $EA
-	db $EB, $EC
-	db $E6, $E0
-	db $E8, $E1
-PlayerFire_Front:
-	db $02
-	db $04
-	db $80
-	db $08
-	db $24, $16
-	db $25, $2A
-	db $26, $2B
-	db $27, $30
-PlayerFire_Back:
-	db $42
-	db $04
-	db $80
-	db $08
-	db $32, $20
-	db $39, $21
-	db $3A, $22
-	db $3B, $23
-PlayerFire_Flipped:
-	db $42
-	db $04
-	db $80
-	db $08
-	db $2E, $2C
-	db $2F, $2D
-	db $1A, $18
-	db $1B, $19
-PlayerFire_Turn:
-	db $02
-	db $04
-	db $82
-	db $08
-	db $A8, $AA
-	db $A9, $AB
-	db $AC, $AE
-	db $AD, $AF
-PlayerFire_Duck:
-	db $02
-	db $03
-	db $80
-	db $08
-	db $31, $33
-	db $34, $36
-	db $35, $37
-PlayerFire_LookUp:
-	db $02
-	db $04
-	db $81
-	db $08
-	db $40, $41
-	db $42, $43
-	db $44, $45
-	db $46, $47
-PlayerFire_Swim1:
-	db $03
-	db $04
-	db $83
-	db $08
-	db $D6, $E3, $FF
-	db $E2, $E4, $FF
-	db $CC, $CE, $FF
-	db $CD, $CF, $E7
-PlayerFire_Swim2:
-	db $03
-	db $04
-	db $83
-	db $08
-	db $D6, $E3, $FF
-	db $E2, $E4, $FF
-	db $C8, $CA, $FF
-	db $C9, $CB, $C7
-PlayerFire_Climb1:
-	db $02
-	db $04
-	db $82
-	db $08
-	db $B0, $B2
-	db $B1, $B3
-	db $B4, $B6
-	db $B5, $B7
-PlayerFire_Climb2:
-	db $42
-	db $04
-	db $82
-	db $08
-	db $B2, $B0
-	db $B3, $B1
-	db $B6, $B4
-	db $B7, $B5
-PlayerFire_Victory:
-	db $02
-	db $04
-	db $81
-	db $08
-	db $68, $69
-	db $6A, $6B
-	db $6C, $6D
-	db $6E, $6F
-PlayerFire_Shoot:
-	db $02
-	db $04
-	db $80
-	db $08
-	db $08, $0C
-	db $09, $0D
-	db $1C, $1E
-	db $1D, $1F
-PlayerFire_Hold:
-	db $02
-	db $04
-	db $82
-	db $08
-	db $80, $82
-	db $81, $83
-	db $A0, $A2
-	db $A1, $A3
-PlayerFire_DuckHold:
-	db $02
-	db $03
-	db $81
-	db $08
-	db $78, $79
-	db $7A, $7B
-	db $7C, $7D
-PlayerFire_HoldWalk1:
-	db $02
-	db $04
-	db $82
-	db $08
-	db $80, $82
-	db $81, $83
-	db $A0, $A2
-	db $85, $87
-PlayerFire_HoldWalk2:
-	db $02
-	db $04
-	db $82
-	db $08
-	db $80, $82
-	db $81, $83
-	db $A0, $A2
-	db $8B, $8D
-PlayerCapeStatic_AnimTbl: ;player animations for when the cape isn't animating
-	dw McapeStand ;unique from normal sprite 
-	dw McapeWalk  ;larger mapping but otherwise identical
-	dw McapeRun	  ;this suggests that the cape may have originally been part of the player sprite
-	dw MbigWalk	  ;in game the cape is mostly a separate sprite bar a few frames
-	dw MbigJump
-	dw McapeSpin
-	dw MbigTurn
-	dw MbigDuck
-	dw McapeLookUp
-	dw MbigLeap
-	dw MbigFall
-	dw MbigSink
-	dw MbigSwim
-	dw McapeClimb
-	dw McapeClimbMove
-	dw MbigLeap
-	dw MbigWin
-PlayerCapeStaticHold_AnimTbl: 
-	dw McapeHoldStand
-	dw MbigHoldWalk
-	dw McapeRun
-	dw MbigHoldWalk
-	dw MbigHoldJump
-	dw McapeSpin
-	dw MbigTurn
-	dw MbigHoldDuck
-	dw McapeLookUp
-	dw MbigSink
-	dw MbigHoldFall
-	dw MbigSink
-	dw MbigHoldSwim
-	dw McapeClimb
-	dw McapeClimbMove
-	dw MbigSink
-	dw MbigWin
-McapeStand:
-	dw PlayerCape_Stand
-	db $0A
-	db $00
-	dw PlayerCape_Stand
-	db $80
-	db $00
-McapeWalk:
+	db $03 ;F1
+	dw PlayerBig_FireThrow 
+	db $00 
+	db $80 ;Loop F1
+MbigStand:
+	db $03 ;F1
+	dw PlayerBig_Stand 
+	db $00 
+	db $80 ;Loop F1
+MbigWalk:
+	db $04 ;f1
 	dw PlayerBig_Walk1
-	db $04
-	db $00
+	db $01
+	db $04 ;f2
 	dw PlayerBig_Walk2
-	db $04
 	db $00
-	dw PlayerCape_Stand
 	db $04
+	dw PlayerBig_Stand
 	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerBig_Walk1
-	db $04
-	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerCape_Stand
-	db $04
-	db $00
-	dw PlayerBig_Walk2
-	db $04
-	db $00
-	dw PlayerBig_Walk1
 	db $80
-	db $00
-McapeRun:
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerCape_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerCape_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerCape_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Walk1
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerCape_Stand
-	db $02
-	db $00
-	dw PlayerBig_Walk2
-	db $02
-	db $00
-	dw PlayerBig_Run1
-	db $02
-	db $00
-	dw PlayerBig_Run2
-	db $02
-	db $00
+MbigRun:
+	db $02 ;f3
 	dw PlayerBig_Run3
-	db $02
-	db $00
-	dw PlayerBig_Run2
-	db $02
-	db $00
+	db $01
+	db $02;f1
 	dw PlayerBig_Run1
-	db $90
 	db $00
-McapeSpin:
-	dw PlayerBig_Front
-	db $01
+	db $02 ;f2
+	dw PlayerBig_Run2
 	db $00
-	dw PlayerCape_Back
-	db $01
-	db $00
-	dw PlayerBig_Side1
-	db $01
-	db $00
-	dw PlayerBig_Side2
-	db $01
-	db $00
-	dw PlayerBig_Front
 	db $80
+MbigJump:
+	db $23
+	dw PlayerBig_Jump
 	db $00
-McapeLookUp:
-	dw PlayerCape_LookUp
 	db $02
+	dw PlayerBig_Fall
 	db $00
-	dw PlayerCape_LookUp
+	db $81
+MbigLeap:
+	db $23
+	dw PlayerBig_RunJump
+	db $00
+	db $80	
+MbigSpin:
+	db $01
+	dw PlayerBig_Front
+	db $00
+	db $01
+	dw PlayerBig_Stand
+	db $00
+	db $01
+	dw PlayerBig_Back
+	db $00
+	db $01
+	dw PlayerBig_Stand  ;mirrored
+	db $F0 
 	db $80
-	db $00
-McapeClimb:
-	dw PlayerCape_Climb1
-	db $08
-	db $00
-	dw PlayerCape_Climb1
+MbigTurn:
+	db $7E
+	dw PlayerBig_Turn 
+	db $00 
 	db $80
-	db $00
-McapeClimbMove:
-	dw PlayerCape_Climb1
-	db $08
-	db $00
-	dw PlayerCape_Climb2
-	db $08
-	db $00
-	dw PlayerCape_Climb1
+MbigDuck:
+	db $7E
+	dw PlayerBig_Duck
+	db $00 
 	db $80
+MbigLookUp:
+	db $7E
+	dw PlayerBig_LookUp 
+	db $00 
+	db $80
+MbigFall:
+	db $7E
+	dw PlayerBig_Fall
+	db $00 
+	db $80
+MbigSink:
+	db $7E
+	dw PlayerBig_Swim3
+	db $00 
+	db $80
+	
+MbigSwim: ;add new frame!!
+	db $03
+	dw PlayerBig_Swim1
+	db $00 
+	db $03
+	dw PlayerBig_Swim2
+	db $00 
+	db $03
+	dw PlayerBig_Swim3
 	db $00
-McapeHoldStand:
-	dw PlayerCape_Hold
+	db $80
+MbigClimb:
+	db $7E
+	dw PlayerBig_Climb1
+	db $00 
+	db $80
+MbigClimbMove:
+	db $08
+	dw PlayerBig_Climb1
+	db $00 
+	db $08
+	dw PlayerBig_Climb1 ;mirrored
+	db $F0
+	db $80
+MbigWin:
 	db $0A
+	dw PlayerBig_Victory
+	db $00 
+	db $80
+MbigHold:
+	db $7E
+	dw PlayerBig_Hold 
+	db $00 
+	db $80
+	
+MbigHoldWalk:
+	db $04
+	dw PlayerBig_Hold
+	db $00 
+	db $04
+	dw PlayerBig_HoldWalk1
+	db $00 
+	db $04
+	dw PlayerBig_HoldWalk2
+	db $01
+	db $80
+MbigHoldRun:
+	db $02
+	dw PlayerBig_Hold
+	db $00 
+	db $02
+	dw PlayerBig_HoldWalk1
+	db $00 
+	db $02
+	dw PlayerBig_HoldWalk2
+	db $01
+	db $80
+MbigHoldJump:
+	db $7E
+	dw PlayerBig_HoldWalk1
+	db $00 
+	db $80
+MbigHoldDuck:
+	db $7E
+	dw PlayerBig_DuckHold
 	db $00
-	dw PlayerCape_Hold
+	db $80
+MbigHoldFall:
+	db $7E
+	dw PlayerBig_HoldWalk2
+	db $00
+	db $80
+MbigHoldSwim: ;unused
+	dw PlayerBig_Swim1
+	db $03
+	db $00
+	dw PlayerBig_Swim1
+	db $03
+	db $00
+	dw PlayerBig_Swim1
+	db $03
+	db $00
+	dw PlayerBig_Swim1
+	db $03
+	db $00
+	dw PlayerBig_Swim1
 	db $80
 	db $00
-PlayerCape_Stand:
+MbigHoldLookUp: ;new!
+	db $7E
+	dw PlayerBig_LookUpHold
+	db $00
+	db $80
+;**********************************************
+;Super Mario mapping data
+;**********************************************
+PlayerBig_Stand: ;M
+	db $02 ;width
+	db $04 ;height
+	db $80 ;bank 
+	db $1B,$1D,$1F,$21 ;tile IDs in columns left to right 
+	db $1C,$1E,$20,$22
+PlayerBig_Walk1: ;M
+	db $02 
+	db $04 
+	db $80 
+	db $1B,$1D,$27,$29
+	db $1C,$1E,$28,$2A
+PlayerBig_Walk2: ;M
+	db $02 
+	db $04 
+	db $80 
+	db $1B,$1D,$23,$25
+	db $1C,$1E,$24,$26
+PlayerBig_Run1: ;M
+	db $03
+	db $04 
+	db $80
+	db $FF,$FF,$2B,$FF
+	db $1B,$1D,$2C,$2E
+	db $1C,$1E,$2D,$2F
+PlayerBig_Run2: ;M
+	db $03
+	db $04 
+	db $80
+	db $FF,$FF,$2B,$FF
+	db $1B,$1D,$2C,$33
+	db $1C,$1E,$32,$34
+PlayerBig_Run3: ;M
+	db $03
+	db $04 
+	db $80
+	db $FF,$FF,$2B,$FF
+	db $1B,$1D,$2C,$30
+	db $1C,$1E,$2D,$31
+PlayerBig_RunJump: ;M
+	db $03 
+	db $04 
+	db $82
+	db $FF,$FF,$2C,$2F
+	db $1B,$1D,$2D,$30
+	db $2B,$39,$2E,$31
+PlayerBig_Jump: ;M
+	db $02 
+	db $04 
+	db $82
+	db $1B,$1D,$1F,$21
+	db $1C,$1E,$20,$22
+PlayerBig_Fall: ;M
+	db $02 
+	db $04 
+	db $82
+	db $23,$25,$27,$29
+	db $24,$26,$28,$2A
+PlayerBig_Front: ;M
+	db $02 
+	db $04 
+	db $8A
+	db $1F,$21,$23,$25
+	db $20,$22,$24,$26
+PlayerBig_Back: ;M
+	db $02 
+	db $04 
+	db $8A
+	db $27,$29,$2B,$2D
+	db $28,$2A,$2C,$2E
+PlayerBig_Turn: ;UN (no animation, define state)
+	.db $02
+	.db	$04 
+	.db $82
+	.db $32,$34,$36,$38
+	.db $33,$35,$37,$31
+PlayerBig_Duck: ;M
 	db $02
+	db $02
+	db $86
+	db $1B, $1D
+	db $1C, $1E
+PlayerBig_LookUp: ;M
+	db $02
+	db $04 
+	db $80
+	db $35,$37,$1F,$21
+	db $36,$38,$20,$22
+PlayerBig_Swim1: ;M
+	db $03
 	db $04
 	db $84
-	db $08
-	db $29, $33
-	db $32, $34
-	db $35, $37
-	db $36, $3F
-PlayerCape_LookUp:
-	db $02
-	db $04
-	db $87
-	db $08
-	db $F3, $F4
-	db $F5, $F6
-	db $F7, $F8
-	db $F9, $FB
-PlayerCape_Back:
+	db $FF,$FF,$29,$2B
+	db $1B,$1D,$31,$2C
+	db $1C,$1E,$32,$24
+PlayerBig_Swim2: ;M
 	db $03
 	db $04
-	db $89
-	db $10
-	db $71, $73, $74
-	db $72, $75, $76
-	db $FF, $77, $78
-	db $FF, $79, $7A
-PlayerCape_Climb1:
+	db $84
+	db $FF,$FF,$25,$27
+	db $1B,$1D,$2F,$28
+	db $1C,$1E,$30,$24
+PlayerBig_Swim3: ;M new!
+	db $03
+	db $04
+	db $84
+	db $FF,$FF,$1F,$22
+	db $1B,$1D,$20,$23
+	db $1C,$1E,$21,$24
+PlayerBig_Climb1: ;M
 	db $02
 	db $04
 	db $88
-	db $08
-	db $29, $2A
-	db $2B, $2C
-	db $31, $32
-	db $33, $34
-PlayerCape_Climb2:
-	db $42
+	db $00,$02,$04,$06
+	db $01,$03,$05,$07
+PlayerBig_Victory: ;M
+	db $02 
+	db $04 
+	db $8A
+	db $2F,$31,$33,$35
+	db $30,$32,$34,$36
+PlayerBig_Hold: ;M
+	db $02
 	db $04
-	db $88
-	db $08
-	db $2A, $29
-	db $2C, $2B
-	db $32, $31
-	db $34, $33
-PlayerCape_Hold:
+	db $80
+	db $1B,$1D,$39,$2E
+	db $1C,$1E,$3A,$2F
+PlayerBig_HoldWalk1: ;M
+	db $02
+	db $04
+	db $80
+	db $1B,$1D,$39,$33
+	db $1C,$1E,$3B,$34
+PlayerBig_HoldWalk2: ;M
+	db $02
+	db $04
+	db $80
+	db $1B,$1D,$39,$30
+	db $1C,$1E,$3A,$31
+PlayerBig_DuckHold: ;M
+	db $02
+	db $03
+	db $86
+	db $1F,$21,$23
+	db $20,$22,$24
+PlayerBig_LookUpHold: ;M
+	db $02
+	db $04 
+	db $80
+	db $35,$37,$39,$2E
+	db $36,$38,$3A,$2F
+PlayerBig_FireThrow: ;M
 	db $02
 	db $04
 	db $86
-	db $08
-	db $BA, $A2
-	db $A1, $A3
-	db $B0, $B2
-	db $B1, $BB
-PlayerCapeMove_AnimTbl:
-	dw MbigStand
-	dw MbigWalk
-	dw MbigRun
-	dw MbigWalk
-	dw MbigJump 
-	dw MbigSpin
-	dw MbigTurn
-	dw MbigDuck
-	dw MbigLookUp
-	dw MbigLeap
-	dw MbigFall
-	dw MbigSink
-	dw MbigSwim
-	dw McapeClimb
-	dw McapeClimbMove
-	dw MbigLeap
-	dw MbigWin
-PlayerCapeMoveHold_AnimTbl:
-	dw MbigHold
-	dw MbigHoldWalk
-	dw MbigHoldRun
-	dw MbigHoldWalk
-	dw MbigHoldJump
-	dw MbigSpin
-	dw MbigTurn
-	dw MbigHoldDuck
-	dw MbigLookUp
-	dw MbigSink
-	dw MbigHoldFall
-	dw MbigSink
-	dw MbigHoldSwim
-	dw McapeClimb
-	dw McapeClimbMove
-	dw MbigSink
-	dw MbigWin
+	db $25,$27,$32,$34
+	db $26,$31,$33,$35
+;**********************************************
+;Yoshi Animation tbls, work on these later
+;**********************************************
 YoshiAnimTablesTbl_1:
 	dw Yoshi_AnimTbl
 	dw Yoshi_AnimTbl

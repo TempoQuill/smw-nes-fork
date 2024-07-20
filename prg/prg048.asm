@@ -18,6 +18,10 @@ bra4_8013:
 	BCS bra4_8024
 	INC ObjectVariables,X
 bra4_8024:
+; NOTE This routine has a deceptively useless branch
+; the contents of A have the 7th bit masked away, meaning the branch
+; will always fail.
+; Even still, A gets overwritten without using its restored contents
 	PHA
 	CLC
 	ADC ObjectYPos,X
@@ -341,7 +345,7 @@ bra4_8274:
 loc4_8274:
 	INC ObjectVariables,X
 	RTS
-ObjID_hBE:
+Obj_hBE:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_8282
@@ -462,7 +466,7 @@ bra4_835A:
 tbl4_836E:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_8378
 	dw ptr_AD88
 ptr9_8378:
@@ -479,7 +483,7 @@ ptr9_8378:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #$12
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	LDA ObjectSlot,X
 	CLC
@@ -560,7 +564,7 @@ bra4_8422:
 	STA $32
 	LDA tbl4_9A83+1,Y
 	STA $33
-	JSR sub4_8140
+	JMP sub4_8140
 bra4_843A_RTS:
 	RTS
 ptr9_843B:
@@ -601,7 +605,7 @@ bra4_8468:
 	db $40
 	db $01
 	db $00
-ObjID_hC0:
+Obj_hC0:
 	LDX $A4
 	LDA ObjectVariables,X
 	CMP #$80
@@ -723,7 +727,7 @@ bra4_8560:
 tbl4_8574:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_857E
 	dw ptr_AD88
 ptr9_857E:
@@ -740,7 +744,7 @@ ptr9_857E:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #$12
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	LDA ObjectSlot,X
 	CLC
@@ -851,7 +855,7 @@ loc4_8669:
 	STA $05F0
 	TYA
 	JMP loc4_9104
-ObjID_hC2:
+Obj_hC2:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_867F
@@ -968,13 +972,13 @@ bra4_8750:
 tbl4_8764:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_876E
 	dw ptr_AD88
 ptr9_876E:
 	JSR sub4_8778
 	JSR Obj_CapeHitCheck
-	JSR jmp_54_BC3E
+	JMP jmp_54_BC3E
 	RTS
 sub4_8778:
 	LDA ObjectState,X
@@ -1064,7 +1068,7 @@ tbl4_8804:
 	db $07
 	db $07
 	db $07
-ObjID_hCE:
+Obj_hCE:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_881E
@@ -1255,7 +1259,7 @@ bra4_898A:
 tbl4_899E:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_89A8
 	dw ptr_AD88
 ptr9_89A8:
@@ -1272,7 +1276,7 @@ ptr9_89A8:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #$12
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	LDA ObjectSlot,X
 	AND #$01
@@ -1414,7 +1418,7 @@ tbl4_8AAB:
 	db $08
 	db $08
 	db $08
-ObjID_hAE:
+Obj_hAE:
 	LDX $A4
 	LDA ObjectXPos,X
 	SEC
@@ -1505,7 +1509,7 @@ bra4_8B7E:
 	STY $05F0
 	LDA #$00
 	JMP loc4_90CE
-ObjID_hD0:
+Obj_hD0:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_8B90
@@ -1622,7 +1626,7 @@ bra4_8C61:
 tbl4_8C75:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_8C7F
 	dw ptr_AD88
 ptr9_8C7F:
@@ -1639,7 +1643,7 @@ ptr9_8C7F:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #$12
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	LDA ObjectSlot,X
 	AND #$01
@@ -1744,7 +1748,7 @@ bra4_8D71:
 	STA $05F0
 	TYA
 	JMP loc4_9104
-ObjID_hB0:
+Obj_hB0:
 	LDX $A4
 	JSR sub4_8DEC
 	LDA ObjectXPos,X
@@ -1821,7 +1825,7 @@ bra4_8E0B:
 	STA $32
 	LDA tbl4_9A83+1,Y
 	STA $33
-	JSR sub4_8140
+	JMP sub4_8140
 bra4_8E23_RTS:
 	RTS
 tbl4_8E24:
@@ -1840,7 +1844,7 @@ bra4_8E35:
 	STY $05F0
 	LDA #$01
 	JMP loc4_90CE
-ObjID_hD2:
+Obj_hD2:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_8E47
@@ -1983,7 +1987,7 @@ bra4_8F4D:
 tbl4_8F61:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_8F6B
 	dw ptr_AD88
 ptr9_8F6B:
@@ -2000,7 +2004,7 @@ ptr9_8F6B:
 	STA PlayerXSpeed
 	LDA #$01
 	JSR RewardPoints
-	LDA #$12
+	LDA #sfx_EnemyHit2
 	STA SFXRegister
 	LDA ObjectSlot,X
 	AND #$01
@@ -2091,7 +2095,7 @@ tbl4_9038:
 	db $0F
 	db $0F
 	db $0F
-ObjID_hB2:
+Obj_hB2:
 	LDX $A4
 	LDA ObjFrameCounter
 	AND #$02
@@ -2391,7 +2395,7 @@ SprMap_BaseballChuck_Throw2:
 	db $32, $33, $34
 ptr6_9286:
 	RTS
-ObjID_hD6:
+Obj_hD6:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra4_92C1
@@ -2520,7 +2524,7 @@ tbl4_935F:
 	db $80
 	db $00
 	db $40
-ObjID_hB4:
+Obj_hB4:
 	LDX $A4
 	LDA BooBuddiesFlag
 	CMP #$FF
@@ -2603,7 +2607,7 @@ bra4_93FA:
 bra4_93FE:
 	STA ObjectYScreen,X
 	RTS
-ObjID_hD8:
+Obj_hD8:
 	LDX $A4
 	LDA ObjectVariables,X
 	CMP #$80
@@ -2721,7 +2725,7 @@ bra4_94DF:
 tbl4_94F3:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr9_94FD
 	dw ptr_AD88
 ptr9_94FD:
@@ -2920,7 +2924,7 @@ bra4_9671:
 ;----------------------------------------
 ;Boo object code
 ;----------------------------------------
-ObjID_hDA:
+Obj_hDA:
 	LDX $A4 ;Get object index
 	LDA ObjectVariables,X
 	CMP #$80
@@ -3098,7 +3102,7 @@ loc4_97C1:
 bra4_97E7_RTS:
 	RTS
 
-ObjID_hDC:
+Obj_hDC:
 	LDX $A4
 	LDA ObjectXPos,X
 	SEC

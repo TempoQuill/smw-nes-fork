@@ -1,8 +1,8 @@
 DonutPlains_P1:
 DonutPlains_P1Loop:
-	.byte SongSpeed, $01
+	.byte SongSpeed, 1
 	.byte Transpose, $0C
-	.byte DutySet, $5B
+	.byte DutySet, $07
 	.byte PitchSet, $39
 	.byte VolSet, $11
 	.byte SegCall
@@ -63,7 +63,7 @@ DonutPlains_P1Sub:
 DonutPlains_P2:
 DonutPlains_P2Loop:
 	.byte Transpose, $0C
-	.byte DutySet, $5B
+	.byte DutySet, $07
 	.byte PitchSet, $39
 	.byte VolSet, $11
 	.byte SegCall
@@ -230,7 +230,7 @@ DonutPlains_TriSub1:
 	.byte SegEnd
 DonutPlains_Noise:
 	.byte Transpose, $00
-	.byte DutySet, 0
+	.byte DutySet, $00
 	.byte PitchSet, 0
 	.byte VolSet, $77
 DonutPlains_NoiseLoop:
@@ -257,16 +257,16 @@ DonutPlains_NoiseLoop:
 	.word DonutPlains_NoiseLoop
 	.byte $FF
 DonutPlains_End:
-	.byte $FF
+	db $FF
 DonutPlains_Footer:
-	.byte NRest
+	db NRest
 	.word DonutPlains_P1
-	.byte $01
+	db $01
 	.word DonutPlains_P2
-	.byte $02
+	db $02
 	.word DonutPlains_Tri
-	.byte $03
+	db $03
 	.word DonutPlains_Noise
-	.byte $04
+	db $04
 	.word DonutPlains_End
-	.byte $FF
+	db $FF

@@ -1,5 +1,5 @@
 Victory_P1:
-	.byte SongSpeed, $01
+	.byte SongSpeed, 1
 	.byte Transpose, 5
 	.byte DutySet, $38
 	.byte PitchSet, $00
@@ -243,16 +243,16 @@ Victory_DPCM:
 	.byte FMajorDown
 	.byte $FF
 Victory_End:
-	.byte $FF
+	db $FF
 Victory_Footer:
-	.byte NRest
+	db NRest
 	.word Victory_P1
-	.byte $01
+	db $01
 	.word Victory_P2
-	.byte $02
+	db $02
 	.word Victory_Tri
 	.byte $03
 	.word Victory_End
 	.byte $04
 	.word Victory_DPCM
-	.byte $FF
+	db $FF

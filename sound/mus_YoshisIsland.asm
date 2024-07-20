@@ -1,6 +1,6 @@
 YoshisIsland_P1:
 YoshisIsland_P1Loop:
-	.byte SongSpeed, $01
+	.byte SongSpeed, 1
 	.byte Transpose, $0C
 	.byte DutySet, $38
 	.byte PitchSet, $39
@@ -80,7 +80,7 @@ YoshisIsland_P1Loop:
 	.byte F#2
 	.byte $F4
 	.word YoshisIsland_P1Loop
-	.byte $FF
+	db $FF
 YoshisIsland_P2:
 YoshisIsland_P2Loop:
 	.byte Transpose, $0C
@@ -162,7 +162,7 @@ YoshisIsland_P2Loop:
 	.byte F#2
 	.byte $F4
 	.word YoshisIsland_P2Loop
-	.byte $FF
+	db $FF
 YoshisIsland_Tri:
 YoshisIsland_TriLoop:
 	.byte Transpose, 0
@@ -223,11 +223,11 @@ YoshisIsland_TriLoop:
 	.byte G#2
 	.byte $F4
 	.word YoshisIsland_TriLoop
-	.byte $FF
+	db $FF
 YoshisIsland_Noise:
 YoshisIsland_NoiseLoop:
 	.byte Transpose, $00
-	.byte DutySet, 0
+	.byte DutySet, $00
 	.byte PitchSet, 0
 	.byte VolSet, $77
 	.byte SongLoop,2
@@ -270,16 +270,16 @@ YoshisIsland_NoiseLoop:
 	.word YoshisIsland_NoiseLoop
 	.byte $FF
 YoshisIsland_End:
-	.byte $FF
+	db $FF
 YoshisIsland_Footer:
-	.byte NRest
+	db NRest
 	.word YoshisIsland_P1
-	.byte $01
+	db $01
 	.word YoshisIsland_P2
-	.byte $02
+	db $02
 	.word YoshisIsland_Tri
-	.byte $03
+	db $03
 	.word YoshisIsland_Noise
-	.byte $04
+	db $04
 	.word YoshisIsland_End
-	.byte $FF
+	db $FF

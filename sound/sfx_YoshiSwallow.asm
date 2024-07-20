@@ -1,5 +1,5 @@
 YoshiSwallow_P2:
-	.byte SongSpeed, $01
+	.byte SongSpeed, 1
 	.byte Transpose, $00
 	.byte DutySet, $60
 	.byte PitchSet, $63
@@ -10,6 +10,6 @@ YoshiSwallow_P2:
 	.byte C1-3
 	.byte $FF
 YoshiSwallow_Footer:
-	.byte $81
+	.byte $80
 	.word YoshiSwallow_P2
 	.byte $FF

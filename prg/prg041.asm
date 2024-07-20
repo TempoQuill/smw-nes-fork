@@ -161,148 +161,49 @@ TitleYoshiXOfs:
 	db $02
 TitleYoshiYOfs:
 	db $0B
+
 tbl_A155:
-	db $01
-	db $00
-	db $07
-	db $A9
-	db $01
-	db $90
-	db $0D
-	db $70
-	db $02
-	db $30
-	db $07
-	db $A9
-	db $02
-	db $A0
-	db $0D
-	db $70
-	db $03
-	db $30
-	db $0D
-	db $80
-	db $04
-	db $00
-	db $09
-	db $A9
-	db $04
-	db $B0
-	db $09
-	db $A9
-	db $05
-	db $30
-	db $0D
-	db $50
-	db $05
-	db $C0
-	db $07
-	db $A9
-	db $06
-	db $30
-	db $0D
-	db $58
-	db $06
-	db $60
-	db $07
-	db $A9
-	db $08
-	db $30
-	db $0D
-	db $80
-	db $08
-	db $F0
-	db $0D
-	db $60
-	db $0A
-	db $30
-	db $0D
-	db $60
-	db $0A
-	db $60
-	db $0D
-	db $A9
-	db $0B
-	db $45
-	db $09
-	db $A9
-	db $0B
-	db $80
-	db $09
-	db $A9
-	db $0C
-	db $30
-	db $0D
-	db $80
-	db $0C
-	db $80
-	db $0D
-	db $60
-	db $0D
-	db $A0
-	db $0D
-	db $60
-	db $0D
-	db $E0
-	db $0D
-	db $60
-	db $FF
-	db $FF
-	db $00
-	db $00
+	titlespr 256, 169, 7
+	titlespr 400, 112, 13
+	titlespr 560, 169, 7
+	titlespr 672, 112, 13
+	titlespr 816, 128, 13
+	titlespr 1024, 169, 9
+	titlespr 1200, 169, 9
+	titlespr 1328, 80, 13
+	titlespr 1472, 169, 7
+	titlespr 1584, 88, 13
+	titlespr 1632, 169, 7
+	titlespr 2096, 128, 13
+	titlespr 2288, 96, 13
+	titlespr 2608, 96, 13
+	titlespr 2656, 169, 13
+	titlespr 2885, 169, 9
+	titlespr 2944, 169, 9
+	titlespr 3120, 128, 13
+	titlespr 3200, 96, 13
+	titlespr 3488, 96, 13
+	titlespr 3552, 96, 13
+	db $FF, $FF, $00, $00 ;End of data
+
 tbl_A1AD:
-	db $00
-	db $01
-	db $03
-	db $00
-	db $00
-	db $70
-	db $04
-	db $00
-	db $01
-	db $40
-	db $02
-	db $01
-	db $02
-	db $30
-	db $05
-	db $01
-	db $02
-	db $A0
-	db $06
-	db $0E
-	db $03
-	db $A0
-	db $01
-	db $01
-	db $04
-	db $2E
-	db $07
-	db $01
-	db $04
-	db $F0
-	db $05
-	db $01
-	db $05
-	db $B0
-	db $06
-	db $0E
-	db $05
-	db $EE
-	db $07
-	db $01
-	db $06
-	db $70
-	db $01
-	db $01
-	db $06
-	db $A0
-	db $01
-	db $01
-	db $FF
-	db $FF
-	db $02
-	db $00
+	db $00, $01, $03, $00
+	db $00, $70, $04, $00
+	db $01, $40, $02, $01
+	db $02, $30, $05, $01
+	db $02, $A0, $06, $0E
+	db $03, $A0, $01, $01
+	db $04, $2E, $07, $01
+	db $04, $F0, $05, $01
+	db $05, $B0, $06, $0E
+	db $05, $EE, $07, $01
+	db $06, $70, $01, $01
+	db $06, $A0, $01, $01
+	db $FF, $FF, $02, $00 ;End of data
+
+;----------------------------------------
+;SUBROUTINE ($A1E1)
+;----------------------------------------
 sub_A1E1:
 	LDA $0360
 	ASL
@@ -334,7 +235,7 @@ bra_A214:
 	STX GS0SpriteCount
 	LDA $27
 	JSR sub_42_8DF8
-	LDX $30
+	LDX GS0SpriteCount
 	LDA $28
 	STA GS0SpriteYPos,X
 	LDA #$01
@@ -345,11 +246,15 @@ bra_A22B:
 	INC $0360
 bra_A22E_RTS:
 	RTS
+
+;----------------------------------------
+;SUBROUTINE ($A22F)
+;----------------------------------------
 sub_A22F:
 	LDA $0361
 	ASL
 	ASL
-	TAX
+	TAX ;Get index for current action
 	LDA tbl_A1AD,X
 	STA $25
 	LDA tbl_A1AD+1,X
@@ -357,20 +262,21 @@ sub_A22F:
 	LDA tbl_A1AD+2,X
 	STA $27
 	LDA tbl_A1AD+3,X
-	STA $28
+	STA $28 ;Copy action data to memory
 	LDA PlayerXScreenDup
 	CMP $25
-	BNE bra_A262_RTS
+	BNE @Stop
 	LDA PlayerXPosDup
 	CMP $26
-	BNE bra_A262_RTS
+	BNE @Stop ;Don't change action until player reaches the X position
 	LDA $27
 	STA TitleDemoAction
 	LDA $28
-	STA TitleJumpTimer
+	STA TitleJumpTimer ;Load wait time before jumping
 	INC $0361
-bra_A262_RTS:
+@Stop:
 	RTS
+
 sub_A263:
 	LDA TitleDemoAction
 	ASL
@@ -906,6 +812,10 @@ bra_A581:
 	STA GS0SpriteXPos,X
 bra_A5AB_RTS:
 	RTS
+	
+;----------------------------------------
+;SUBROUTINE ($A5AC)
+;----------------------------------------
 sub_A5AC:
 	LDX #$03
 bra_A5AE:
@@ -949,9 +859,13 @@ bra_A5E1:
 	AND #$01
 	BNE bra_A5F8_RTS
 bra_A5F5:
-	JSR sub2_96DB
+	JMP sub2_96DB
 bra_A5F8_RTS:
 	RTS
+
+;----------------------------------------
+;SUBROUTINE ($A5F9)
+;----------------------------------------
 sub_A5F9:
 	STA $28
 	STX $29
@@ -999,6 +913,10 @@ bra_A636:
 	STA TitleJumpTimer
 bra_A64C_RTS:
 	RTS
+
+;----------------------------------------
+;SUBROUTINE ($A64D)
+;----------------------------------------
 sub_A64D:
 	LDA PlayerXScreenDup
 	BEQ bra_A677
@@ -1041,6 +959,10 @@ tbl_A691:
 	db $30
 	db $20
 	db $30
+
+;----------------------------------------
+;TITLE SCREEN CODE ($A695)
+;----------------------------------------
 pnt5_A695:
 	JSR sub_A1E1
 	JSR sub_A22F
@@ -1070,7 +992,7 @@ bra_A6C3:
 	STA a:Event
 	RTS
 bra_A6CF:
-	JSR sub_B486
+	JMP sub_B486
 	RTS
 bra_A6D3:
 	JSR ClearGS0Sprites
@@ -1088,7 +1010,7 @@ sub_A6EE:
 	LDA #$00
 	JSR sub_42_99FA
 	LDX #$F8
-	JSR sub_A6F9
+	JMP sub_A6F9
 	RTS
 sub_A6F9:
 	LDY #$02
@@ -1108,7 +1030,7 @@ pnt5_A706:
 	BEQ bra_A735
 	LDA #$05
 	STA $0312
-	LDA #$0A
+	LDA #sfx_Warp
 	STA SFXRegister
 	JSR sub_B068
 	LDA #$00
@@ -1140,7 +1062,7 @@ bra_A74B:
 	STA GS0SpriteYPos+1
 	LDA #$01
 	STA GameType
-	LDA #$05
+	LDA #sfx_Beep
 	STA SFXRegister
 bra_A760_RTS:
 	RTS
@@ -1374,7 +1296,7 @@ loc_A912:
 	JSR sub_B486
 	LDA #$2A
 	STA M90_PRG0 ;Swap bank 42 into the 1st PRG slot
-	JSR DrawDestroyedCastle
+	JMP DrawDestroyedCastle
 	RTS
 pnt5_A924:
 	JSR DrawDestroyedCastle
@@ -1566,9 +1488,9 @@ bra_AA52:
 	RTS
 sub_AA5F:
 	LDA zInputBottleNeck
-	AND #buttonA+buttonStart ;Check if A or start is pressed
+	AND #btnA+btnStart ;Check if A or start is pressed
 	BEQ bra_AA6A ;If not, branch
-	JSR PlayLevel ;If they are, jump
+	JMP PlayLevel ;If they are, jump
 	RTS
 bra_AA6A:
 	LDX CurrentPlayer
@@ -1621,7 +1543,7 @@ loc_AAB1:
 sub_AACB:
 	LDA #$2A
 	STA M90_PRG0 ;Load bank 42 into the 1st PRG slot
-	JSR TilemapDecompSub ;Draw the compressed title screen logo to VRAM
+	JMP TilemapDecompSub ;Draw the compressed title screen logo to VRAM
 	RTS
 ClearGS0Sprites:
 	LDX #$00
@@ -1647,7 +1569,7 @@ WorldSelectCheck:
 	LDA WorldSelectTrigger
 	BEQ bra_AAFA ;Branch if the world select trigger is set to zero
 	LDA zInputBottleNeck
-	AND #buttonSelect ;Check if select is pressed
+	AND #btnSelect ;Check if select is pressed
 	BEQ bra_AB0C_RTS ;If not, stop
 bra_AAFA:
 	LDA #$04
@@ -1656,7 +1578,7 @@ bra_AAFA:
 	STA PlayerMapAnim ;Reset the player's animation
 	STA WorldSelectNum ;Set the starting spot
 	LDA #$0F ;Set next event
-	JSR sub_BFD0 ;Reset the trigger
+	JMP sub_BFD0 ;Reset the trigger
 bra_AB0C_RTS:
 	RTS
 tbl_AB0D:
@@ -1730,7 +1652,7 @@ bra_AB79:
 	LDA #$50
 	STA GS0SpriteYPos
 	JSR AnimateMapPlayer
-	JSR ClearOtherSprites
+	JMP ClearOtherSprites
 	RTS
 tbl_AB95:
 	db $04
@@ -1962,7 +1884,7 @@ loc_ACB3:
 	STA PPUMask
 	STA PPUMaskMirror ;Clear PPU registers
 	JSR ClearNametable ;Clear the screen
-	LDA #$2E
+	LDA #mus_Silence
 	STA MusicRegister ;Stop playing music
 	LDA CurrentPlayer
 	BNE P2TransitionSet ;Branch if player #2 is playing
@@ -2211,7 +2133,7 @@ sub_AEA3:
 	STA ScrollYPos
 	STA PPUMask
 	STA PPUMaskMirror ;Clear the PPU registers
-	JSR ClearNametable ;Clear the screen
+	JMP ClearNametable ;Clear the screen
 	RTS
 tbl_AEB2:
 	db $04
@@ -2393,7 +2315,7 @@ loc_B001:
 	JSR sub_B486
 	LDA #$2A
 	STA M90_PRG0
-	JSR DrawDestroyedCastle
+	JMP DrawDestroyedCastle
 	RTS
 pnt5_B013:
 	LDA FrameCount
@@ -2414,7 +2336,7 @@ loc_B02C:
 	JSR sub_B486
 	LDA #$2A
 	STA M90_PRG0
-	JSR DrawDestroyedCastle
+	JMP DrawDestroyedCastle
 	RTS
 pnt5_B03E:
 	LDA #$00
@@ -3322,8 +3244,6 @@ sub_B486:
 	BEQ bra_B4BB
 	LDA zInputCurrentState
 	AND #$0C
-	BEQ bra_B4A0
-bra_B4A0:
 	LDA zInputCurrentState
 	AND #$03
 	BEQ bra_B4AA
@@ -3331,8 +3251,6 @@ bra_B4A0:
 bra_B4AA:
 	LDA zInputCurrentState
 	AND #$0C
-	BEQ bra_B4B1
-bra_B4B1:
 	LDA zInputCurrentState
 	AND #$03
 	BEQ bra_B4BB
@@ -3351,6 +3269,10 @@ loc_B4BB:
 	STA CameraXScreen
 	LDA $56
 	STA $52
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 	RTS
 sub_B4D5:
@@ -4760,7 +4682,7 @@ bra_BC84:
 bra_BCA6:
 	LDA HorizScrollLock
 	CMP $55
-	BNE bra_BCC0
+	BNE loc_BD0E
 	LDA #$00
 	STA $55
 	STA $56
@@ -4770,9 +4692,9 @@ bra_BCA6:
 	STA $12
 	LDA PlayerXScreenDup
 	SBC $55
-	BPL bra_BCC0
-bra_BCC0:
 	JMP loc_BD0E
+	NOP
+	NOP
 bra_BCC3:
 	LDA $28
 	CMP #$80
@@ -4858,7 +4780,7 @@ bra_BD31:
 bra_BD53:
 	LDA VertScrollLock
 	CMP $57
-	BNE bra_BD6D
+	BNE loc_BDC3
 	LDA #$00
 	STA $57
 	STA $58
@@ -4868,7 +4790,6 @@ bra_BD53:
 	STA $13
 	LDA PlayerYScreenDup
 	SBC $57
-	BPL bra_BD6D
 bra_BD6D:
 	JMP loc_BDC3
 bra_BD70:
@@ -4898,7 +4819,7 @@ bra_BD70:
 bra_BD9B:
 	LDA YScreenCount
 	CMP $57
-	BNE bra_BDB5
+	BNE loc_BDC3
 	STA $57
 	LDA #$00
 	STA $58
@@ -4908,8 +4829,6 @@ bra_BD9B:
 	STA $13
 	LDA PlayerYScreenDup
 	SBC $57
-	BPL bra_BDB5
-bra_BDB5:
 	JMP loc_BDC3
 bra_BDB8:
 	STA $13
@@ -4917,6 +4836,10 @@ bra_BDB8:
 	STA $57
 	LDA $54
 	STA $58
+	RTS
+	RTS
+	RTS
+	RTS
 	RTS
 loc_BDC3:
 	LDA $57
@@ -5048,12 +4971,15 @@ loc_BE91:
 	STA M90_PRG0
 	LDA ($DA),Y
 	STA PlayerBackColl
-	LDA #$3A
-	STA M90_PRG0
-	JSR $8000 ;Unused function, bank 60 is just padding
+;	LDA #$3A
+;	STA M90_PRG0
+;	;JSR $8000 ;Unused function, bank 60 is just padding
 	LDA $26
 	BEQ bra_BEBC
 	JMP loc_BE5D
+REPT 8
+	RTS
+ENDR
 bra_BEBC:
 	JMP loc_BEC1
 	STA $95
@@ -5115,7 +5041,7 @@ sub_BED2:
 	STA $66
 	LDA PlayerYPos
 	STA $67
-	JSR sub_BF31
+	JMP sub_BF31
 	RTS
 sub_BF31:
 	LDY $66
@@ -5151,9 +5077,12 @@ sub_BF31:
 	CMP #$78
 	BCC bra_BF7A_RTS
 	STA PlayerBackColl
-	LDA #$3A
-	STA M90_PRG0
-	JSR $8000
+REPT 8
+	RTS
+ENDR
+;	LDA #$3A
+;	STA M90_PRG0
+;	;JSR $8000
 bra_BF7A_RTS:
 	RTS
 	db $C0

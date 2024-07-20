@@ -1,11 +1,9 @@
 Ending_P1:
 Ending_P1Loop:
-	.byte $F5
-	.byte $02
+	.byte SongSpeed, 2
 	.byte Transpose, $0C
-	.byte DutySet, $5B
-	.byte PitchSet
-	.byte $39
+	.byte DutySet, $07
+	.byte PitchSet, $39
 	.byte VolSet, $11
 	.byte $A4
 	.byte C3
@@ -148,14 +146,13 @@ Ending_P1Loop:
 	.byte NRest
 	.byte $F4
 	.word Ending_P1Loop
-	.byte $FF
+	db $FF
 Ending_P2:
 Ending_P2Loop:
 	.byte Transpose
 	.byte NRest
 	.byte DutySet, $17
-	.byte PitchSet
-	.byte $16
+	.byte PitchSet, $16
 	.byte VolSet, $14
 	.byte NLen+12
 	.byte NRest
@@ -198,13 +195,12 @@ Ending_P2Loop:
 	.byte D3
 	.byte $F4
 	.word Ending_P2Loop
-	.byte $FF
+	db $FF
 Ending_Tri:
 Ending_TriLoop:
 	.byte Transpose, $0C
 	.byte DutySet, $38
-	.byte PitchSet
-	.byte $39
+	.byte PitchSet, $39
 	.byte VolSet, $41
 	.byte NLen+12
 	.byte C2
@@ -225,11 +221,11 @@ Ending_TriLoop:
 	.byte B2
 	.byte $F4
 	.word Ending_TriLoop
-	.byte $FF
+	db $FF
 Ending_Noise:
 Ending_NoiseLoop:
 	.byte Transpose, $01
-	.byte DutySet, 0
+	.byte DutySet, $00
 	.byte PitchSet, 0
 	.byte VolSet, $53
 	.byte NLen+12
@@ -278,18 +274,18 @@ Ending_NoiseLoop:
 	.byte C3
 	.byte $F4
 	.word Ending_NoiseLoop
-	.byte $FF
+	db $FF
 Ending_End:
-	.byte $FF
+	db $FF
 Ending_Footer:
-	.byte NRest
+	db NRest
 	.word Ending_P1
-	.byte $01
+	db $01
 	.word Ending_P2
-	.byte $02
+	db $02
 	.word Ending_Tri
-	.byte $03
+	db $03
 	.word Ending_Noise
-	.byte $04
+	db $04
 	.word Ending_End
-	.byte $FF
+	db $FF

@@ -1,6 +1,5 @@
 ForestofIllusion_P1:
 ForestofIllusion_P1Loop:
-	.byte SongSpeed, $01
 	.byte Transpose, $03
 	.byte DutySet, $12
 	.byte PitchSet, 0
@@ -74,6 +73,7 @@ ForestofIllusion_P1Sub:
 	.byte NRest
 	.byte SegEnd
 ForestofIllusion_P2:
+	.byte SongSpeed, 1
 ForestofIllusion_P2Loop:
 	.byte Transpose, $00
 	.byte DutySet, $17
@@ -125,11 +125,11 @@ ForestofIllusion_P2Loop:
 	.byte NRest
 	.byte $F4
 	.word ForestofIllusion_P2Loop
-	.byte $FF
+	db $FF
 ForestofIllusion_Tri:
 ForestofIllusion_TriLoop:
 	.byte Transpose, $00
-	.byte DutySet, $5B
+	.byte DutySet, $07
 	.byte PitchSet, $39
 	.byte VolSet, $11
 	.byte SongLoop,2
@@ -181,18 +181,18 @@ ForestofIllusion_TriLoop:
 	.byte NRest
 	.byte $F4
 	.word ForestofIllusion_TriLoop
-	.byte $FF
+	db $FF
 ForestofIllusion_End:
-	.byte $FF
+	db $FF
 ForestofIllusion_Footer:
-	.byte NRest
-	.word ForestofIllusion_P1
-	.byte $01
+	db NRest
 	.word ForestofIllusion_P2
+	.byte $01
+	.word ForestofIllusion_P1
 	.byte $02
 	.word ForestofIllusion_Tri
-	.byte $03
+	db $03
 	.word ForestofIllusion_End
-	.byte $04
+	db $04
 	.word ForestofIllusion_End
-	.byte $FF
+	db $FF

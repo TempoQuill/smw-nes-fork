@@ -1,80 +1,76 @@
-;disassembled by BZK 6502 Disassembler
 jmp_52_A000:
 	LDY ItemBox
-	BNE bra2_A006
+	BNE bra2_A006 ;Don't render item sprite if the item box is empty
 ptr6_A005:
 	RTS
 bra2_A006:
-	LDX tbl2_A064,Y
-	LDY $3C
+	LDX tbl2_A064,Y ;Get index for item's sprite data
+	LDY $3C ;Get current OAM index (always seems to be $80 for the item)
+;Upload item box sprite to OAM
 	LDA tbl2_A068,X
-	STA $0201,Y
+	STA SpriteMem+1,Y
 	LDA tbl2_A074,X
-	STA $0202,Y
+	STA SpriteMem+2,Y ;Copy upper left tile
 	LDA tbl2_A068+1,X
-	STA $0205,Y
+	STA SpriteMem+5,Y
 	LDA tbl2_A074+1,X
-	STA $0206,Y
+	STA SpriteMem+6,Y ;Copy upper right tile
 	LDA tbl2_A068+2,X
-	STA $0209,Y
+	STA SpriteMem+9,Y
 	LDA tbl2_A074+2,X
-	STA $020A,Y
+	STA SpriteMem+10,Y ;Copy bottom left tile
 	LDA tbl2_A068+3,X
-	STA $020D,Y
+	STA SpriteMem+13,Y
 	LDA tbl2_A074+3,X
-	STA $020E,Y
+	STA SpriteMem+14,Y ;Copy bottom right tile
+
 	LDA #$D3
 	STA SpriteMem,Y
-	STA $0204,Y
+	STA SpriteMem+4,Y
 	LDA #$DB
-	STA $0208,Y
-	STA $020C,Y
+	STA SpriteMem+8,Y
+	STA SpriteMem+12,Y
 	LDA #$78
-	STA $0203,Y
-	STA $020B,Y
+	STA SpriteMem+3,Y
+	STA SpriteMem+11,Y
 	LDA #$80
-	STA $0207,Y
-	STA $020F,Y
+	STA SpriteMem+7,Y
+	STA SpriteMem+15,Y
 	INC $3C
 	INC $3C
 	INC $3C
-	INC $3C
+	INC $3C ;Move to next slot in OAM
 	RTS
+
 tbl2_A064:
 	db $00
 	db $00
 	db $04
 	db $08
 tbl2_A068:
-	db $41
-	db $42
-	db $4B
-	db $4C
-	db $57
-	db $58
-	db $5F
-	db $60
-	db $5D
-	db $5E
-	db $65
-	db $66
+;Mushroom
+	db $41, $42
+	db $4B, $4C
+;Fire Flower
+	db $57, $58
+	db $5F, $60
+;Feather
+	db $5D, $5E
+	db $65, $66
 tbl2_A074:
-	db $03
-	db $03
-	db $03
-	db $03
-	db $03
-	db $03
-	db $02
-	db $02
-	db $00
-	db $03
-	db $00
-	db $00
+;Mushroom
+	db $03, $03
+	db $03, $03
+;Fire Flower
+	db $03, $03
+	db $02, $02
+;Feather
+	db $00, $03
+	db $00, $00
 jmp_52_A080:
-	LDA #$35
+	LDA #53
 	STA M90_PRG0
-	JSR sub_53_827C
+	JMP sub_53_827C
 	RTS
 jmp_52_A089:
 	LDA FrameCount
@@ -158,44 +154,62 @@ sub2_A10D:
 	LDA ObjectAction,X
 	AND #$0F
 	STA $2D
-	JSR sub2_A5D0
+	JMP sub2_A5D0
 	RTS
+
+;----------------------------------------
+;SUBROUTINE ($A118)
+;$25 = Mapping width (pixels)
+;$2A = Mapping width (tiles)
+;$2D = Mapping height (tiles)
+;$2E = Mapping CHR bank
+; Parameters:
+; > $0036
+;----------------------------------------
 jmp_52_A118:
-	LDY #$00
+	LDY #$00 ;Start at beginning of mappings
+	
+;Load mapping width
 	LDA ($32),Y ;Load from first byte of sprite map
 	STA $2A ;Get width in tiles
 	TAX
 	LDA tbl2_A45B,X ;Get size in pixels based on width in tiles
 	STA $25
 	INY ;Move to next byte
+
+;Load mapping height
 	LDA ($32),Y
 	STA $2D ;Get height in tiles
 	INY ;Move to next byte
+
+;Load CHR bank
 	LDA ($32),Y
 	STA $2E ;Get CHR bank number
-	AND #$7F ;Ignore highest bit
+	AND #%01111111 ;Ignore highest bit
 	ASL
 	TAX ;Get bank attribute index
-	LDA #$2F
-	STA M90_PRG3
+	LDA #47
+	STA M90_PRG3 ;Swap bank 47 (Sprite attribute bank) into $C000 - $DFFF
 	LDA CHRSprBankAttrs,X
 	STA $30
 	LDA CHRSprBankAttrs+1,X
 	STA $31 ;Get sprite tile attribute pointer for the given bank
 	LDA $05F0
-	AND #$40
+	AND #%01000000
 	BEQ bra2_A18C ;Branch if sprite tile isn't horizontally flipped
-	LDX #$00
-	LDY $A4 ;Get index for current object
-	LDA ObjectXDistance,Y
-	CLC
-	ADC PlayerSprXPos
-	STA $28 ;Object X Distance + Player X = Object Position (low byte)
-	LDA ObjXScreenDistance,Y
-	ADC #$00 ;Add high byte if needed
-	BMI bra2_A16E
-	BEQ bra2_A15E
-	RTS
+	;If sprite is facing left:
+		LDX #$00
+		LDY $A4 ;Get index for current object
+		LDA ObjectXDistance,Y
+		CLC
+		ADC PlayerSprXPos
+		STA $28 ;Object X Distance + Player Sprite X = Object Sprite X Position
+		LDA ObjXScreenDistance,Y
+		ADC #$00 ;Add high byte if needed
+		BMI bra2_A16E ;Branch if object goes off-screen
+		BEQ bra2_A15E
+		RTS
+
 bra2_A15E:
 	LDA $28
 bra2_A160:
@@ -205,12 +219,13 @@ bra2_A160:
 	BCS bra2_A1D7 ;Position sprites vertically once the tile width is exceeded
 	;Otherwise, move next sprite a tile over
 		CLC
-		ADC #$08
+		ADC #8
 	BCC bra2_A160 ;Write every tile until the width is exceeded
 	BCS bra2_A181
 bra2_A16E:
 	LDA $28
 	LDY #$00 ;Set index to first object?
+
 bra2_A172:
 	STY $41,X
 	INX
@@ -222,6 +237,7 @@ bra2_A172:
 	BCS bra2_A160
 bra2_A180_RTS:
 	RTS
+
 bra2_A181:
 	LDA #$00
 bra2_A183:
@@ -230,6 +246,7 @@ bra2_A183:
 	CPX $2A
 	BCC bra2_A183
 	BCS bra2_A1D7 ;Position sprites vertically once the tile width is exceeded
+
 bra2_A18C:
 	LDX #$00
 	STX $41
@@ -239,6 +256,7 @@ bra2_A18C:
 	ADC PlayerSprXPos
 	BCC bra2_A19B
 	INC $41
+
 bra2_A19B:
 	CLC
 	ADC ObjectXDistance,Y
@@ -248,6 +266,7 @@ bra2_A19B:
 	BMI bra2_A1BB
 	BEQ bra2_A1AB
 	RTS
+
 bra2_A1AB:
 	LDA $28
 bra2_A1AD:
@@ -350,7 +369,7 @@ bra2_A23F:
 	STY $3E
 	LDA a:$41,Y
 	BEQ bra2_A281
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA $2B
 	STA SpriteMem,X
 	LDY $40
@@ -367,7 +386,7 @@ bra2_A260:
 	AND #$3F
 	STA $38
 	ORA $36
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDY $A4
 	LDA $05F0
 	EOR #$40
@@ -375,7 +394,7 @@ bra2_A260:
 	LDY $38
 	ORA ($30),Y
 	ORA $06E1
-	STA $0202,X
+	STA SpriteMem+2,X
 	TXA
 	CLC
 	ADC #$04
@@ -420,10 +439,12 @@ sub_52_A2A8:
 	CLC
 	ADC #$0C
 	JSR sub2_A2DE
-	JSR sub2_A446
+	JMP sub2_A446
 	RTS
-	JSR sub2_A2CA ;unlogged
-	RTS ;unlogged
+	RTS
+	RTS
+	RTS
+	RTS
 sub2_A2CA:
 	LDY #$00
 	LDA ($32),Y
@@ -614,7 +635,7 @@ bra2_A3F1:
 	STY $3E
 	LDA a:$41,Y
 	BEQ bra2_A433
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA $2B
 	STA SpriteMem,X
 	LDY $40
@@ -631,7 +652,7 @@ bra2_A412:
 	AND #$3F
 	STA $38
 	ORA $36
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDY $A4
 	LDA $05F0
 	EOR #$40
@@ -639,7 +660,7 @@ bra2_A412:
 	LDY $38
 	ORA ($30),Y
 	ORA $06E1
-	STA $0202,X
+	STA SpriteMem+2,X
 	TXA
 	CLC
 	ADC #$04
@@ -862,7 +883,7 @@ bra2_A57E:
 	STY $3E
 	LDA a:$41,Y
 	BEQ bra2_A5B8
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA $2B
 	STA SpriteMem,X
 	LDY $40
@@ -879,12 +900,12 @@ bra2_A59F:
 	AND #$3F
 	TAY
 	ORA $36
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDA YoshiIdleMovement
 	EOR #$40
 	AND #$C0
 	ORA ($30),Y
-	STA $0202,X
+	STA SpriteMem+2,X
 	TXA
 	CLC
 	ADC #$04
@@ -1089,14 +1110,14 @@ bra2_A6EC:
 	STY $3E
 	LDA a:$41,Y
 	BEQ bra2_A70C
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA $2B
 	STA SpriteMem,X
 	LDY $40
 	LDA $25
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDA #$22
-	STA $0202,X
+	STA SpriteMem+2,X
 	TXA
 	CLC
 	ADC #$04
@@ -1402,7 +1423,7 @@ tbl2_A71F:
 ;Extra (sprite animation?) code for objects $00-7F
 tbl2_A83B:
 	dw ptr6_A005 ;0
-	dw obj_u80 ;1
+	dw ptr6_9562 ;1
 	dw ptr6_9590 ;2
 	dw ptr6_9630 ;3
 	dw ptr6_9660 ;4
@@ -1659,263 +1680,137 @@ tbl2_A93B:
 	db $31
 	db $31
 
-;Seemingly unused set of pointers. They don't have banks specified anywhere, but it might help to give these labels.
-	db $AA
-	db $8A
-	db $AA
-	db $8A
-	db $7D
-	db $8F
-	db $7D
-	db $8F
-	db $C8
-	db $81
-	db $C8
-	db $81
-	db $86
-	db $85
-	db $86
-	db $85
-	db $00
-	db $80
-	db $00
-	db $80
-	db $02
-	db $94
-	db $02
-	db $94
-	db $77
-	db $95
-	db $77
-	db $95
-	db $18
-	db $84
-	db $18
-	db $84
-	db $AE
-	db $84
-	db $AE
-	db $84
-	db $CF
-	db $86
-	db $CF
-	db $86
-	db $72
-	db $85
-	db $72
-	db $85
-	db $D4
-	db $86
-	db $D4
-	db $86
-	db $33
-	db $83
-	db $33
-	db $83
-	db $39
-	db $89
-	db $39
-	db $89
-	db $6A
-	db $8C
-	db $6A
-	db $8C
-	db $FA
-	db $8D
-	db $FA
-	db $8D
-	db $49
-	db $81
-	db $49
-	db $81
-	db $A6
-	db $97
-	db $A6
-	db $97
-	db $6C
-	db $96
-	db $6C
-	db $96
-	db $F5
-	db $9A
-	db $F5
-	db $9A
-	db $FD
-	db $99
-	db $FD
-	db $99
-	db $FD
-	db $99
-	db $FD
-	db $99
-	db $DE
-	db $90
-	db $DE
-	db $90
-	db $F4
-	db $92
-	db $F4
-	db $92
-	db $CB
-	db $8A
-	db $CB
-	db $8A
-	db $7D
-	db $8D
-	db $7D
-	db $8D
-	db $40
-	db $90
-	db $40
-	db $90
-	db $67
-	db $93
-	db $67
-	db $93
-	db $64
-	db $97
-	db $05
-	db $A0
-	db $E1
-	db $93
-	db $05
-	db $A0
-	db $D6
-	db $8F
-	db $05
-	db $A0
-	db $05
-	db $A0
-	db $6D
-	db $83
-	db $78
-	db $82
-	db $78
-	db $82
-	db $7C
-	db $84
-	db $7C
-	db $84
-	db $75
-	db $86
-	db $75
-	db $86
-	db $78
-	db $82
-	db $78
-	db $82
-	db $7C
-	db $84
-	db $7C
-	db $84
-	db $75
-	db $86
-	db $75
-	db $86
-	db $78
-	db $82
-	db $78
-	db $82
-	db $7C
-	db $84
-	db $7C
-	db $84
-	db $14
-	db $88
-	db $14
-	db $88
-	db $86
-	db $8B
-	db $86
-	db $8B
-	db $3D
-	db $8E
-	db $3D
-	db $8E
-	db $62
-	db $80
-	db $B3
-	db $8B
-	db $87
-	db $92
-	db $87
-	db $92
-	db $02
-	db $94
-	db $02
-	db $94
-	db $85
-	db $96
-	db $85
-	db $96
-	db $E8
-	db $97
-	db $E8
-	db $97
-	db $78
-	db $8C
-	db $E4
-	db $90
-	db $E4
-	db $80
-	db $E4
-	db $80
-	db $34
-	db $86
-	db $34
-	db $86
-	db $E8
-	db $84
-	db $E8
-	db $84
-	db $10
-	db $9C
-	db $AC
-	db $99
-	db $4B
-	db $9A
-	db $4B
-	db $9A
-	db $4B
-	db $9A
-	db $4B
-	db $9A
-	db $4B
-	db $9A
-	db $11
-	db $98
-	db $11
-	db $98
-	db $11
-	db $98
-	db $B6
-	db $99
-	db $B6
-	db $99
-	db $11
-	db $98
-	db $11
-	db $98
-	db $CE
-	db $81
-	db $CE
-	db $81
-	db $CE
-	db $81
-	db $CE
-	db $81
-	db $25
-	db $83
-	db $25
-	db $83
-	db $2C
-	db $97
-	db $2C
-	db $97
-	db $2C
-	db $97
-	db $2C
-	db $97
+;----------------------------------------
+;Unused, duplicate pointers for objects 80-FF. Can be found in bank 54
+	dw Obj_h80
+	dw Obj_h80
+	dw Obj_h82
+	dw Obj_h82
+	dw Obj_h84
+	dw Obj_h84
+	dw Obj_h86
+	dw Obj_h86
+	dw Obj_h88
+	dw Obj_h88
+	dw Obj_h8A
+	dw Obj_h8A
+	dw Obj_h8C
+	dw Obj_h8C
+	dw Obj_h8E
+	dw Obj_h8E
+	dw Obj_h90
+	dw Obj_h90
+	dw Obj_h92
+	dw Obj_h92
+	dw Obj_h94
+	dw Obj_h94
+	dw Obj_h96
+	dw Obj_h96
+	dw Obj_h98
+	dw Obj_h98
+	dw Obj_h9A
+	dw Obj_h9A
+	dw Obj_h9C
+	dw Obj_h9C
+	dw Obj_h9E
+	dw Obj_h9E
+	dw Obj_hA0
+	dw Obj_hA0
+	dw Obj_hA2
+	dw Obj_hA2
+	dw Obj_hA4
+	dw Obj_hA4
+	dw Obj_hA6
+	dw Obj_hA6
+	dw Obj_hA8
+	dw Obj_hA8
+	dw Obj_hA8
+	dw Obj_hA8
+	dw Obj_hAA
+	dw Obj_hAA
+	dw Obj_hAC
+	dw Obj_hAC
+	dw Obj_hAE
+	dw Obj_hAE
+	dw Obj_hB0
+	dw Obj_hB0
+	dw Obj_hB2
+	dw Obj_hB2
+	dw Obj_hB4
+	dw Obj_hB4
+	dw Obj_hB6
+	dw ptr6_A005 ;(different)
+	dw Obj_hB8
+	dw ptr6_A005 ;(different)
+	dw Obj_hBA
+	dw ptr6_A005 ;(different)
+	dw ptr6_A005 ;(different)
+	dw Obj_hBD
+	dw Obj_hBE
+	dw Obj_hBE
+	dw Obj_hC0
+	dw Obj_hC0
+	dw Obj_hC2
+	dw Obj_hC2
+	dw Obj_hBE
+	dw Obj_hBE
+	dw Obj_hC0
+	dw Obj_hC0
+	dw Obj_hC2
+	dw Obj_hC2
+	dw Obj_hBE
+	dw Obj_hBE
+	dw Obj_hC0
+	dw Obj_hC0
+	dw Obj_hCE
+	dw Obj_hCE
+	dw Obj_hD0
+	dw Obj_hD0
+	dw Obj_hD2
+	dw Obj_hD2
+	dw Obj_hD4
+	dw Obj_hD5
+	dw Obj_hD6
+	dw Obj_hD6
+	dw Obj_hD8
+	dw Obj_hD8
+	dw Obj_hDA
+	dw Obj_hDA
+	dw Obj_hDC
+	dw Obj_hDC
+	dw Obj_hDE
+	dw Obj_hDF
+	dw Obj_hE0
+	dw Obj_hE0
+	dw Obj_hE2
+	dw Obj_hE2
+	dw Obj_hE4
+	dw Obj_hE4
+	dw Obj_hE6
+	dw Obj_hE7
+	dw Obj_hE8
+	dw Obj_hE8
+	dw Obj_hE8 ;1st bonus block
+	dw Obj_hE8
+	dw Obj_hE8 ;2nd bonus block
+	dw Obj_hED
+	dw Obj_hED ;3rd bonus block
+	dw Obj_hED
+	dw Obj_hF0
+	dw Obj_hF0
+	dw Obj_hED
+	dw Obj_hED
+	dw Obj_hF4
+	dw Obj_hF4
+	dw Obj_hF4
+	dw Obj_hF4
+	dw Obj_h58
+	dw Obj_h58
+	dw Obj_hFA
+	dw Obj_hFA
+	dw Obj_hFA
+	dw Obj_hFA
+
 ;Extra (perhaps sprite handling?) code for objects 80-FF
 tbl2_AABB:
 	dw ptr6_8BF1 ;80
@@ -2362,7 +2257,7 @@ bra2_AD5D:
 	STY $3E
 	LDA a:$41,Y
 	BEQ bra2_AD9C
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA $2B
 	STA SpriteMem,X
 	LDY $40
@@ -2379,14 +2274,14 @@ bra2_AD7E:
 	AND #$3F
 	STA $38
 	ORA $36
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDY $A4
 	LDA $05F0
 	EOR #$40
 	AND #$C0
 	LDY $38
 	ORA ($30),Y
-	STA $0202,X
+	STA SpriteMem+2,X
 	TXA
 	CLC
 	ADC #$04
@@ -2580,7 +2475,7 @@ bra2_AEC0:
 	STY $3E
 	LDA a:$41,Y
 	BEQ bra2_AF02
-	STA $0203,X
+	STA SpriteMem+3,X
 	LDA $2B
 	STA SpriteMem,X
 	LDY $40
@@ -2597,7 +2492,7 @@ bra2_AEE1:
 	AND #$3F
 	STA $38
 	ORA $36
-	STA $0201,X
+	STA SpriteMem+1,X
 	LDY $A4
 	LDA $05F0
 	EOR #$40
@@ -2605,7 +2500,7 @@ bra2_AEE1:
 	LDY $38
 	ORA ($30),Y
 	ORA $06E1
-	STA $0202,X
+	STA SpriteMem+2,X
 	TXA
 	CLC
 	ADC #$04
@@ -2636,5 +2531,5 @@ bra2_AF23:
 bra2_AF28_RTS:
 	RTS
 
-.pad $b600
+.pad $Af40
 .incbin "sound/dmc-34.bin"

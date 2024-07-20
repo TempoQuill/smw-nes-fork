@@ -1,76 +1,47 @@
 ;disassembled by BZK 6502 Disassembler
-jmp_57_A000:
+DoPlayerActionChange:
+	STA PlayerAction+1 ;update prev player action and current anim
+	STA PlayerAnimation 
+	LDA #$FF
+	STA PlayerFrameDur
+	STA PlayerAnimFrame ;reset the animation vars
+	JSR MakePlayerAnimPtr ;make a new animation ptr	; was PlayerAnimationSub
+	BNE bra4_A020 ;always 
+jmp_57_A000: ;PlayerAnimationChangeChk START HERE!!!
 	LDA PlayerAction
-	CMP PlayerPrevAction
-	BEQ bra4_A020 ;Branch here if the player's action stays the same
-	BNE bra4_A014 ;If it doesn't, branch here
-;Unused
-	LDA PlayerXSpeed ;unlogged
-	ROR ;unlogged
-	ROR ;unlogged
-	ROR ;unlogged
-	ROR ;unlogged
-	AND #$0F ;unlogged
-	TAX ;unlogged
-	LDA tbl4_A095,X ;unlogged
-bra4_A014:
-	STA PlayerAnimation ;Update the player's animation
-	LDA #$00
-	STA PlayerAnimationFrame ;Switch to first frame of animation
-	JSR PlayerAnimationSub
-	JMP loc4_A03E
+	CMP PlayerPrevAction 
+	BNE DoPlayerActionChange ;Branch if player action has changed
 bra4_A020:
-	CMP #$01
-	BNE bra4_A034
-	LDA PlayerXSpeed
-	ROR
-	ROR
-	ROR
-	ROR
-	AND #$0F
-	TAX
-	LDA tbl4_A095,X ;load animation from table
-	TAY ;move it to the y reg
-	JMP loc4_A035 ;jump
-bra4_A034:
-	TAY
-loc4_A035:
-	CPY PlayerAnimation ;compare current animation to frame loaded from table
-	BEQ bra4_A03E ;branch if they're equal
-	STY PlayerAnimation ;unlogged
-	JSR PlayerAnimationSub ;unlogged
-bra4_A03E:
-loc4_A03E:
-	LDA PlayerAction
-	STA PlayerAction+1
 	JSR DecPlayerFrameLength
-	JSR LoadPlayerSprite
-	LDA #$14 ;skip past first 5 sprites in OAM
-	STA $3C ;store in player OAM tracker byte
-	JSR sub3_F176
+	JSR ConfigPlayerSpr ;configure variables for new sprite settings 
+	LDA #$14 
+	STA $3C ;skip past first 5 sprites in OAM
+	JSR sub3_F176 ;clear all sprites 
 	LDA PlayerAction+1
-	CMP $062C
+	CMP $062C ;previous, previous player action?
 	BEQ bra4_A061
 	STA $062C
 	LDA #$00
 	STA $0629
 	STA $0627
+	
 bra4_A061:
 	JSR sub4_A0CD
 	LDA Event
 	CMP #$01
 	BEQ bra4_A06D
 	JSR sub4_B938
+	
 bra4_A06D:
 	LDA FreezeFlag
 	BNE bra4_A094_RTS
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$01
 	BNE bra4_A07F
 	INC $0629
 	INC $0627
 bra4_A07F:
-	INC $062B
+	INC ObjFrameCounter
 	LDA $4A
 	BEQ bra4_A094_RTS
 	INC $4B
@@ -82,26 +53,7 @@ bra4_A07F:
 	STA $4B
 bra4_A094_RTS:
 	RTS
-tbl4_A095: ;Animation table 
-	db $01 ;player walk cycle
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $01
-	db $02
-	db $02
-	db $02
-	db $03
-	db $03
-	db $03
-	db $04
-	db $04
-	db $05
-	db $05
-	db $05
-	db $60
+	
 BubbleXMovement:
 	db $01
 	db $01
@@ -224,150 +176,158 @@ bra4_A119:
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ;PLAYER SPRITES AND ANIMATION
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-;The following code is poorly commented due to the animation bank having 3 sets of pointers and being extremely hard to follow.
-sub4_A14A:	
-	LDA Player1YoshiStatus
-	ASL ;Multiply current yoshi status by 2
-	TAX ;Move it to the x offset
-	LDA #$24
-	STA M90_PRG3 ;Load animation bank into 3rd slot
-;Pick Animation table
-	LDA lda_36_C000,X
-	STA $32 ;Get lower pointer bytes
-	LDA lda_36_C000+1,X
-	STA $33 ;Get upper pointer bytes
-	LDA PlayerPowerup 
-	LDY Player1YoshiStatus
-	BNE MakePlayerAnimPtr ;Branch if the player has Yoshi
-	LDY PlayerHoldFlag
-	BEQ MakePlayerAnimPtr ;Branch if the player isn't carrying anything
-	CLC ;If they are
-	ADC #$05 ;Make the player use the 2nd set of animations
-	
-MakePlayerAnimPtr: ;Select player animation set
-	AND #$0F ;Mask out the lower 4 bits of the Powerup value
-	ASL ;Multiply it by 2
-	TAY ;Move it to y offset
-	LDA ($32),Y ;Load lower byte of 2nd pointer
-	STA PlayerAnimationPtr ;store it
-	INY
-	LDA ($32),Y ;Load upper byte of 2nd pointer
-	STA PlayerAnimationPtr+1 ;Store it
-	RTS ;End
-;**********************************************************************************
-DecPlayerFrameLength:
-	LDA $18 ;get the current frame duration
-	BMI AdvNextPlayerFrame ;if it's underflown(?), branch ahead
-	DEC $18 ;else decrement frame length 
-	RTS ;end
-;**********************************************************************************
-AdvNextPlayerFrame: ;if Player frame ended:
-	INC PlayerAnimationFrame ;advance to next frame
-PlayerAnimationSub:
-	LDA PlayerAnimation ;Load player's animation value
-	ASL ;multiply it by 2
-	TAY ;copy to Y 
+;The following code is under modification and might be a bit janky for a while, this will be fixed
+;for now I just want to get the basics working and worry about tidying it up later
+;some other animation routine functions need to be moved in here as well I think, there are some at the start bank
+;check what else references this, should be able to point Yoshi anims directly to their table and remove this part
+;note for later, Anim ID is doubled, this will break Yoshi ptr as it doesn't need variant animations, fine for now though
+MakePlayerAnimPtr: ;Select player animation and set
 	LDA #$24 	
 	STA M90_PRG3 ;Load the animation bank into the 3rd PRG slot
-;Unsure exactly what pointer it's making here (pointer is later used to create the PlayerFramePtr									
-	LDA (PlayerAnimationPtr),Y ;Load the low byte 
-	STA $32 ;store it
-	INY
-	LDA (PlayerAnimationPtr),Y ;Load the high byte 
-	STA $33 ;store it
-;Make Player Frame Pointer
-	LDA PlayerAnimationFrame ;Load player's current animation frame
-	ASL
-	ASL ;multiply it by 4
-	TAY ;move it to the Y reg
-	LDA ($32),Y ;Load the low byte of the player's mapping data pointer
-	STA PlayerFramePtr	
-	INY 
-	LDA ($32),Y ;Load the high byte of the player's mapping data pointer
-	STA PlayerFramePtr+1
-;Get Frame duration
-	INY	
-	LDA ($32),Y ;if next byte is positive (below 7F)
-	BPL StorePlayerFrameLength ;Check bit 7. If it's cleared, treat this byte like a frame length byte and branch.
-	AND #$7F
-	STA PlayerAnimationFrame ;If bit 7 is set, clear it and use the resulting value as the animation loop point.
-	JMP PlayerAnimationSub ;Restart the routine to get the next frame 
-StorePlayerFrameLength:
-	STA $18 ;Store the animation frame length
-	RTS ;end
-;**********************************************************************************	
-LoadPlayerSprite: ;loads the player sprite
-;Prep 	
-	LDY #$00 ;Clear Y index/set to read first byte of sprite format (sprite width)
-	LDA #$24
-	STA M90_PRG3 ;Load animation bank into 3rd PRG slot
-;Get sprite object size
-	LDA (PlayerFramePtr),Y ;get width byte
-	AND #$3F ;Remove attribute bits (%00111111)
-	STA PlayerWidth	
-	LDA (PlayerFramePtr),Y ;reload width byte
-	AND #$C0 ;remove width bits (%11000000) 
-	STA PlayerSpriteAttributes ;get attributes from width mapping (This is used for sprites that mirror such as the front facing and climbing sprites)
-	INY
-	LDA (PlayerFramePtr),Y ;get height byte
-	STA PlayerHeight	
-	INY 
-;Get attribute pointer for the sprite's CHR bank
-	LDA (PlayerFramePtr),Y ;get CHR bank byte
+	LDA PlayerAnimation 
+	ASL ;double the players animation ID to skip over holding anims by default
+	TAY
+;	LDX Player1YoshiStatus
+;	BNE MakeYoshiAnimPtr ;if the player has Yoshi, branch
+	LDX PlayerHoldFlag
+	BEQ SkipSetPlayerHoldAnims ;if the player isn't holding anything, branch
+	INY ;if they are, offset anim ID by 1 to use holding variant
+SkipSetPlayerHoldAnims:	
+	LDA PlayerPowerup
+	BNE UseMarioPowerAnims ;if player has a powerup, branch	
+	LDX SmallMarioAnimTblLo,Y ;else make small player animation pointer
+	LDA SmallMarioAnimTblHi,Y
+StorePlayerAnimPtr:	;store the animation pointer
+	STX PlayerAnimPtr
+	STA PlayerAnimPtr+1	
+	RTS 
+UseMarioPowerAnims:
+	LDX BigMarioAnimTblLo,Y ;make Big player animation pointer			
+	LDA BigMarioAnimTblHi,Y
+	BNE StorePlayerAnimPtr ;always
+MakeYoshiAnimPtr: 
+	LDX Yoshi_AnimTbl,Y ;make Yoshi player animation pointer
+	INY ;Yoshi tbl unfinished, load both bytes from this tbl for now
+	LDA Yoshi_AnimTbl,Y
+	BNE StorePlayerAnimPtr ;always
+;**********************************************************************************
+;All code in this sectioned off portion is new 
+DecPlayerFrameLength: ;START here, this routine handles frame changes WITHIN an animation, NOT animation changes 
+	DEC PlayerFrameDur 
+	BMI AdvNextPlayerFrame ;if frame duration underflown, advance to next frame
+	RTS
+DetectPlayerAnimLoopPoint:	
+	AND #$7F		;mask out bit 7
+	STA PlayerAnimFrame ;use the resulting value as the animation loop point	
+	BPL PlayerAnimationSub ;Continue looping animation, always				
+AdvNextPlayerFrame: ;if Player frame ended
+	INC PlayerAnimFrame ;advance to next frame
+PlayerAnimationSub: 
+	LDA #$24 	
+	STA M90_PRG3 ;Load the animation bank into the 3rd PRG slot	
+	LDA PlayerAnimFrame ;get current animation frame 
 	ASL 
-	TAX ;double it and move it to X
-	LDA #$2F
-	STA M90_PRG3 ;load palette mapping bank into 3rd PRG slot
-	LDA CHRSprBankAttrs,X
-	STA PlayerPalMappingLo ;load low byte of palette mapping pointer
-	LDA CHRSprBankAttrs+1,X
-	STA PlayerPalMappingHi ;load high byte of palette mapping pointer
-;Set base mirroring 
-	LDA #$24
-	STA M90_PRG3 ;load player animation bank (bank 36) back into 3rd PRG slot
+	ASL ;multiply it by 4 (anim data is 4 bytes per frame)
+	TAY ;move it to Y
+	LDA (PlayerAnimPtr), Y
+;	BEQ CalcPlayerFrameDur ;if it's 00, branch, this frame uses velocity based timings, NOT READY YET
+	BMI DetectPlayerAnimLoopPoint ;if it's negative, branch, this is a loop point		
+StorePlayerFrameDuration:
+	STA PlayerFrameDur ;else, store the frame duration
+	INY  
+MakePlayerFramePtr:
+	LDA (PlayerAnimPtr), Y
+	STA PlayerFramePtr ;store low byte
+	INY
+	LDA (PlayerAnimPtr), Y
+	STA PlayerFramePtr+1 ;store high byte	
+	INY  ;get vertical offset and forced mirroring byte 
+	LDA (PlayerAnimPtr), Y
+	TAX							;might rework this section, feels clunky
+	AND #%00001111 ;mask out mirroring bits 
+	STA PlayerVBob	
+	TXA 
+	AND #%11110000 
+	STA PlayerSpriteAttributes ;save mapping mirror state
+SetPlayerSize: ;configure new sprite size for player
+	LDY #$00 
+	LDA (PlayerFramePtr),Y
+	STA PlayerWidth
+	INY
+	LDA (PlayerFramePtr),Y
+	STA PlayerHeight
+	INY ;set player CHR bank
+	LDA (PlayerFramePtr),Y
+	TAY
+	LDA PlayerPowerup 
+	CMP #$02 	
+	BNE SkipFireCHR ;if the player doesn't have a flower, leave CHR bank as is
+	INY ;else set it to fire variant
+SkipFireCHR: 
+	STY SpriteBank1	;store the loaded sprite bank
+	
+CalcPlayerVOfs: ;					NEED TO UPDATE OTHER CODE AS IT'S LIKELY DUPLICATE
+;	LDY PlayerHeight ;use player height to select V offset
+;	LDA PlayerSpriteVOffset,Y
+;	CLC 
+;	ADC PlayerSprYPos
+;	STA PlayerSprYPosOfs
+;	SEC
+;	SBC PlayerVBob ;Subtract mapping offset from V offset
+;	STA PlayerVBob
+	RTS ;end 
+;**********************************************************************************
+;**********************************************************************************	
+;Remake necessary functions for every frame here
+ForcePlayerMirror:
+	LDA PlayerMovement
+	AND #$F0	;get the direction the player is facing
+	EOR #$40	;reverse it
+	STA PlayerSpriteMirror
+	JMP StoreMarioMirror
+PlayerLeftSprXOffset:
+	CLC 
+	ADC SpriteHOffsetTbl,Y ;add offset to sprite x position
+	JMP StorePlayerSprXOfs
+ConfigPlayerSpr: ;START HERE (replaces LoadPlayerSprite)
 	LDA PlayerMovement
 	AND #$F0 ;get the direction the player is facing
-	EOR #$40 ;reverse it
 	STA PlayerSpriteMirror ;set it to player sprite mirroring
-	LDA #$00
-	STA $24 ;clear UNKNOWN
-	INY ; advance to next byte of mapping (Horizontal offset)
-;Get Horizontal Offset 
+SetPlayerMirror: ;feels clunky, consider rework of this function
+	LDA PlayerSpriteAttributes ;used for temp compatibility with cape code
+	BMI ForcePlayerMirror ;if value is negative, force sprite to be mirrored	
+StoreMarioMirror:
 	LDA PlayerSpriteMirror
-	AND #$40 ;if player's sprite is H mirrored (facing right)
-	BNE bra4_A208 ;branch
-;Else if sprite not mirrored (facing left)
-	LDA PlayerSprXPos
-	SEC
-	SBC (PlayerFramePtr),Y ;subtract x position by mapping offset
-	STA PlayerSprXPosOfs ;set it as sprite X offset
-	LDA #$00
-	SBC #$00 ;subtract carry if present
-	STA $20 ;store it
-	JMP loc4_A218 ;Skip past next section
+;	EOR PlayerPalette ;apply mirroring 
+	STA ScratchRAM1 ;save composite result to zero page for faster access (Note, this needs to be moved to ZP later)	
+GetPlayerSprXOfs:
+	LDY PlayerWidth ;use player width to select X offset
+	LDA PlayerSprXPos;PlayerXPos 
+	LDX PlayerSpriteMirror
+	BNE PlayerLeftSprXOffset: ;if sprites are mirrored, branch
+	SEC 
+	SBC SpriteHOffsetRightTbl,Y ;Subtract offset from sprite x position
+StorePlayerSprXOfs:	
+	STA PlayerSprXPosOfs 
 	
-bra4_A208: ;If Sprite H Mirrored
-	LDA (PlayerFramePtr),Y
-	SEC
-	SBC #$08 ;subtract loaded mapping offset by 8
-	CLC
-	ADC PlayerSprXPos  ;add player X position to modified mapping offset
-	STA PlayerSprXPosOfs ;set it as sprite X offset	
-	LDA #$00
-	ADC #$00 ;add carry if present
-	STA $20 ;store it
 ;get Vertical Offset
 loc4_A218:
 	LDX #$00 ;set X to #$00
 	LDY PlayerHeight ;Put player height into Y
 	LDA PlayerSpriteVOffset,Y ;Load players vertical offset based on sprite height 
+	CLC 
+	ADC PlayerSprYPos ;add player sprite Y pos to the V offset 
+	SEC 
+	SBC PlayerVBob ;DEBUG ;subtract the bobbing V offset 
+	STA PlayerSprYPosOfs ;store it as the Y offset for the sprite
+	
 	BPL bra4_A223 ;branch if offset is positive (only happens if sprite height is 00, unsure when this would ever occur though)
 	LDX #$FF ;else if offset negative, set X to #$FF
 	
 bra4_A223: ;offset player vertically
-	CLC
-	ADC PlayerSprYPos ;add player vertical position to loaded vertical offset
-	STA PlayerSprYPosOfs ;set it as sprite Y offset 
+;	CLC
+;	ADC PlayerSprYPos ;add player vertical position to loaded vertical offset
+;	STA PlayerSprYPosOfs ;set it as sprite Y offset 
 	BCC bra4_A22B ;if carry clear (result less than 255) then branch to end of routine (leaves X untouched)
 	INX ;increment X (Result: 00 or 01) (if X is #$FF this will underflow to be #$00) 
 bra4_A22B:
@@ -375,7 +335,7 @@ bra4_A22B:
 	RTS ;end
 	
 PlayerSpriteVOffset: ;This table adjusts the sprite offset based on the height of the player, listed next to the offsets are the respective heights
-	db $00 ;00 (unsure when this one is used)
+	db $00 ;00 
 	db $F8 ;01 
 	db $F0 ;02
 	db $E8 ;03
@@ -413,7 +373,7 @@ bra4_A25B:
 	LDA BubbleXPos
 	SEC
 	SBC $52
-	STA $0203
+	STA SpriteMem+3
 	LDA BubbleYPos
 	SEC
 	SBC $54
@@ -425,11 +385,11 @@ bra4_A25B:
 	SBC #$10
 bra4_A275:
 	STA BubbleSpawnPoint
-	STA SpriteMem ;$0200, Y position
+	STA SpriteMem ;SpriteMem+0, Y position
 	LDA #$3E ;TileID
-	STA $0201 ;store tile ID/,mirroring 
+	STA SpriteMem+1 ;store tile ID/,mirroring 
 	LDA #$00
-	STA $0202 ;store palette
+	STA SpriteMem+2 ;store palette
 	DEC BubbleYPos
 	DEC BubbleYPos
 	JSR sub4_A0B0
@@ -570,7 +530,7 @@ loc4_A348: ;load/store tile ID (facing right)
 	CMP #$FF
 	BEQ bra4_A3BC ;if loaded a null tile branch to end section of routine
 	AND #$3F ;else, mask out attribute bits
-	STA $0201,X ;Store tile ID
+	STA SpriteMem+1,X ;Store tile ID
 	PHA ;push A to stack
 	LDA #$40 ;set A for mirrored sprite
 	JMP loc4_A37B ;jump 
@@ -589,7 +549,7 @@ bra4_A369: ;load/store tile ID (facing left)
 	CMP #$FF
 	BEQ bra4_A3BC ;if loaded a null tile branch to end section of routine
 	AND #$3F ;else, mask out attribute bits
-	STA $0201,X ;Store the tile ID
+	STA SpriteMem+1,X ;Store the tile ID
 	PHA ;push A to stack
 	LDA #$00 ;set A for unmirrored sprite
 ;********************************************************	
@@ -611,7 +571,7 @@ loc4_A37B:
 	LDA ($34),Y ;use tile ID to select respective attribute data
 	ORA $38 ;ORA against sprite mirroring 						 
 	ORA $06E0 ;ORA again with UNKNOWN (This flips the tiles as needed)
-	STA $0202,X ;store tile attributes
+	STA SpriteMem+2,X ;store tile attributes
 ;********************************************************	
 ;Position Tiles X
 	LDA #$24
@@ -620,7 +580,7 @@ loc4_A37B:
 	LDA PlayerMetaspriteHAlign
 	CLC
 	ADC PlayerRidingTileHorizPos,Y ;add tile H position to sprite H alignment 
-	STA $0203,X ;store X position 
+	STA SpriteMem+3,X ;store X position 
 ;********************************************************	
 ;Position Tiles Y	
 	LDA PlayerMetaspriteVAlign
@@ -636,7 +596,7 @@ bra4_A3BC:
 	INC $2E ;increment Mapping offset
 	LDA $2E
 	CMP #$10 ;these sprites are forced to each have #$10 (16) tiles it would appear
-	BCS bra4_A3CF ;If it exceeds #$10, branch to PlayerSpriteBuilder (build Yoshi sprite)
+	BCS PlayerSpriteBuilder ;If it exceeds #$10, branch to PlayerSpriteBuilder (build Yoshi sprite)
 	LDA PlayerMovement ;get current movement direction
 	EOR PlayerSpriteAttributes ;flip bits against sprite attributes
 	AND #$40 ;determine sprite mirror direction
@@ -645,199 +605,90 @@ bra4_A3BC:
 ;************************************************************************************************
 ;End of Mario Riding sprite builder
 ;************************************************************************************************	
+SpriteHOffsetTbl: ;Horizontal offsets for sprites
+	.db $00 ;00 (N/A)
+	.db $00 ;01 (N/A)
+	.db $00 ;02 
+	.db $08 ;03 
+;	.db $18 ;04 (value from Yoshi mappings)
+;	.db $20 ;05
+;	.db $28 ;06
+;	.db $30 ;07	
+SpriteHOffsetRightTbl: ;Horizontal offsets for sprites
+	.db $00 ;00 (N/A)
+	.db $00 ;01 (N/A)
+	.db $08 ;02  
+	.db $10 ;03 
+;	.db $18 ;04 (value from Yoshi mappings)
+;	.db $20 ;05
+;	.db $28 ;06
+;	.db $30 ;07	
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-===-=-=-=-==-=-=-=-=-=-=--
 ;MAIN PLAYER SPRITE BUILDER
+;Please excuse the poor coding on the first part here, this is very WIP and full of quick fixes
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-===-=-=-=-==-=-=-=-=-=-=--
-bra4_A3CF:
-PlayerSpriteBuilder: ;creates standard Mario or Yoshi sprites (riding sprites have their own routine)
+PlayerSpriteBuilder:
+	LDA #$24
+	STA M90_PRG3 ;Load animation bank into 3rd slot
+Initialise:
+	LDX PlayerWidth ;setup loop counters
+	BEQ VSLS_RTS ;if width is 00, don't render the sprite
+	STX $3E ;WidthCounter
+	LDX OAMtrack ;get current storage location offset
+	LDY #$02 ;Load offset for start of mapping data
+	LDA PlayerSprXPosOfs ;get base X offset
+;**********************
+RepeatLoaderLoop: ;runs when height counter is 00 or at start of routine
+	STA MetaXTemp
+	LDA PlayerHeight 
+	STA $3F ;HeightCounter
+	LDA PlayerSprYPosOfs ;get base Y offset
+	STA MetaYTemp
+;**********************
+GetPlayerTile: ;main loop point here <---
+	INY ;advance to next tile ID
+	LDA (PlayerFramePtr),Y
+	BMI NullTile ;if tile is to be blanked, branch
+	STA $0201, X  
+	LDA ScratchRAM1;PlayerPalette ;StorePlayerAtts:
+	STA $0202, X
+	LDA MetaYTemp ;sets Y position of sprite tile
+	STA $0200, X 
+	LDA MetaXTemp ;sets X position of sprite tile
+	STA $0203, X
+UpdateOAMTracker; add one tile to OAM space tracker
+	INX
+	INX
+	INX
+	INX
+NullTile: 
+	LDA MetaYTemp  ;update sprite row position
+	CLC 
+	ADC #$08  
+	STA MetaYTemp ;lower sprite row position by 8 pixels
+	DEC $3F ;HeightCounter
+	BNE GetPlayerTile ; if column not completed, goto main loop point
+;**********************
+UpdateColumnXPos: 
+	DEC $3E ;WidthCounter
+	BEQ VSLS_RTS ;if all columns have been drawn, branch to end
 	LDA PlayerSpriteMirror
-	AND #$40 ;determine player mirror direction
-	BEQ bra4_A3F5 ; branch ahead if direction left
-;**************************************************************************************	
-;Else player facing RIGHT START (sprite mirrored as tiles face left)
-	LDA PlayerSprXPosOfs ;get X position offset for player sprite
-	LDX #$00 ;clear X (column storage buffer offset)
-	BEQ bra4_A3E2 ; branch, always
-;****************************************************
-;Ok so there are a total of two writes to $20
-;They store the carry bit when calculating the X offset for the sprite
-;As far as I can tell $20 is always #$00
-;Seems like a waste of a byte and I'm not sure of its use
-;****************************************************
-SpaceColumnNegative: ;This is for reversing sprite columns when facing right 
-	SEC
-	SBC #$08
-	BCS bra4_A3E2 ;if PlayerSprXPosOfs exceed #$08, skip ahead (only space columns by 8 pixels)
-	DEC $20 ;otherwise decrement $20 (unknown use)
-;****************************************************
-bra4_A3E2: ;if player facing right, it will jump here first
-	LDY $20 ;load $20 into Y (unknown use)
-	BEQ bra4_A3EC ;If #$00, branch to store column alignment
-;Else $20 not 00
-	LDY #$FF ;set Y to #$FF 
-	STY $41,X ;store #$FF in MetaspriteColumnAlignment (unknown use, hide column??)
-	BMI bra4_A3EE ;branch on minus, always (advance to next column)
-	
-bra4_A3EC: ;store column alignment
-	STA $41,X ; store PlayerSprXPosOfs in MetaspriteColumnAlignment 
-;****************************************************	
-bra4_A3EE: 
-	INX ;increment X (move to next column storage buffer byte)
-	CPX PlayerWidth ;compare X to player width
-	BCC SpaceColumnNegative  ;if X < Player width, branch to subtraction (reverse tile order for face right) (branch backwards)
-	BCS bra4_A413 ;if X > player width, branch to Y positioning 	(branch ahead)
-;****************************************************	
-bra4_A3F5: ;if player facing LEFT else START here
-	LDA PlayerSprXPosOfs ;get X position offset for player sprite
-	LDX #$00 ;clear X (column storage buffer offset)
-	BEQ bra4_A402 ;Always
-;****************************************************	
-SpaceColumnPositive: ;This is for spacing sprite columns when facing left ;not used on initialise of routine
+	BNE SpaceColumnNegative ;if player facing left, branch	
+SpaceColumnPositive: ;column spacing for when facing right
+	LDA MetaXTemp
 	CLC
 	ADC #$08
-	BCC bra4_A402 ;if less than #$08, skip ahead (only space columns by 8 pixels)
-	INC $20 ;otherwise increment $20 (unknown use)
-;****************************************************		
-bra4_A402:
-	LDY $20 ;load $20 into Y (unknown use)
-	BEQ bra4_A40C ;If #$00, branch ahead to store column alignment
-;Else $20 not 00
-	LDY #$FF ;set Y to #$FF 
-	STY $41,X ;store #$FF in MetaspriteColumnAlignment (unknown use, hide column??)
-	BMI bra4_A40E ;branch on minus, always (advance to next column)
-	
-bra4_A40C: ;store column alignment
-	STA $41,X ; store PlayerSprXPosOfs in MetaspriteColumnAlignment 
-;****************************************************
-bra4_A40E:
-	INX ;increment X (move to next column storage buffer byte)
-	CPX PlayerWidth ;compare X to player width
-	BCC SpaceColumnPositive ;if X < Player width, branch to addition (tile order for face left) (branch backwards)
-;Else coderoll
-;****************************	
-; Position Y
-;****************************	
-;equivalent code for Y positioning		
-bra4_A413:
-	LDA PlayerSprYPosOfs ;get Y position offset for player sprite
-	LDX #$00 ;clear X (row storage buffer offset)
-	BEQ bra4_A422 ;always 
-;****************************************************
-SpaceRowsVertically: ;this spaces the rows of the sprite (starts from the top, adding moves the position downwards)
-	CLC
-	ADC #$08 ;lower row position by 8 pixels
-	STA PlayerMetaspriteVAlign ;store PlayerSprYPosOfs as vertical tile alignment 
-	BCC bra4_A422 ;branch on carry clear
-	INC $22 ;else carry set, increment $22 (unknown use)
-;****************************************************	
-bra4_A422: ;START here
-	LDY $22 ;load $22 (unknown use)
-	BEQ bra4_A42C ;If #$00, branch ahead to immediate store
-;Else $22 not 00	
-	LDY #$FF ;set Y to #$FF 
-	STY $B2,X ;store #$FF in MetaspriteRowAlignment (unknown use, hide row??)
-	BMI bra4_A438 ;branch on minus, always (advance to next row)
-	
-bra4_A42C:
-	STA PlayerMetaspriteVAlign ;store PlayerSprYPosOfs as vertical tile alignment 
-	CMP #$C0 
-	BCC bra4_A434 ;if it's less than #$C0, branch to store row 
-	LDA #$00 ;else if exceed #$C0, set row position to 00 (might be for screen wrapping tiles?)
-bra4_A434:
-	STA $B2,X ;store in MetaspriteColumnAlignment 
-	LDA PlayerMetaspriteVAlign ;get updated vertical tile alignment
-;****************************************************
-bra4_A438:
-	INX ;increment X
-	CPX PlayerHeight 
-	BCC SpaceRowsVertically ;if X < Player height, repeat routine
-;Else X >= PlayerHeight	
-	LDA #$04 
-	STA $40 ;set $40 to #$04 (unknown use)
-	LDA #$00
-	STA $3E ;clear $3E (width loop counter)
-	STA $3F ;clear $3F (height loop counter)
-	TAX ;set X to #$00
-;****************************************************
-;Align and store tiles
-bra4_A448: ;load row alignment 
-	LDA $B2,X ;get alignment for first row
-	CMP #$FF
-	BNE bra4_A458 ;if it's not #$FF, branch ahead
-	LDA $40 ;else if it is FF, load $40 (unknown use)
-	CLC
-	ADC PlayerWidth ;add PlayerWidth to $40 
-	STA $40 ;store result in $40 (unknown use)
-	JMP loc4_A4B2 ; Jump to increment height loop counter
-	
-bra4_A458: ;if row alignment not #$FF
-	STA PlayerMetaspriteVAlign ;store row aligment as metasprite V aligment
-	LDA #$00
-	STA $3E ;clear $3E (unknown use)
-	TAX ;set X to #$00
-;********************
-bra4_A45F: ;load column spacing
-	LDA $41,X ;load column spacing (X=0 first time we get here)
-	CMP #$FF  ;if loaded value is #$FF
-	BEQ bra4_A4A8 ;Branch to increment width loop counter
-;else if column spacing not #$FF
-	STA PlayerMetaspriteHAlign ;store column aligment as metasprite H aligment
-	LDX $3C ;load OAM tracker byte into X
-	LDY $40 ;load $40 (unknown use)
-	LDA #$24
-	STA M90_PRG3 ;load player animation bank into 3rd PRG slot
-	LDA (PlayerFramePtr),Y ;Load tile ID from mapping
-	CMP #$FF ;if loaded value is #$FF (null tile)
-	BEQ bra4_A4A8 ;branch to increment width loop counter
-	ORA $24 ;else set some bits against $24 (unknown use, might be for tile mirroring?)
-	AND #$3F ;Mask out mirroring bits
-	LDY Player1YoshiStatus ;put Yoshi status into Y
-	BEQ PlayerOAMmanager ;branch to Player OAM manager if no Yoshi
-	ORA #$40 ;else set H mirroring bit (%01000000) (why?)
-	
-PlayerOAMmanager: 
-	STA $0201,X ;store tile ID(/mirroring bit, though it's useless here)
-	AND #$3F ;Mask out mirroring bits
-	TAY ;transfer masked tile ID to Y
-	LDA #$2F
-	STA M90_PRG3 ;load attribute bank into 3rd PRG slot
-	LDA (PlayerPalMappingLo),Y
-	ORA PlayerSpriteMirror ;set mirroring for whole sprite 
-	EOR PlayerSpriteAttributes ;flip mirroring bits against sprite attributes
-	ORA $06E0 ;set some bits against unknown
-	STA $0202,X ;store attributes
-	LDA PlayerMetaspriteHAlign
-	STA $0203,X ;store horizontal position
-	LDA PlayerMetaspriteVAlign
-	STA SpriteMem,X ;store vertical position 
-	TXA ;move X to A
-	CLC
-	ADC #$04 ;
-	STA $3C ;add one tile to OAM tracker byte
-;***********************************************	
-bra4_A4A8: 
-	INC $40 ;Increment $40 (unknown use)
-	INC $3E ;Increment $3E (width loop counter)
-	LDX $3E 
-	CPX PlayerWidth ;Compare $3E with PlayerWidth
-	BCC bra4_A45F ;if X < PlayerWidth, go to load column spacing (repeat routine to build sprite)
-
-loc4_A4B2: ;else $3E >= PlayerWidth
-	INC $3F ;increment $3F (height loop counter)
-	LDX $3F
-	CPX PlayerHeight ;compare $3F with PlayerHeight
-	BCC bra4_A448 ;If X < PlayerHeight, got to load row alignment 
-;Else
-	LDY #$02 ;Offset for Mario's frame pointer (CHR bank byte)
-	LDA #$24
-	STA M90_PRG3 ;Load player Animation bank 
-	LDA (PlayerFramePtr),Y ;load CHR bank from the mapping
-	LDY Player1YoshiStatus
-	BEQ bra4_A4CA ;if no Yoshi, skip to store bank
-	LDY #$01 ;else if Yoshi, set to store in 2nd slot 
-bra4_A4CA:
-	STA SpriteBank1,Y ;Store selected CHR bank in slot 1 (Mario) or slot 2 (Yoshi)
-	RTS ;end
+;	BCC RepeatLoaderLoop ;always (test this)
+	JMP RepeatLoaderLoop
+SpaceColumnNegative: ;reverse column spacing for when facing left
+	LDA MetaXTemp
+	SEC
+	SBC #$08
+	;BCS RepeatLoaderLoop ;always (test this)
+	JMP RepeatLoaderLoop	
+VSLS_RTS:
+	STX OAMtrack ;store the updated storage offset
+	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ; END OF MARIO SPRITE LOADER
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=	
@@ -884,7 +735,7 @@ bra4_A50B:
 loc4_A50E: ;Unsure of purpose
 	LDA #$00
 	STA $0629 ;clear Unknown
-	LDA $062B ;get unknown2
+	LDA ObjFrameCounter ;get unknown2
 	AND #$08 ;Mask it (%00001000)
 	BEQ bra4_A51E ;if masked bit is 00, branch (set Y as 01)
 	LDY #$00 ;else set Y as 00 (adjusts offset for loading CHR bank)
@@ -1858,7 +1709,7 @@ loc4_A92C:
 	STA $34 ;store loaded animation value
 	BMI bra4_A936 ;branch ahead if a value above $7F is loaded
 	STY PlayerPowerup ;else, set cape to moving (#$04 loaded earlier)
-	JSR sub4_A14A ;jump to sub (check if Yoshi present or player carrying objects)
+	JSR MakePlayerAnimPtr ;jump to sub (check if Yoshi present or player carrying objects)
 ;coderoll on return
 bra4_A936:
 	LDY PlayerPowerup ;get player powerup
@@ -1947,7 +1798,7 @@ bra4_A9AB: ;
 	STA PlayerMetaspriteVAlign ;This is being reused for the capes alignment since this is calculated per frame for both
 	LDA PlayerMovement
 	EOR PlayerSpriteAttributes 
-	AND #$40 ;determine mirror direction 
+	AND #$40 ;determine mirror direction
 	BNE bra4_A9D6 ;if player isn't H mirrored (facing left), branch
 ;else player is mirrored (facing right)
 	LDA PlayerSprXPos
@@ -1966,7 +1817,7 @@ loc4_A9BD: ;If player H mirrored, (facing right)
 	BEQ bra4_AA31 ;branch if it's a null tile
 ;Load tile ID
 	AND #$3F ;else strip attributes
-	STA $0201,X ;store tile ID 
+	STA SpriteMem+1,X ;store tile ID 
 	PHA ;push masked tile ID to stack
 	LDA #$40 ;set mirroring for tile (mirrored)
 	JMP loc4_A9F0 ;go to Cape OAM manager 
@@ -1987,7 +1838,7 @@ bra4_A9DE: ;get unmirrored tile ID (code loops back to here but starts ahead of 
 	CMP #$FF
 	BEQ bra4_AA31 ;branch if it's a null tile
 	AND #$3F ;else strip attributes
-	STA $0201,X ;store tile ID
+	STA SpriteMem+1,X ;store tile ID
 	PHA ;push masked tile ID to stack
 	LDA #$00 ;set mirroing for tile (unmirrored)
 ;**************************************************
@@ -1999,19 +1850,19 @@ loc4_A9F0: ;START HERE for cape OAM manager
 	LDA SpriteBank1	
 	ASL ;double bank ID
 	TAY ;move it to Y
-	LDA #$2F
-	STA M90_PRG3 ;put the attributes bank into the 2nd PRG slot
-	LDA CHRSprBankAttrs,Y
-	STA $34 ;lowbyte of attribute pointer
-	LDA CHRSprBankAttrs+1,Y
-	STA $35 ;highbyte of attribute pointer 
+;	LDA #$2F
+;	STA M90_PRG3 ;put the attributes bank into the 2nd PRG slot
+;	LDA CHRSprBankAttrs,Y
+;	STA $34 ;lowbyte of attribute pointer
+;	LDA CHRSprBankAttrs+1,Y
+;	STA $35 ;highbyte of attribute pointer 
 	PLA ;retrive masked tile ID from stack
 	TAY ;move it to Y
-	LDA ($34),Y ;load attributes 
+	LDA #$00 ;($34),Y ;load attributes 
 ;probably to do with mirroring, not sure what these values contain
 	ORA $38 ; use tile mirroring temp byte as bitmask to set some bits (00/40 bitmask: 1=set 0=ignore)
 	ORA $06E0 ; use ?? as bitmask to set some bits
-	STA $0202,X ;store attributes
+	STA SpriteMem+2,X ;store attributes
 	
 	LDA #$24
 	STA M90_PRG3 ;load the player animation bank into the 2nd PRG slot
@@ -2019,7 +1870,7 @@ loc4_A9F0: ;START HERE for cape OAM manager
 	LDA PlayerMetaspriteHAlign
 	CLC
 	ADC tbl4_AC03,Y ;add column spacing to horizontal alignment
-	STA $0203,X ;store X position
+	STA SpriteMem+3,X ;store X position
 	
 	LDA PlayerMetaspriteVAlign
 	CLC
@@ -2108,7 +1959,7 @@ loc4_AA8E: ;If player H mirrored, (facing right)
 	BEQ bra4_AB02  ;branch if it's a null tile
 ;Load tile ID	
 	AND #$3F ;else strip attributes
-	STA $0201,X ;store tile ID 
+	STA SpriteMem+1,X ;store tile ID 
 	PHA ;push masked tile ID to stack
 	LDA #$40 ;set mirroring for tile (mirrored)
 	JMP loc4_AAC1 ;go to Yoshi Cape OAM manager
@@ -2129,7 +1980,7 @@ bra4_AAAF: ;get unmirrored tile ID (code loops back to here but starts ahead of 
 	CMP #$FF
 	BEQ bra4_AB02 ;branch if it's a null tile
 	AND #$3F ;else strip attributes
-	STA $0201,X ;store tile ID
+	STA SpriteMem+1,X ;store tile ID
 	PHA ;push masked tile ID to stack
 	LDA #$00 ;set mirroing for tile (unmirrored)
 ;**************************************************
@@ -2153,7 +2004,7 @@ loc4_AAC1: ;START HERE for cape OAM manager
 ;probably to do with mirroring, not sure what these values contain
 	ORA $38 ; use tile mirroring temp byte as bitmask to set some bits (00/40 bitmask: 1=set 0=ignore)
 	ORA $06E0 ; use ?? as bitmask to set some bits
-	STA $0202,X ;store attributes
+	STA SpriteMem+2,X ;store attributes
 	
 	LDA #$24
 	STA M90_PRG3 ;load the player animation bank into the 2nd PRG slot
@@ -2161,7 +2012,7 @@ loc4_AAC1: ;START HERE for cape OAM manager
 	LDA PlayerMetaspriteHAlign
 	CLC
 	ADC tbl4_AC03,Y ;add column spacing to horizontal alignment
-	STA $0203,X ;store X position
+	STA SpriteMem+3,X ;store X position
 	
 	LDA PlayerMetaspriteVAlign
 	CLC
@@ -2195,7 +2046,7 @@ loc4_AB16:
 	STA $0627 ;Clear frame offset
 	LDA #$03
 	STA PlayerPowerup ;set cape to static 
-	JSR sub4_A14A ;Select if Yoshi is present or if carrying object
+	JSR MakePlayerAnimPtr ;Select if Yoshi is present or if carrying object
 	LDA #$08 ;load #$08 on return
 bra4_AB2D:
 	JMP loc4_A96C ;jump to check for Yoshi
@@ -2266,7 +2117,7 @@ loc4_AB70:
 	STA $0627 ;clear cape frame picker
 	LDA #$03
 	STA PlayerPowerup ;set cape to static
-	JSR sub4_A14A ;;Select if Yoshi is present or if carrying object
+	JSR MakePlayerAnimPtr ;;Select if Yoshi is present or if carrying object
 	LDA #$00 ;clear A
 	JMP loc4_A96C ;jump to check for Yoshi 
 loc4_AB82:
@@ -2305,7 +2156,7 @@ loc4_ABB0:
 	LDA #$00
 	STA $0627 ;clear frame picker
 	LDY #$02 ;set Y to 02
-	LDA $062B ;load UNKNOWN 
+	LDA ObjFrameCounter ;load UNKNOWN 
 	AND #$01 
 	BNE bra4_ABC0 
 	LDY #$07
@@ -2459,97 +2310,97 @@ CapeMappingTbl: ;Cape mapping selection table 1
 	dw CapeFall4
 	dw CapeFlap4 ;also settle 1
 	dw CapeSettle2
-;Cape mappings 
+;Cape mappings
 CapeFlap1: ;flapping 1
+	db $00
 	db $01
 	db $02
 	db $03
-	db $04
 ;Mirrored version	
-	db $02
 	db $01
-	db $04
+	db $00
 	db $03
+	db $02
 CapeFlap2: ;flapping 2
+	db $04
 	db $05
 	db $06
 	db $07
-	db $08
 ;Mirrored version	
-	db $06
 	db $05
-	db $08
+	db $04
 	db $07
+	db $06
 CapeFlap3: ;flapping 3
-	db $0B
-	db $0C
+	db $08
+	db $09
 	db $FF
 	db $FF
 ;Mirrored version	
-	db $0C
-	db $0B
+	db $09
+	db $08
 	db $FF
 	db $FF
 CapeFall1: ;Falling 1
+	db $0C
 	db $0D
 	db $0E
 	db $0F
-	db $10
 ;Mirrored version	
-	db $0E
 	db $0D
-	db $10
+	db $0C
 	db $0F
+	db $0E
 CapeFall2: ;Falling 2
+	db $10
 	db $11
 	db $12
 	db $13
-	db $14
 ;Mirrored version	
-	db $12
 	db $11
-	db $14
+	db $10
 	db $13
+	db $12
 CapeFall3: ;Falling 3
+	db $14
 	db $15
 	db $16
 	db $17
-	db $18
 ;Mirrored version	
-	db $16
 	db $15
-	db $18
+	db $14
 	db $17
-CapeFall4: ;Falling 4
+	db $16
+CapeFall4: ;Falling 4 ;REMOVE
 	db $19
 	db $1A
 	db $1B
 	db $1C
-;Mirrored version	
+;Mirrored version ;REMOVE
 	db $1A
 	db $19
 	db $1C
 	db $1B
 CapeFlap4: ;flapping 4 (frame 1 of settling)
-	db $FF
-	db $1D
+	db $08
 	db $09
-	db $0A
+	db $FF
+	db $FF
 ;Mirrored version	
-	db $1D
+	db $09
+	db $08
+	db $FF
+	db $FF
+CapeSettle2: ;settle frame 2
+	db $FF
 	db $FF
 	db $0A
-	db $09
-CapeSettle2: ;settle frame 2
-	db $20
-	db $FF
-	db $1E
-	db $1F
+	db $0B
 ;Mirrored version		
 	db $FF
-	db $20
-	db $1F
-	db $1E
+	db $FF
+	db $0B
+	db $0A
 ;***************************************
 jmp_57_ACA5: 
 	LDA PlayerState
@@ -2564,7 +2415,7 @@ jmp_57_ACAC: ;freeze flag
 	BNE bra4_ACBD_RTS ;Make sure the player isn't moving up
 	LDA #$00
 	STA PlayerAction
-	STA PlayerAnimationFrame ;Reset the player's animation and action
+	STA PlayerAnimFrame ;Reset the player's animation and action
 bra4_ACBD_RTS:
 	RTS
 bra4_ACBE: ;If game not frozen, go through this list
@@ -2602,7 +2453,7 @@ tbl4_ACDE:
 	dw ofs_B7F7
 	dw ofs_B80F
 	dw ofs_B821
-jmp_57_AD04:
+jmp_57_AD04: ;DEBUG need to thoroughly test this fix POWERUP CHANGE EVENT (?)
 	LDA PlayerPowerupBuffer
 	BEQ bra4_AD1E
 	INC PlayerPowerupBuffer
@@ -2612,7 +2463,10 @@ jmp_57_AD04:
 	BCC bra4_AD1D_RTS
 	LDA #$00
 	STA PlayerPowerupBuffer
-	JSR sub4_A14A
+	LDA #$FF ;reset the anim vars (fix occasional out of range anim ptr crash)
+	STA PlayerFrameDur
+	STA PlayerAnimFrame
+	JMP MakePlayerAnimPtr
 bra4_AD1D_RTS:
 	RTS
 bra4_AD1E:
@@ -2665,9 +2519,9 @@ bra4_AD76:
 	STA $06DD
 	LDA #$04
 	STA Event
-	JSR sub4_A14A
 	PLA
 	PLA
+	JMP MakePlayerAnimPtr
 bra4_AD8B_RTS:
 	RTS
 sub4_AD8C:
@@ -2720,7 +2574,7 @@ bra4_ADE2:
 	CMP PlayerHoldFlag2 ;if the player's carry flag is equal to its duplicate,
 	BEQ bra4_ADF0 ;branch
 	STA PlayerHoldFlag2 ;if not, make it equal
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 bra4_ADF0:
 	LDY InvincibilityTimer
 	BEQ bra4_AE14_RTS ;Stop if the timer is empty
@@ -2746,7 +2600,7 @@ bra4_AE14_RTS:
 ;-=-=-=-=-=-=-=-=-=-=-=-
 ItemBoxLogicSub: ;X: Itembox, Y: Player Power
 	LDA zInputBottleNeck
-	AND #buttonSelect	
+	AND #btnSelect	
 	BNE DoItemboxLogic ;if select is pressed, branch
 ItemBoxLogicDone:
 	RTS
@@ -2832,7 +2686,7 @@ PActIdleChecks:
 	JSR LookUpDuckRoutine ;Check for ducking and looking up
 	JSR PlayerWalkRoutine ;Check for walking
 	JSR SwimHoldRoutine ;Check for swimming
-	JSR ShootFireball ;Check for shooting fireballs
+	JMP ShootFireball ;Check for shooting fireballs
 PActIdleDone:
 	RTS
 PlayerIdleFallChk:
@@ -2856,7 +2710,7 @@ PActDuck:
 bra4_AED0:
 	JSR LookUpDuckRoutine
 	JSR SwimHoldRoutine
-	JSR ShootFireball
+	JMP ShootFireball
 PActDuckDone:
 	RTS
 PlayerDuckFallChk:
@@ -2893,7 +2747,7 @@ bra4_AF0F:
 	JSR PlayerRunRoutine
 	JSR SwimHoldRoutine
 	JSR LeapRoutine
-	JSR ShootFireball
+	JMP ShootFireball
 	RTS
 PlayerWalkFallRout:
 	LDA PlayerYSpeed
@@ -2925,7 +2779,7 @@ bra4_AF41:
 	BEQ bra4_AF51 ;Skip the underwater object grab if the player isn't underwater
 	JSR SwimHoldRoutine
 bra4_AF51:
-	JSR SpinJumpRoutine
+	JMP SpinJumpRoutine
 	RTS
 	
 JumpYSpdRoutine:
@@ -2933,7 +2787,7 @@ JumpYSpdRoutine:
 	AND #$04
 	BEQ JumpYSpdRtDone ;Make sure the player is moving up
 	LDA zInputCurrentState
-	AND #buttonA
+	AND #btnA
 	BEQ JumpYSpdRtDone ;Make sure the A button is held
 	LDA PlayerYSpeed
 	CLC
@@ -2954,7 +2808,7 @@ bra4_AF78:
 	JSR JumpXSpdRoutine
 	LDA PlayerState
 	BEQ bra4_AF85_RTS ;Skip the underwater object grab if the player isn't underwater
-	JSR SwimHoldRoutine
+	JMP SwimHoldRoutine
 bra4_AF85_RTS:
 	RTS
 pnt_AF86:
@@ -2986,11 +2840,11 @@ ShootFireball:
 	AND #dirDown
 	BNE ShootFireballDone ;Stop if down is held
 	LDA zInputBottleNeck
-	AND #buttonB
+	AND #btnB
 	BEQ ShootFireballDone ;Wait until B is pressed
 	LDA #$13 ;norm fireball 
 	STA PlayerAction ;Set PAct to throwing fireball
-	JSR SetFireballDir ;Jump to set fireball direction
+	JMP SetFireballDir ;Jump to set fireball direction
 ShootFireballDone:
 
 	RTS		
@@ -3005,7 +2859,7 @@ MidAirFireShoot:
 	AND #dirDown
 	BNE MidAirFireShootDone ;Stop if down is held
 	LDA zInputBottleNeck
-	AND #buttonB
+	AND #btnB
 	BEQ MidAirFireShootDone ;Wait until B is pressed
 	LDY #$11 ;Make the player shoot a mid-air fireball
 	LDA UnderwaterFlag
@@ -3013,7 +2867,7 @@ MidAirFireShoot:
 	INY ;If underwater, make the player shoot an underwater fireball instead
 bra4_AFEB:
 	STY PlayerAction ;Store loaded action (type of fire to throw)
-	JSR SetFireballDir ;Jump
+	JMP SetFireballDir ;Jump
 MidAirFireShootDone:
 	RTS
 ;-=-=--=-=		
@@ -3113,7 +2967,7 @@ bra4_B08C:
 	LDA UsedFireballSlots
 	EOR #$01
 	STA UsedFireballSlots
-	LDA #$05 
+	LDA #sfx_FireBall
 	STA SFXRegister; Play fireball throw sound
 	RTS
 ;----------------------------------------
@@ -3132,7 +2986,7 @@ bra4_B0B0:
 bra4_B0B2: ;swimming action list
 	JSR SwimMove
 	JSR SwimHoldRoutine
-	JSR MidAirFireShoot
+	JMP MidAirFireShoot
 	RTS
 sub4_B0BC:
 	LDA Player1YoshiStatus
@@ -3156,7 +3010,7 @@ loc4_B0D7:
 	JSR sub4_B1DE
 bra4_B0DA:
 	LDA zInputBottleNeck
-	AND #buttonB
+	AND #btnB
 	BEQ bra4_B11D_RTS ;Make sure B is pressed
 	LDA #$00
 	STA SwallowFrameCount
@@ -3179,21 +3033,21 @@ bra4_B0FD:
 	SEC ;If about to swallow item, continue
 	SBC #$05
 	STA Player1YoshiStatus
-	JSR sub4_A14A
-	LDA #$00
-	STA PlayerAnimationFrame
+	JSR MakePlayerAnimPtr
+;	LDA #$00;DEBUG was $00, this may or may not be correct for whatever it's doing
+;	STA PlayerAnimFrame
 bra4_B113:
 	LDA Player1YoshiStatus
 	CMP #$04
 	BNE bra4_B11E
-	JSR SpawnYoshiFire
+	JMP SpawnYoshiFire
 bra4_B11D_RTS:
 	RTS
 bra4_B11E:
 	LDY ObjectCount
 	STA ObjectSlot,Y
 	LDA PlayerMovement
-	AND #buttonB
+	AND #btnB
 	BNE bra4_B138
 	LDA PlayerXPosDup
 	CLC
@@ -3255,7 +3109,7 @@ loc4_B193:
 	CMP #$09
 	BCS bra4_B1C0_RTS
 	LDA zInputBottleNeck
-	AND #buttonB
+	AND #btnB
 	BEQ bra4_B1C0_RTS
 	LDA #sfx_YoshiTongue
 	STA SFXRegister
@@ -3303,7 +3157,7 @@ sub4_B1DE:
 	CLC
 	ADC #$05
 	STA Player1YoshiStatus
-	JSR sub4_A14A
+	JMP MakePlayerAnimPtr
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;YOSHI FIRE SPAWN
@@ -3612,7 +3466,7 @@ HoldFloatUp:
 	RTS
 SwimChk:
 	LDA zInputBottleNeck
-	AND #buttonA
+	AND #btnA
 	BEQ SwimmingDone ;Make sure A is pressed
 	LDA zInputCurrentState
 	AND #dirUp
@@ -3632,7 +3486,7 @@ SwimmingDone:
 	RTS
 JumpingRoutine:
 	LDA zInputBottleNeck
-	AND #buttonA
+	AND #btnA
 	BEQ SwimmingDone ;Make sure the A button is pressed
 	LDA PlayerYSpeed
 	BNE SwimmingDone ;Make sure that the player has no leftover vertical speed
@@ -3644,7 +3498,7 @@ JumpingRoutine:
 DoBJump:
 	LDY #$48 ;Set vertical speed to $48
 	LDA zInputCurrentState
-	AND #buttonB
+	AND #btnB
 	BEQ DoLowJump
 	LDY #$58 ;If B is held, set vertical speed to $58
 DoLowJump:
@@ -3666,7 +3520,7 @@ SpinJumpRoutine:
 	LDA Player1YoshiStatus
 	BEQ SpinJumpDone ;Make sure the player isn't riding Yoshi
 	LDA zInputBottleNeck
-	AND #buttonA
+	AND #btnA
 	BEQ SpinJumpDone ;Make sure A is held
 	LDA zInputCurrentState
 	AND #dirUp
@@ -3694,7 +3548,7 @@ DismountYoshiRoutine:
 	LDA #$00
 	STA Player1YoshiStatus ;get off yoshi
 	STA YoshiExitStatus
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDA #$04
 	STA YoshiUnmountedState
 	LDA PlayerYPosDup ;get player y position
@@ -3735,11 +3589,11 @@ loc4_B4E0:
 DismountYoshiRtDone:
 	RTS
 LeapRoutine:
-	LDA PlayerAnimationFrame
+	LDA PlayerAnimFrame
 	CMP #$10 ;if animation frame is lower than 10,
 	BCC LeapingDone ;branch
 	LDA zInputBottleNeck ;
-	AND #buttonA ;if A not pressed,
+	AND #btnA ;if A not pressed,
 	BEQ LeapingDone ;branch
 	LDA #$60 ;
 	STA PlayerYSpeed ;set y speed to $60
@@ -3754,7 +3608,7 @@ PlayerRunRoutine:
 	AND #$03
 	BEQ bra4_B55C ;Make sure either left or right are held. If they aren't, skip ahead.
 	LDA zInputCurrentState ;Otherwise, continue
-	AND #buttonB
+	AND #btnB
 	BNE SetupPlayerRun ;Switch to running if B is held
 	STA $0314 ;Likely an unused or residual opcode. Does nothing.
 	LDA PlayerXSpeed
@@ -3868,7 +3722,7 @@ bra4_B5C4: ;if P speed timer not reached
 bra4_B5D2:
 	JSR SwimMove
 	JSR sub4_B616
-	JSR sub4_B669
+	JMP sub4_B669
 	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=	
 ;END OF P SPEED ROUTINE
@@ -3898,7 +3752,7 @@ SpinCapeRoutine:
 	LDA PlayerHoldFlag
 	BNE SpinCapeDone ;Make sure the player isn't carrying anything
 	LDA zInputBottleNeck
-	AND #buttonB
+	AND #btnB
 	BEQ SpinCapeDone ;Make sure B is pressed
 	LDA #$08
 	STA PlayerState ;Set player state
@@ -3912,7 +3766,7 @@ sub4_B616:
 	RTS
 sub4_B61B:
 	LDA zInputCurrentState ;
-	AND #buttonB ;if b still held,
+	AND #btnB ;if b still held,
 	BNE bra4_B627 ;branch
 	LDA #$0A ;
 	STA PlayerAction ;set action to falling
@@ -3957,10 +3811,10 @@ bra4_B668_RTS:
 	RTS
 sub4_B669:
 	LDA zInputCurrentState ;
-	AND #buttonB ;if B not held,
+	AND #btnB ;if B not held,
 	BEQ bra4_B67B_RTS ;branch
 	LDA zInputCurrentState ;
-	AND #buttonA ;if A not held,
+	AND #btnA ;if A not held,
 	BEQ bra4_B67B_RTS ;branch
 	LDA #$40 ;
 	STA PlayerYSpeed ;set Y speed to $40
@@ -4012,7 +3866,7 @@ ClimbSetMovUp:  ;else
 	BNE ClimbVMove ;branch ahead, always (pretty sure it is anyway)
 ClimbJumpChk:
 	TXA ;retrive inputs
-	AND #buttonA
+	AND #btnA
 	BNE PlayerClimbJump	;if A is pressed, branch back to fence jump routine
 ClimbJoyDownChk: 
 	LDA #$00	
@@ -4070,7 +3924,7 @@ bra4_B73D:
 	STA $32
 sub4_B741:
 	STX PlayerAction
-	LDA PlayerAnimationFrame
+	LDA PlayerAnimFrame
 	CMP $32
 	BCC bra4_B769_RTS
 	STY PlayerAction
@@ -4083,7 +3937,7 @@ sub4_B741:
 	STA YoshiTongueState
 bra4_B75C:
 	STY Player1YoshiStatus
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDA #$00
 	STA PlayerState
 	STA $062E
@@ -4100,7 +3954,7 @@ ofs_B76A:
 bra4_B77A:
 	LDA #$0D
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B782:
 	JSR TongueSpeedBoost
@@ -4109,7 +3963,7 @@ ofs_B782:
 	LDY #$07
 	LDA #$0D
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B794:
 	JSR TongueSpeedBoost
@@ -4127,7 +3981,7 @@ bra4_B7A7:
 bra4_B7AD:
 	LDA #$03
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7B5:
 	JSR TongueSpeedBoost
@@ -4140,7 +3994,7 @@ ofs_B7B5:
 bra4_B7C5:
 	LDA #$04
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7CD:
 	JSR TongueSpeedBoost
@@ -4149,7 +4003,7 @@ ofs_B7CD:
 	LDY #$07
 	LDA #$01
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7DF:
 	JSR SwimMove
@@ -4162,7 +4016,7 @@ ofs_B7DF:
 bra4_B7EF:
 	LDA #$03
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B7F7:
 	JSR SwimMove
@@ -4175,7 +4029,7 @@ ofs_B7F7:
 bra4_B807:
 	LDA #$07
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B80F:
 	JSR SwimMove
@@ -4184,7 +4038,7 @@ ofs_B80F:
 	LDY #$07
 	LDA #$03
 	STA $32
-	JSR sub4_B741
+	JMP sub4_B741
 	RTS
 ofs_B821:
 	JSR SwimMove
@@ -4203,7 +4057,7 @@ bra4_B835:
 	JSR sub4_B8C0
 	LDA #$06
 	STA Player1YoshiStatus ;Make Yoshi swallow
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDA #sfx_YoshiSwallow
 	STA SFXRegister ;Play swallow sound
 	RTS
@@ -4233,7 +4087,7 @@ TongueSpdBoostDone:
 	RTS
 TongueSwimChk:
 	LDA zInputBottleNeck
-	AND #buttonA
+	AND #btnA
 	BEQ TongueSwimChkDone ;Make sure the A button is pressed
 	LDA UnderwaterFlag
 	BEQ bra4_B886 ;Branch if not underwater
@@ -4306,7 +4160,7 @@ ofs_B8DE:
 	STA YoshiExitStatus
 	LDA #$07
 	STA PlayerAction ;set to ducking
-	JSR sub4_A14A
+	JSR MakePlayerAnimPtr
 	LDX #$00
 	LDY #$14
 	JSR ActionTimerRoutine ;Wait one 20 frame tick
@@ -4329,7 +4183,7 @@ unknownrout1:
 		LDA PlayerYSpeed ;if player's y speed isn't empty,
 		BNE rout1done ;stop
 		LDA zInputBottleNeck ;
-		AND #buttonA ;make sure A is pressed
+		AND #btnA ;make sure A is pressed
 		BEQ rout1done ;
 		LDA #$60 ;
 		STA PlayerYSpeed ;set y speed to 60 (hex)
@@ -4481,7 +4335,7 @@ CliffDeathCheck:
 	BCC MovePlayerDown ;If above this point, continue falling as normal
 	;Otherwise, kill the player
 	LDA #mus_Death	
-	STA MusicRegister ;Play death mus_ic
+	STA MusicRegister ;Play death music
 	LDA #$00		
 	STA PlayerPowerup ;Remove any powerups
 	STA Player1YoshiStatus ;Remove yoshi
@@ -4749,8 +4603,8 @@ loc4_BB43:
 	LDA #$27
 	STA M90_PRG3 ;Swap the collision bank into the 4th PRG slot
 	JSR jmp_39_E000 ;Jump
-	LDA #$3F	
-	STA M90_PRG3 ;Swap the IRQ bank back in
+	LDA #$24
+	STA M90_PRG3 ;Swap the warp bank back in
 	LDA PlayerBackColl
 	CMP #$F8
 	BNE bra4_BB73
@@ -4827,8 +4681,8 @@ bra4_BBF0:
 	LDA #$27
 	STA M90_PRG3 ;Swap bank 39 into 4th PRG slot
 	JSR jmp_39_E000 ;Jump
-	LDA #$3F
-	STA M90_PRG3 ;Swap the IRQ bank back in
+	LDA #$24
+	STA M90_PRG3 ;Swap the warp bank back in
 	LDA PlayerBackColl
 	CMP #$F8
 	BNE bra4_BC09 ;Branch if the player isn't in front of a fence tile
@@ -5138,7 +4992,7 @@ loc4_BED5: ;Player bumped head on ceiling
 	LDA PlayerState
 	CMP #$03 ;if player is climbing,
 	BEQ bra4_BEF1 ;branch
-	LDA #sfx_Thud
+	LDA #sfx_HitBlock
 	STA SFXRegister ;play "thud" sound
 bra4_BEF1: ;If player bumps head whilst climbing
 	LDA PlayerColYPos

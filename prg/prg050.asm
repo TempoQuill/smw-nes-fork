@@ -1,5 +1,5 @@
 ;disassembled by BZK 6502 Disassembler
-ObjID_h88:
+Obj_h88:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra6_800A
@@ -61,7 +61,7 @@ bra6_8078:
 	BCS bra6_807F
 	JMP sub_54_B4FC
 bra6_807F:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$1E
 	BNE bra6_809C
 	INC ObjectVariables,X
@@ -137,7 +137,7 @@ bra6_8106:
 tbl6_811A:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_8124
 	dw ptr_AD88
 ptr6_8124:
@@ -213,7 +213,7 @@ bra6_8196:
 	LDY #$C0
 bra6_81B0:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Ninji:
 	dw SprMap_Ninji_Idle
@@ -230,7 +230,7 @@ SprMap_Ninji_Jump:
 	db $A6 ;1K CHR Bank
 	db $26, $27
 	db $28, $29
-ObjID_h84:
+Obj_h84:
 	LDA #$07
 	STA $25
 	LDX $A4
@@ -293,13 +293,13 @@ bra6_8232:
 tbl6_8246:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_8250
 	dw ptr_AD88
 ptr6_8250:
 	JSR sub6_825A
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 sub6_825A:
 	LDX $A4
@@ -423,14 +423,14 @@ loc6_8324:
 bra6_833F:
 	LDA #$01
 	STA ScreenShake
-	LDA #sfx_Thud
+	LDA #sfx_Thwomp
 	STA SFXRegister
 bra6_8348:
 	INC ObjectVariables,X
 bra6_834B_RTS:
 	RTS
 ptr6_834C:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$1E
 	BNE bra6_8365_RTS
 	LDA ObjectVariables,X
@@ -502,7 +502,7 @@ ptr6_83B3:
 	LDY #$C0
 bra6_83DB:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Thwomp:
 	dw SprMap_Thwomp_Idle
@@ -589,7 +589,7 @@ bra6_847E:
 	RTS
 bra6_8489:
 	LDX $A4
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra6_849D
 	INC ObjectVariables,X
@@ -597,15 +597,15 @@ bra6_8489:
 	AND #$1F
 	STA ObjectVariables,X
 bra6_849D:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$01
 	BNE bra6_84A7
 	JSR jmp_54_BBC3
 bra6_84A7:
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
-ObjID_h90:
+Obj_h90:
 	LDX $A4
 	LDA ObjectXPos,X
 	SEC
@@ -661,7 +661,7 @@ bra6_8514:
 	RTS
 bra6_851F:
 	LDX $A4
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$01
 	BNE bra6_8533
 	INC ObjectVariables,X
@@ -669,18 +669,18 @@ bra6_851F:
 	AND #$1F
 	STA ObjectVariables,X
 bra6_8533:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$01
 	BNE bra6_853D
 	JSR jmp_54_BBC3
 bra6_853D:
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 ptr7_8544:
 	LDY #$00
 	LDX $A4
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$10
 	BEQ bra6_8550
 	INY
@@ -700,7 +700,7 @@ bra6_8550:
 	LDY #$C0
 bra6_856A:
 	STY $36
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS ;unlogged code end
 tbl6_8570:
 	dw Unknown1 ;Unused (Fuzzy)
@@ -725,7 +725,7 @@ Unknown2:
 	db $0E
 	db $0C
 	db $0F
-ObjID_h86:
+Obj_h86:
 	LDA #$07
 	STA $25
 	LDX $A4
@@ -788,17 +788,17 @@ bra6_85F0:
 tbl6_8604:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_860C
 ptr6_860C:
 	JSR sub6_8616
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 sub6_8616:
 	LDX $A4
 	LDA ObjectVariables,X
-	STA P1Score
+	STA P1Score ;Likely a leftover debugging function
 	AND #$0F
 	ASL
 	TAY
@@ -887,7 +887,7 @@ loc6_86BC:
 	STA ObjectVariables,X
 bra6_86CE_RTS:
 	RTS
-ObjID_h92:
+Obj_h92:
 	LDA #$07
 	STA $25
 	LDX $A4
@@ -950,12 +950,12 @@ bra6_8739:
 tbl6_874D:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_8755
 ptr6_8755:
 	JSR sub6_875F
 	JSR Obj_PlayerHitCheck
-	JSR jmp_54_BF74 ;unlogged
+	JMP jmp_54_BF74 ;unlogged
 	RTS ;unlogged
 sub6_875F:
 	LDX $A4
@@ -1024,7 +1024,7 @@ bra6_87C6:
 bra6_87DB_RTS:
 	RTS
 ptr6_87DC:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$0E
 	BNE bra6_87FD_RTS
 	LDA ObjectVariables,X
@@ -1043,7 +1043,7 @@ bra6_87FD_RTS:
 ptr6_87FE:
 	LDY #$00
 	LDX $A4
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$10
 	BEQ bra6_880A
 	INY
@@ -1065,7 +1065,7 @@ bra6_8824:
 	STY $36
 	LDA #$00
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 SprPtrs_Urchin:
 	dw SprMap_Urchin_Open
@@ -1356,11 +1356,11 @@ ofs_88E5:
 	db $00
 	db $0A
 	db $80
-ObjID_h70:
+Obj_h70:
 	LDX $A4
 	LDA ObjectVariables,X
 	BPL bra6_8971
-	JSR jmp_54_B5BB
+	JMP jmp_54_B5BB
 	RTS
 bra6_8971:
 	JSR sub6_8BCA
@@ -1444,7 +1444,7 @@ ptr6_8A0C:
 	LDY ObjActionTimer,X
 	LDA tbl6_8A53,Y
 	STA EnemyAnimFrame,X
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$01
 	BNE bra6_8A52_RTS
 	LDA ObjActionTimer,X
@@ -1462,7 +1462,7 @@ bra6_8A31:
 	LDA #$01
 	STA ScreenShake
 	STA FreezeFlag
-	LDA #sfx_Thud
+	LDA #sfx_Thwomp ; morton/roy landing
 	STA SFXRegister
 	LDA ObjectYPos,X
 	AND #$F8
@@ -1532,7 +1532,7 @@ bra6_8AAF:
 	LDA ObjActionTimer,X
 	CMP #$18
 	BCS bra6_8ABD
-	LDA #PlayerAnimationFrame
+	LDA #PlayerAnimFrame
 	BNE bra6_8AC3
 bra6_8ABD:
 	CMP #$20
@@ -1557,7 +1557,7 @@ ptr6_8ADB:
 	CMP #$30
 	BCC bra6_8B13
 	BNE bra6_8AEA
-	LDA #$10
+	LDA #sfx_Thunder?
 	STA SFXRegister
 	BNE bra6_8B13
 bra6_8AEA:
@@ -1675,7 +1675,7 @@ loc6_8BAE:
 	LDY #$09
 bra6_8BBA:
 loc6_8BBA:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$04
 	BEQ bra6_8BC2
 	INY
@@ -1747,7 +1747,7 @@ bra6_8C34:
 tbl6_8C48:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_8C52
 	dw ptr_AD88
 ptr6_8C52:
@@ -1816,10 +1816,10 @@ bra6_8CC2:
 	LDA WorldNumber
 	CMP #$04
 	BEQ bra6_8CD7
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 bra6_8CD7:
-	JSR sub_52_A2A8
+	JMP sub_52_A2A8
 	RTS
 ptr6_8CDB:
 	LDA WorldNumber
@@ -1846,7 +1846,7 @@ bra6_8D02:
 	AND #$C0
 	ORA #$60
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 bra6_8D12:
 	LDX $A4
@@ -1872,7 +1872,7 @@ bra6_8D35:
 	AND #$C0
 	ORA #$60
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl6_8D45:
 	dw ofs_90CF
@@ -3179,14 +3179,14 @@ bra6_933A:
 tbl6_934E:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_9358
 	dw ptr_AD88
 ptr6_9358:
 	LDA ReznorsDefeated
 	BNE bra6_9363_RTS
 	JSR jmp_54_BC3E
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 bra6_9363_RTS:
 	RTS
 ptr6_9364:
@@ -3205,7 +3205,7 @@ ptr6_9364:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 ptr6_9389:
 	LDX $A4
@@ -3228,9 +3228,9 @@ bra6_93A9:
 	LDA EnemyAnimFrame,X
 	AND #$C0
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
-ObjID_h72:
+Obj_h72:
 	LDX $A4
 	JSR sub6_9BEA
 	LDA ObjectSlot,X
@@ -3337,7 +3337,7 @@ tbl6_949D:
 	dw ptr6_9603
 	dw ptr6_9632
 ptr6_94AB:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra6_94C1_RTS
 	LDA ObjActionTimer,X
@@ -3371,7 +3371,7 @@ bra6_94E5:
 	DEC ObjectYPos,X
 	RTS
 ptr6_94E9:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra6_94FF_RTS
 	LDA ObjActionTimer,X
@@ -3396,7 +3396,7 @@ bra6_950E:
 	LDA tbl6_95CE,Y
 	BNE bra6_9525
 bra6_951A:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$08
 	BNE bra6_9522
 	INY
@@ -3406,7 +3406,7 @@ bra6_9525:
 	STA EnemyAnimFrame,X
 	RTS
 ptr6_9529:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra6_953F_RTS
 	LDA ObjActionTimer,X
@@ -3432,7 +3432,7 @@ bra6_9557:
 	STA EnemyAnimFrame,X
 	RTS
 ptr6_955B:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra6_9585_RTS
 	LDA ObjActionTimer,X
@@ -3471,7 +3471,7 @@ bra6_95A1:
 	RTS
 bra6_95A6:
 	INC ObjActionTimer,X
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$18
 	LSR
 	LSR
@@ -3564,14 +3564,14 @@ ptr6_9603:
 	CMP #$50
 	BCC bra6_961A
 bra6_9611:
-	LDA #$23
+	LDA #mus_Victory
 	STA MusicRegister
 	LDA #$09
 	STA Event
 	RTS
 bra6_961A:
 	LDY #$28
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$04
 	BNE bra6_9624
 	INY
@@ -3583,7 +3583,7 @@ bra6_9624:
 	INC ObjectYPos,X
 	RTS
 ptr6_9632:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra6_964A_RTS
 	LDA ObjActionTimer,X
@@ -3675,7 +3675,7 @@ bra6_96DA:
 tbl6_96EE:
 	dw Obj_YoshiTongueCheck
 	dw ptr_AA7B
-	dw ptr_AB29
+	dw Obj_PowerupEatCheck
 	dw ptr6_96F8
 	dw ptr_AD88
 ptr6_96F8:
@@ -3738,7 +3738,7 @@ loc6_9747:
 	LDA PlayerYSpeed
 	BNE bra6_9767
 bra6_9763:
-	JSR jmp_54_BF74
+	JMP jmp_54_BF74
 	RTS
 bra6_9767:
 	LDA InvincibilityTimer
@@ -3771,7 +3771,7 @@ bra6_979A:
 	STA ObjActionTimer,X ;Clear action timer
 bra6_97A3_RTS:
 	RTS
-ObjID_h64:
+Obj_h64:
 	LDX $A4
 	LDA ObjectVariables,X
 	BMI bra6_97AE
@@ -4009,7 +4009,7 @@ loc6_9970:
 	LDY #$F6
 bra6_9972:
 loc6_9972:
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$04 ;Set frequency to 4 frames using a bitmask
 	BEQ bra6_997A ;If the bits are masked out, use the 1st sprite and branch
 	INY ;Otherwise, continue and go to the 2nd podoboo sprite
@@ -4061,7 +4061,7 @@ bra6_99CC:
 	STY $36
 	LDA #$40
 	STA $05F0
-	JSR jmp_54_A118
+	JMP jmp_54_A118
 	RTS
 tbl6_99D7:
 	db $DD
@@ -4095,12 +4095,12 @@ sub6_99EF:
 	BPL bra6_99FF_RTS
 	LDA #$02
 	STA $2D
-	JSR sub2_A5D0
 	PLA
 	PLA
+	JMP sub2_A5D0
 bra6_99FF_RTS:
 	RTS
-ObjID_h6C:
+Obj_h6C:
 	LDX $A4
 	LDA ObjectXPos,X
 	SEC
@@ -4290,7 +4290,7 @@ bra6_9B5D:
 	LDY #$01
 bra6_9B75:
 	STY $96
-	JSR sub6_9C4F
+	JMP sub6_9C4F
 bra6_9B7A_RTS:
 	RTS
 ptr6_9B7B:

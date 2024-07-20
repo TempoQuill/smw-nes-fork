@@ -1,5 +1,5 @@
 ;disassembled by BZK 6502 Disassembler
-.incbin tilesets/ts_bonus.bin
+incbin tilesets/ts_bonus.bin
 	db $18
 	db $00
 	db $00
@@ -262,7 +262,7 @@ bra3_8759:
 	JSR GetMovementData
 bra3_8766:
 	LDY #$00
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$08
 	BNE bra3_8770
 	INY
@@ -333,7 +333,7 @@ bra3_87EE:
 bra3_87FF:
 loc3_87FF:
 	db $AD
-	.incbin tilesets/ts_bonus.bin
+	incbin tilesets/ts_bonus.bin
 	db $00
 	db $00
 	db $00
@@ -2443,7 +2443,7 @@ tbl3_97DD:
 	db $98
 	db $40
 	db $98
-	LDA $062B
+	LDA ObjFrameCounter
 	AND #$03
 	BNE bra3_97F6_RTS
 	LDA ObjectVariables,X
@@ -2458,7 +2458,7 @@ bra3_97F7:
 	LDA #$20
 	STA $06E1
 	db $BD
-	.incbin tilesets/ts_bonus.bin
+	incbin tilesets/ts_bonus.bin
 	db $00
 	db $00
 	db $00

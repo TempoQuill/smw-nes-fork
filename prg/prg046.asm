@@ -1,5 +1,5 @@
 ;disassembled by BZK 6502 Disassembler
-	.incbin levels/overworld_map.bin ;include tilemap data for the overworld map
+	incbin levels/overworld_map.bin ;include tilemap data for the overworld map
 	
 	db $2D
 	db $00
@@ -153,7 +153,7 @@ bra13_999F:
 	LDA $032F
 	AND #$03
 bra13_99A6:
-	STA $0202,X
+	STA SpriteMem+2,X
 	INX
 	INX
 	INX
