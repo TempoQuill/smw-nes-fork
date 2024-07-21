@@ -3497,7 +3497,12 @@ bra4_B33F:
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;END OF YOSHI FIRE SPAWN
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=	
-	
+PlayerWalkDecellerate:
+	LDA PlayerXSpeed
+	BEQ @Done
+	DEC PlayerXSpeed
+@Done:
+	RTS
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 ;WALKING AND RUNNING
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=	
@@ -3511,7 +3516,7 @@ PlayerWalkRoutine:
 PlayerWalkLeft:
 	LDA zInputCurrentState
 	AND #dirLeft
-	BEQ PlayerWalkDone ;Make sure left is held
+	BEQ PlayerWalkDecellerate ;Make sure left is held
 	LDA PlayerMovement
 	ORA #$41 ;Make the player face left
 loc4_B368:
@@ -3521,7 +3526,7 @@ loc4_B368:
 	BCS SetWalking ;Set walking speed at #$10, or 16 decimal
 	LDA PlayerXSpeed
 	CLC
-	ADC #$04
+	ADC #$01
 	STA PlayerXSpeed ;Accelerate the player's speed by 4
 SetWalking:
 	LDA #$01
@@ -3548,7 +3553,7 @@ loc4_B395:
 	BCS SwimMoveDone ;If X speed < 16,
 	LDA PlayerXSpeed
 	CLC
-	ADC #$04
+	ADC #$01
 	STA PlayerXSpeed ;Increase the player's X speed by 4
 SwimMoveDone:
 	RTS
@@ -3643,7 +3648,7 @@ DoBJump:
 	LDA zInputCurrentState
 	AND #btnB
 	BEQ DoLowJump
-	LDY #$58 ;If B is held, set vertical speed to $58
+	LDY #$50 ;If B is held, set vertical speed to $58
 DoLowJump:
 	LDA zInputCurrentState
 	AND #dirDown
@@ -3756,12 +3761,16 @@ PlayerRunRoutine:
 	STA $0314 ;Likely an unused or residual opcode. Does nothing.
 	LDA PlayerXSpeed
 	CMP #$10
-	BCS PlayerWalk2Done ;Limit the player's X speed to #$10, or 16 decimal
+	BCS PlayerWalk2Decellerate ;Limit the player's X speed to #$10, or 16 decimal
 	LDA PlayerXSpeed
 	CLC
-	ADC #$04
+	ADC #$01
 	STA PlayerXSpeed ;Increment the player's X speed by 4
 PlayerWalk2Done:
+	RTS
+PlayerWalk2Decellerate:
+	BEQ PlayerWalk2Done
+	DEC PlayerXSpeed
 	RTS
 unused_func1:
 	LDA $0314 ;unlogged
@@ -3783,11 +3792,11 @@ DoPlayerRun:
 	LDA #$02
 	STA PlayerAction ;Set action to running
 	LDA PlayerXSpeed
-	CMP #$40
-	BCS bra4_B55B_RTS ;Set running speed cap at #$40, or 64 decimal
+	CMP #$30
+	BCS bra4_B55B_RTS ;Set running speed cap at #$30, or 48 decimal
 	LDA PlayerXSpeed
 	CLC
-	ADC #$04
+	ADC #$01
 	STA PlayerXSpeed ;Accelerate the player's speed by 4 until the cap is reached
 bra4_B55B_RTS:
 	RTS
@@ -4220,11 +4229,10 @@ bra4_B859:
 loc4_B864:
 	STA PlayerMovement
 	LDA PlayerXSpeed
-	CMP #$10 ;caps speed for when Yoshi sticks his tongue out
+	JSR ParseVelocityCap ;caps speed for when Yoshi sticks his tongue out
 	BCS TongueSpdBoostDone ;Branch if x speed goes over 16 (this is basically a speed cap)
 	LDA PlayerXSpeed
-	CLC
-	ADC #$04
+	ADC #$01
 	STA PlayerXSpeed
 TongueSpdBoostDone:
 	RTS

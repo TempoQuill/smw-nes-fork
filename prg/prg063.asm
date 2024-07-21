@@ -364,30 +364,35 @@ VerifyEntryAtTableE329:
 	PLA
 	PLA
 	RTS
-;-----UNUSED CODE START-----
-;Seems to be an early routine for loading levels
-pnt2_E2E5:
-	LDA zInputBottleNeck
-;	AND #btnA
-;	BEQ bra3_E2FE ;If the A button is pressed,
-	INC LevelNumber ;Increment level number
-	LDA LevelNumber
-	CMP #$04 ;Check if level number is below 4,
-	BCC bra3_E2FE ;If it is, branch
-	LDA #$00 ;If it's above 4, continue
-	STA LevelNumber ;Clear level number
-	INC WorldNumber ;Carry over world number (1-5 would become 2-1)
-bra3_E2FE:
-	LDA zInputBottleNeck
-	AND #btnStart
-	BEQ bra3_E315 ;If start is pressed,
-	INC a:GameState ;Set game state to 'in level'
-	LDA #$00
-	STA a:Event ;Clear event triggers
-	LDA #$05
-	STA PalTransition
-	JMP sub3_F919 ;Jump
-bra3_E315:
+
+ParseVelocityCap:
+	PHA
+	LDA UnderwaterFlag
+	BNE @Walking
+	LDA zInputCurrentState
+	ORA zInputBottleNeck
+	AND #btnB
+	BEQ @Walking
+	PLA
+	CMP #$30
+	RTS
+@Walking:
+	PLA
+	CMP #$10
+	RTS
+
+GetVelocityCap:
+	LDA UnderwaterFlag
+	BNE @Walking
+	LDA zInputCurrentState
+	ORA zInputBottleNeck
+	AND #btnB
+	BNE @Running
+@Walking:
+	LDA #$10
+	RTS
+@Running:
+	LDA #$30
 	RTS
 
 loc3_E317:
