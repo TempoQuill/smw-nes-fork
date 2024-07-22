@@ -210,7 +210,7 @@ jmp_58_862A:
 	LDA #$00
 PauseNotDone:
 	STA APUStatus
-	LDA #%00001111
+	LDA #%00000111
 	STA APUStatus ;Disable noise channel
 	JSR UpdateChannels
 	JSR sub10_86E8
