@@ -6700,6 +6700,8 @@ bra_F4D9_RTS:
 	db $3D
 	db $01
 ThrottleSpeed:
+	LDA FreezeFlag
+	BNE @Quit
 	LDA zInputCurrentState
 	AND #dirLeft | dirRight
 	BEQ @Sub
@@ -6719,4 +6721,5 @@ ThrottleSpeed:
 	LDA #$00
 @Set:
 	STA PlayerXSpeed ;Clear the player's X speed if it went negative
+@Quit:
 	RTS
