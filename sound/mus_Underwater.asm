@@ -35,183 +35,116 @@ Underwater_P1:
 	db NLen+4
 	db NRest
 Underwater_P1Loop:
-	db SongLoop,2
-	db NLen+42
+	db NLen+84
 	db NRest
-	db SegCall
-	dw Underwater_PSub1
-	db NLen+42
 	db NRest
-	db Transpose, 1
+	db NRest
+	db NRest
+	db DutySet, $7B
+	db PitchSet, $0F
+	db VolSet, $25
 	db SegCall
 	dw Underwater_P1Sub1
-	db SongLoopEnd
-	db SongLoop,2
-	db SegCall
-	dw Underwater_PSub1
-	db SegCall
-	dw Underwater_PSub1
-	db SegCall
-	dw Underwater_PSub2
-	db Transpose, 2
+	db NLen+42
+	db C3
+	db C#3
+	db D3
+	db C#3
+	db C3
+	db A#2
+	db NLen+77
+	db A2
+	db NLen+7
+	db NRest
 	db SegCall
 	dw Underwater_P1Sub1
 	db SegCall
 	dw Underwater_P1Sub2
-	db Transpose, 3
+	db DutySet, $07
+	db VolSet, $10
 	db SegCall
-	dw Underwater_P1Sub1
+	dw Underwater_P1Sub3
+	db NLen+49
+	db B4
+	db NLen+7
+	db NRest
+	db B4
+	db D5
+	db F5
+	db G5
+	db NLen+35
+	db A#5
+	db NLen+7
+	db NRest
+	db NLen+35
+	db G5
+	db NLen+7
+	db NRest
 	db SegCall
-	dw Underwater_PSub2
-	db Transpose, 2
+	dw Underwater_P1Sub3
+	db NLen+49
+	db B4
+	db NLen+7
+	db NRest
+	db C5
+	db C#5
+	db D5
+	db F5
+	db NLen+35
+	db A5
+	db NLen+7
+	db NRest
+	db NLen+35
+	db G5
+	db NLen+7
+	db NRest
+	db DutySet, $7B
+	db VolSet, $25
 	db SegCall
 	dw Underwater_P1Sub2
-	db SegCall
-	dw Underwater_PSub1
-	db SegCall
-	dw Underwater_PSub1
-	db SegCall
-	dw Underwater_PSub2
-	db Transpose, 2
-	db SegCall
-	dw Underwater_P1Sub1
-	db SegCall
-	dw Underwater_PSub2
-	db SegCall
-	dw Underwater_P1Sub3
-	db SegCall
-	dw Underwater_PSub1
-	db NLen+42
-	db NRest
-	db SongLoopEnd
-	db SongLoop,2
-	db Transpose, 5
-	db SegCall
-	dw Underwater_P1Sub1
-	db SegCall
-	dw Underwater_P1Sub1
-	db Transpose, 0
-	db SegCall
-	dw Underwater_P1Sub4
-	db SegCall
-	dw Underwater_P1Sub4
-	db SegCall
-	dw Underwater_P1Sub5
-	db SegCall
-	dw Underwater_P1Sub5
-	db SegCall
-	dw Underwater_P1Sub6
-	db Transpose, 2
-	db NLen+14
-	db NRest
-	db SegCall
-	dw Underwater_P1Sub2T
-	db NLen+14
-	db NRest
-	db SongLoopEnd
-	db SegCall
-	dw Underwater_PSub1
-	db SegCall
-	dw Underwater_PSub1
-	db SegCall
-	dw Underwater_PSub2
-	db Transpose, 2
-	db SegCall
-	dw Underwater_P1Sub1
-	db SegCall
-	dw Underwater_PSub2
-	db SegCall
-	dw Underwater_P1Sub3
-	db SegCall
-	dw Underwater_PSub1
-	db NLen+42
-	db NRest
 	db $F4
 	dw Underwater_P1Loop
 	db $FF
 Underwater_P1Sub1:
-	db NLen+14
-	db NRest
-	db NLen+2
-	db A2
+	db NLen+42
 	db C3
-	db NLen+10
-	db NRest
-	db NLen+2
-	db A2
+	db C#3
+	db D3
+	db C#3
 	db C3
-	db NLen+10
-	db NRest
+	db B2
+	db A#2
+	db E3
 	db SegEnd
 Underwater_P1Sub2:
-	db NLen+14
-	db NRest
-	db NLen+2
-	db A#2
+	db NLen+42
+	db C3
+	db C#3
 	db D3
-	db NLen+10
-	db NRest
-Underwater_P1Sub2T:
-	db NLen+2
-	db A#2
-	db D3
-	db NLen+10
+	db C#3
+	db C3
+	db E3
+	db NLen+77
+	db F3
+	db NLen+7
 	db NRest
 	db SegEnd
 Underwater_P1Sub3:
-	db NLen+14
+	db NLen+49
+	db C5
+	db NLen+7
 	db NRest
-	db NLen+2
-	db A#2
-	db C3
-	db NLen+10
+	db C#5
+	db D5
+	db F5
+	db A5
+	db NLen+35
+	db C6
+	db NLen+7
 	db NRest
-	db NLen+2
-	db A#2
-	db C3
-	db NLen+10
-	db NRest
-	db SegEnd
-Underwater_P1Sub4:
-	db NLen+14
-	db NRest
-	db NLen+2
-	db C3
-	db F3
-	db NLen+10
-	db NRest
-	db NLen+2
-	db C3
-	db F3
-	db NLen+10
-	db NRest
-	db SegEnd
-Underwater_P1Sub5:
-	db NLen+14
-	db NRest
-	db NLen+2
-	db B2
-	db F3
-	db NLen+10
-	db NRest
-	db NLen+2
-	db B2
-	db F3
-	db NLen+10
-	db NRest
-	db SegEnd
-Underwater_P1Sub6:
-	db NLen+14
-	db NRest
-	db NLen+2
-	db A#2
-	db F3
-	db NLen+10
-	db NRest
-	db NLen+2
-	db A#2
-	db F3
-	db NLen+10
+	db NLen+35
+	db A5
+	db NLen+7
 	db NRest
 	db SegEnd
 Underwater_P2:
@@ -250,22 +183,15 @@ Underwater_P2:
 	db NLen+4
 	db NRest
 Underwater_P2Loop:
-	db SegCall
-	dw Underwater_PSub1
+	db Transpose, $00
 	db SegCall
 	dw Underwater_P2Sub4
-	db SegCall
-	dw Underwater_PSub2
 	db SegCall
 	dw Underwater_P2Sub5
 	db NLen+28
 	db D6
 	db SegCall
-	dw Underwater_PSub1
-	db SegCall
 	dw Underwater_P2Sub4
-	db SegCall
-	dw Underwater_PSub2
 	db SegCall
 	dw Underwater_P2Sub5
 	db NLen+28
@@ -280,13 +206,7 @@ Underwater_P2Loop:
 	db D#3
 	db NLen+70
 	db D3
-	db Transpose, 0
-	db DutySet, $7B
-	db VolSet, $19
-	db NLen+2
-	db C3
-	db E3
-	db NLen+10
+	db NLen+14
 	db NRest
 	db SegCall
 	dw Underwater_P2Sub3
@@ -294,13 +214,7 @@ Underwater_P2Loop:
 	db G2
 	db NLen+70
 	db G3
-	db Transpose, 0
-	db DutySet, $7B
-	db VolSet, $19
-	db NLen+2
-	db C3
-	db E3
-	db NLen+10
+	db NLen+14
 	db NRest
 	db Transpose, $11
 	db PitchSet, $0B
@@ -360,8 +274,8 @@ Underwater_P2Sub2:
 	db D3
 	db NLen+42
 	db C3
-	db SongJump
-	dw Underwater_PSub1
+	db NRest
+	db SegEnd
 Underwater_P2Sub3:
 	db Transpose, $11
 	db PitchSet, $0D
@@ -383,6 +297,8 @@ Underwater_P2Sub4:
 	db PitchSet, $0F
 	db DutySet, $07
 	db VolSet, $10
+	db NLen+42
+	db NRest
 	db NLen+3
 	db C5
 	db NLen+4
@@ -398,6 +314,8 @@ Underwater_P2Sub5:
 	db PitchSet, $0F
 	db DutySet, $07
 	db VolSet, $10
+	db NLen+42
+	db NRest
 	db NLen+3
 	db D5
 	db NLen+4
@@ -406,40 +324,6 @@ Underwater_P2Sub5:
 	db G5
 	db NLen+4
 	db A#5
-	db SegEnd
-Underwater_PSub1:
-	db NLen+14
-	db NRest
-	db Transpose, 0
-	db DutySet, $7B
-	db VolSet, $19
-	db NLen+2
-	db A2
-	db C3
-	db NLen+10
-	db NRest
-	db NLen+2
-	db A2
-	db C3
-	db NLen+10
-	db NRest
-	db SegEnd
-Underwater_PSub2:
-	db NLen+14
-	db NRest
-	db Transpose, 0
-	db DutySet, $7B
-	db VolSet, $19
-	db NLen+2
-	db A#2
-	db D3
-	db NLen+10
-	db NRest
-	db NLen+2
-	db A#2
-	db D3
-	db NLen+10
-	db NRest
 	db SegEnd
 Underwater_Tri:
 	db Transpose, $00
@@ -692,8 +576,246 @@ Underwater_NoiseSub2:
 	db NLen+42
 	db $3B
 	db SegEnd
-Underwater_End:
+Underwater_DPCM:
+	db NLen+84
+	db NRest
+	db NRest
+Underwater_DPCMLoop:
+	db SongLoop,2
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub3
+	db SongLoopEnd
+	db SongLoop,2
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub4
+	db SegCall
+	dw Underwater_DPCMSub5
+	db SegCall
+	dw Underwater_DPCMSub6
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub5
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub4
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub7
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SongLoopEnd
+	db SongLoop,2
+	db SegCall
+	dw Underwater_DPCMSub8
+	db SegCall
+	dw Underwater_DPCMSub8
+	db SegCall
+	dw Underwater_DPCMSub9
+	db SegCall
+	dw Underwater_DPCMSub9
+	db SegCall
+	dw Underwater_DPCMSub10
+	db SegCall
+	dw Underwater_DPCMSub10
+	db SegCall
+	dw Underwater_DPCMSub11
+	db SegCall
+	dw Underwater_DPCMSub5
+	db SongLoopEnd
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub4
+	db SegCall
+	dw Underwater_DPCMSub2
+	db SegCall
+	dw Underwater_DPCMSub7
+	db SegCall
+	dw Underwater_DPCMSub1
+	db SegCall
+	dw Underwater_DPCMSub1
+	db $F4
+	dw Underwater_DPCMLoop
 	db $FF
+Underwater_DPCMSub1:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db A4
+	db C5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db A4
+	db C5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub2:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db A#4
+	db D5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db A#4
+	db D5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub3:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db A#4
+	db C#5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db A#4
+	db C#5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub4:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db B4
+	db D5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db B4
+	db D5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub5:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db C5
+	db E5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db C5
+	db E5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub6:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db B4
+	db D#5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db B4
+	db D#5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub7:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db A#4
+	db C5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db A#4
+	db C5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub8:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db D5
+	db F5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db D5
+	db F5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub9:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db C5
+	db F5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db C5
+	db F5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub10:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db B4
+	db F5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db B4
+	db F5
+	db NLen+8
+	db NRest
+	db SegEnd
+Underwater_DPCMSub11:
+	db NLen+14
+	db NRest
+	db NLen+3
+	db A#4
+	db F5
+	db NLen+8
+	db NRest
+	db NLen+3
+	db A#4
+	db F5
+	db NLen+8
+	db NRest
+	db SegEnd
 Underwater_Footer:
 	db NRest
 	dw Underwater_P1
@@ -704,5 +826,5 @@ Underwater_Footer:
 	db $03
 	dw Underwater_Noise
 	db $04
-	dw Underwater_End
+	dw Underwater_DPCM
 	db $FF

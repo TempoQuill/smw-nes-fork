@@ -313,18 +313,15 @@ YOSHI1_END:
 YOSHI2:		.dsb $2d
 YOSHI2_END:
 	.dsb 3
-SWIM:		.dsb $4a
-SWIM_END:
-	.dsb 2
+POWER_SNARE:	.dsb $4b
+POWER_SNARE_END:
+	.dsb 1
 KICK_DRUM:	.dsb $d
 KICK_DRUM_END:
 	.dsb 3
 .ende
 ; DMC Bank $2D
 .enum $e0
-POWER_SNARE:	.dsb $4b
-POWER_SNARE_END:
-	.dsb 1
 GH_AMBIENCE_1:	.dsb $1b
 GH_AMBIENCE_1_END:
 GH_AMBIENCE_1_END2 = GH_AMBIENCE_1_END - 7
