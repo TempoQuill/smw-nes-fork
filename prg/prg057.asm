@@ -4346,32 +4346,13 @@ rout1done:		RTS
 ;SPEED SCALING AND SPRITE ALIGNMENT 
 ;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 sub4_B938: ;determine if player is walking or running 
-	LDA PlayerXSpeed	
-	CMP #$10	
-	BCS GetPlayerTrueXSpd ;if player's x speed exceeds #$10 (walking speed), branch
-	LDA FrameCount ;else
-	AND #$01 ;bitmask the frame count and use it as the scaled speed instead 
-	JMP loc4_B94F ;skip ahead to walking section
-	
-GetPlayerTrueXSpd: ; this is used when the player is moving faster than #$10, reads from a running speed table
-	ROR
-	ROR
-	ROR
-	ROR ;rotate bits right 4 times to divide speed
-	AND #$0F ;mask out the upper 4 bits of the result
-	TAY ;move it to Y as an offset
+	LDY PlayerXSpeed
+	CPY #$2d
+	LDA #$03
+	BCS @Cap
 	LDA PlayerXSpdTbl,Y ;use that to load a movement speed for the player
-	
-loc4_B94F: ;Decide if player should start walking
+@Cap:
 	STA PlayerMetaspriteHAlign ;store the loaded scaled speed value
-	LDA PlayerXSpeed
-	CMP #$03
-	BCS bra4_B95B ;if player X speed exceeds 3, branch (exits static/standing state)
-	LDA #$00
-	STA PlayerMetaspriteHAlign ;else set scaled speed to 00 (Standing speed)
-	
-bra4_B95B:
-	LDA ScaledPlayerXSpd
 	BNE MovePlayerLeft ;if scaled speed isn't zero, branch
 ;else if player is static
 	LDA PlayerXScreen
@@ -4658,22 +4639,52 @@ loc4_BAD0_RTS:
 ;***************************************************************
 PlayerXSpdTbl: ;X speed table
 ;the higher the PlayerXspeed, the further through the table you can move
-	db $00
-	db $01
-	db $02
-	db $03
-	db $04
-	db $05
-	db $06
-	db $07
-	db $07
-	db $07
-	db $07
-	db $07
-	db $07
-	db $07
-	db $07
-	db $07
+	db $00 ; 00
+	db $01 ; 01
+	db $00 ; 02
+	db $00 ; 03
+	db $00 ; 04
+	db $00 ; 05
+	db $01 ; 06
+	db $00 ; 07
+	db $01 ; 08
+	db $00 ; 09
+	db $01 ; 0a
+	db $01 ; 0b
+	db $00 ; 0c
+	db $01 ; 0d
+	db $01 ; 0e
+	db $01 ; 0f
+	db $01 ; 10
+	db $01 ; 11
+	db $01 ; 12
+	db $01 ; 13
+	db $02 ; 14
+	db $01 ; 15
+	db $01 ; 16
+	db $02 ; 17
+	db $01 ; 18
+	db $02 ; 19
+	db $01 ; 1a
+	db $02 ; 1b
+	db $02 ; 1c
+	db $02 ; 1d
+	db $02 ; 1e
+	db $02 ; 1f
+	db $02 ; 20
+	db $02 ; 21
+	db $02 ; 22
+	db $02 ; 23
+	db $02 ; 24
+	db $02 ; 25
+	db $03 ; 26
+	db $02 ; 27
+	db $03 ; 28
+	db $02 ; 29
+	db $03 ; 2a
+	db $03 ; 2b
+	db $02 ; 2c
+	db $03 ; 2d
 tbl4_BAE1: ;Mid Air hang time table?? might affect Y speed in general
 	db $01
 	db $01
