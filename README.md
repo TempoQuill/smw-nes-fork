@@ -3,7 +3,8 @@ This is a very WIP hack of the disassembly of the unlicensed Dendy port of SMW. 
 Updates to this project are likely to be quite slow due to time and motivation but it is being worked on.
 
 # How to assemble
-Run "assemble.bat" or "assemble.sh" .\
+- Drag and drop your ROM onto the Python script `smw_nes_extractor.py` or run the script and enter your ROM's filename. This will dump the game's assets.
+- Run either "assemble.bat" or "assemble.sh", depending on your OS.
 (The assembler used can be found [here](https://github.com/morskoyzmey/asm6).)
 
 # Current WIP task:
@@ -22,5 +23,5 @@ Known issues with current modifications are: .\
 -fix weirdness with grabbing onto edges of fences .\
 -replace physics routines (big task) 
 
--Better document some of the collision and object code.\
--Finish fixing the labels, cleaning, and organizing the music ASM. As of right now, they're extremely messy.
+- Better document some of the collision and object code.
+- Finish fixing the labels, cleaning, and organizing the music ASM. As of right now, they're extremely messy.
