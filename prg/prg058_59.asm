@@ -129,7 +129,7 @@ tbl10_8000:
 	dw ofs_Vol7E
 	dw ofs_Vol7F
 	.include sound/instruments.asm
-jmp_58_85BE:
+ProcessAudioFunnels:
 	LDA SFXRegister
 	BMI bra10_85C4
 	BNE bra10_85CE
@@ -156,7 +156,7 @@ bra10_85D5_RTS:
 	RTS
 
 ;This is the effective start point for the driver.
-jmp_58_85D6:
+InitSound:
 	LDA #$0F
 	STA APUStatus
 	LDA #$00
@@ -199,7 +199,7 @@ bra10_8623:
 	STA SoundQueue,X
 	BNE bra10_8623
 	RTS
-jmp_58_862A:
+UpdateAudio:
 	LDA PauseFlag
 	BEQ bra10_8642
 	LDA SFXPointer+2
@@ -1361,6 +1361,9 @@ bra10_8E40_RTS:
 	RTS
 
 CheckForBongos:
+; if Player1YoshiStatus
+; != 0, change 0 to 40
+; = 0, change 40 to 0
 	LDA MusicVolumeEnv, X
 	BEQ @MaybeRestore
 	CMP #$28

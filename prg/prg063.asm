@@ -187,8 +187,8 @@ bra3_E12F:
 	STA M90_PRG0
 	LDA #$3B
 	STA M90_PRG1 ;Load music banks 58 and 59 into $8000 and $A000 respectively
-	JSR jmp_58_85BE
-	JSR jmp_58_862A
+	JSR ProcessAudioFunnels
+	JSR UpdateAudio
 	LDA #$00
 	STA $3C
 	INC FrameCount
@@ -275,7 +275,7 @@ ClearMemory:
 	STA M90_PRG0 ;Swap the music bank into 1st PRG slot
 	LDA #$3B
 	STA M90_PRG1 ;Swap the 2nd music bank into 2nd PRG slot
-	JSR jmp_58_85D6 ;Initizialize sound driver
+	JSR InitSound ;Initizialize sound driver
 	LDA #mus_Title
 	STA MusicRegister ;Play the title screen music
 	JSR sub_58_8E23+1 ;Jumps inbetween an opcode. Probably an error.
@@ -2324,8 +2324,8 @@ bra3_EFB4:
 	STA M90_PRG1
 	LDA a:GameState
 	BNE bra3_EFD9 ;If in a level, branch
-	JSR jmp_58_85BE ;Otherwise, jump
-	JSR jmp_58_862A
+	JSR ProcessAudioFunnels ;Otherwise, jump
+	JSR UpdateAudio
 	LDA $08
 	STA M90_PRG0
 	LDA $09
